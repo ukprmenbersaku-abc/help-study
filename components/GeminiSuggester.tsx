@@ -18,7 +18,7 @@ const GeminiSuggester: React.FC<GeminiSuggesterProps> = ({ subjects, onAddSugges
 
     const handleGeneratePlan = async () => {
         if (!apiKey) {
-            setError('APIキーが設定されていません。右上の設定アイコンからAPIキーを入力してください。');
+            setError('APIキーが設定されていません。');
             return;
         }
         if (!goal.trim()) {
@@ -72,32 +72,48 @@ const GeminiSuggester: React.FC<GeminiSuggesterProps> = ({ subjects, onAddSugges
                 「2週間で物理をマスターしたい」などの目標を入力すると、AIが最適な学習スケジュールを提案します。
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-2">
-                <input
-                    type="text"
-                    value={goal}
-                    onChange={(e) => setGoal(e.target.value)}
-                    placeholder="例: 中間テストで数学80点以上取るための計画"
-                    className="flex-grow px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition shadow-sm"
-                    disabled={isLoading}
-                />
-                <button
-                    onClick={handleGeneratePlan}
-                    className="px-6 py-3 bg-indigo-600 text-white font-bold rounded-xl shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition flex items-center justify-center gap-2 disabled:bg-indigo-300 active:scale-95 whitespace-nowrap"
-                    disabled={isLoading}
-                >
-                    {isLoading ? (
-                        <>
-                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                          <span>生成中...</span>
-                        </>
-                    ) : (
-                        '計画を提案'
-                    )}
-                </button>
-            </div>
-            {error && (
-                <div className="mt-3 p-3 bg-rose-50 border border-rose-200 text-rose-600 rounded-lg text-sm flex items-start gap-2">
+            {!apiKey ? (
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left animate-fade-in">
+                    <div className="p-3 bg-amber-100 rounded-full text-amber-600 flex-shrink-0">
+                        <Icon name="settings" className="w-6 h-6" />
+                    </div>
+                    <div>
+                        <h4 className="font-bold text-amber-900">APIキーの設定が必要です</h4>
+                        <p className="text-sm text-amber-800 mt-1 leading-relaxed">
+                            AI機能を使用するには、画面右上の設定アイコン <span className="inline-flex align-middle bg-white rounded p-0.5 border border-amber-200"><Icon name="settings" className="w-3 h-3 text-slate-600" /></span> から
+                            Google Gemini APIキーを入力してください。
+                        </p>
+                    </div>
+                </div>
+            ) : (
+                <div className="flex flex-col sm:flex-row gap-2">
+                    <input
+                        type="text"
+                        value={goal}
+                        onChange={(e) => setGoal(e.target.value)}
+                        placeholder="例: 中間テストで数学80点以上取るための計画"
+                        className="flex-grow px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition shadow-sm"
+                        disabled={isLoading}
+                    />
+                    <button
+                        onClick={handleGeneratePlan}
+                        className="px-6 py-3 bg-indigo-600 text-white font-bold rounded-xl shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition flex items-center justify-center gap-2 disabled:bg-indigo-300 active:scale-95 whitespace-nowrap"
+                        disabled={isLoading}
+                    >
+                        {isLoading ? (
+                            <>
+                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                            <span>生成中...</span>
+                            </>
+                        ) : (
+                            '計画を提案'
+                        )}
+                    </button>
+                </div>
+            )}
+            
+            {error && apiKey && (
+                <div className="mt-3 p-3 bg-rose-50 border border-rose-200 text-rose-600 rounded-lg text-sm flex items-start gap-2 animate-fade-in">
                      <Icon name="x" className="w-5 h-5 flex-shrink-0" />
                      {error}
                 </div>
