@@ -153,7 +153,6 @@ const HomeView: React.FC<HomeViewProps> = ({ userProgress, tasks, subjects, onNa
             <div className="flex-grow space-y-3">
                {upcomingDeadlines.length > 0 ? (
                  upcomingDeadlines.map(task => {
-                   const sub = getSubject(task.subjectId);
                    const daysLeft = Math.ceil((new Date(task.date).getTime() - new Date(today).getTime()) / (1000 * 60 * 60 * 24));
                    return (
                      <div 

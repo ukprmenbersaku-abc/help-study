@@ -220,7 +220,6 @@ const App: React.FC = () => {
             onDateClick={handleDateClick} onTaskClick={handleTaskClick}
             onPrevMonth={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1))}
             onNextMonth={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1))}
-            onToggleTaskCompletion={handleToggleTaskCompletion}
           />
         );
       case 'progress':

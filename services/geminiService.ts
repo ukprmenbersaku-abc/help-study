@@ -42,7 +42,13 @@ export const generateStudyPlan = async (goal: string, apiKey: string): Promise<S
       },
     });
 
-    const jsonString = response.text.trim();
+    const text = response.text;
+    if (!text) {
+        console.error("Gemini response is empty");
+        return null;
+    }
+
+    const jsonString = text.trim();
     const tasks = JSON.parse(jsonString) as SuggestedTask[];
     return tasks;
 
