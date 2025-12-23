@@ -1,0 +1,5 @@
+{
+  "name": "学習計画・進捗トラッカー",
+  "description": "科目ごとの目標設定、週ごとの学習時間、課題の提出期限をカレンダーで管理し、ゲーム感覚で学習進捗を追跡できるアプリです。Gemini APIを活用して、学習計画の提案も行います。(An application that allows you to manage subject-specific goals, weekly study hours, and assignment deadlines on a calendar, and track your learning progress in a game-like manner. It also utilizes the Gemini API to suggest learning plans.)",
+  "requestFramePermissions": []
+}
