@@ -85,7 +85,7 @@ const Calendar: React.FC<CalendarProps> = ({ currentDate, tasks, subjects, onDat
   const getSubject = (id: string) => subjects.find(s => s.id === id);
 
   return (
-    <div className="bg-white p-4 sm:p-6 rounded-3xl shadow-xl border border-slate-200 flex flex-col">
+    <div className="bg-white p-4 sm:p-6 pb-8 rounded-3xl border border-slate-200 flex flex-col">
       <style>{`
         @keyframes popover-enter {
             from { opacity: 0; transform: scale(0.95) translateY(5px); }
@@ -111,7 +111,7 @@ const Calendar: React.FC<CalendarProps> = ({ currentDate, tasks, subjects, onDat
       </div>
 
       {/* Grid Container */}
-      <div className="grid grid-cols-7 grid-rows-6 gap-1 sm:gap-2 bg-slate-50 p-2 sm:p-3 rounded-[2rem] border border-slate-100 min-h-[500px]">
+      <div className="grid grid-cols-7 gap-1 sm:gap-2 bg-slate-50 p-2 sm:p-3 rounded-[2rem] border border-slate-100 min-h-[500px]">
         {calendarCells.map((cell) => {
             const day = cell.day;
             if (!day) return null; // Guard against undefined day
@@ -136,11 +136,11 @@ const Calendar: React.FC<CalendarProps> = ({ currentDate, tasks, subjects, onDat
             }
 
             // 背景色とボーダーの決定
-            let containerClass = "bg-white border-slate-100 hover:border-indigo-300 shadow-sm";
+            let containerClass = "bg-white border-slate-100 hover:border-indigo-300";
             if (cell.type !== 'current') {
-                containerClass = "bg-slate-50/50 border-transparent shadow-none"; // 前月・翌月は背景を薄く、ボーダーなし
+                containerClass = "bg-slate-50/50 border-transparent"; // 前月・翌月は背景を薄く、ボーダーなし
             } else if (isToday) {
-                 containerClass = "bg-white ring-[3px] ring-indigo-500 ring-offset-2 z-10 shadow-md";
+                 containerClass = "bg-white ring-[3px] ring-indigo-500 ring-offset-2 z-10";
             }
 
             // ホバー時の背景色
@@ -160,7 +160,7 @@ const Calendar: React.FC<CalendarProps> = ({ currentDate, tasks, subjects, onDat
                 onMouseLeave={() => setHoveredDate(null)}
               >
                 <div className="flex justify-between items-start">
-                    <span className={`text-xs sm:text-sm font-black flex-shrink-0 w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-full transition-colors ${isToday ? 'bg-indigo-600 text-white shadow-md shadow-indigo-200' : dateTextColor}`}>
+                    <span className={`text-xs sm:text-sm font-black flex-shrink-0 w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-full transition-colors ${isToday ? 'bg-indigo-600 text-white' : dateTextColor}`}>
                       {day.getDate()}
                     </span>
                     {tasksForDay.length > 0 && cell.type === 'current' && (
@@ -180,7 +180,7 @@ const Calendar: React.FC<CalendarProps> = ({ currentDate, tasks, subjects, onDat
                             e.stopPropagation();
                             onTaskClick(task);
                         }}
-                        className={`px-1.5 py-1 rounded-lg text-[9px] lg:text-[10px] truncate border-l-[3px] shadow-sm mb-1 ${task.isCompleted ? 'opacity-40 grayscale' : 'bg-white'}`}
+                        className={`px-1.5 py-1 rounded-lg text-[9px] lg:text-[10px] truncate border-l-[3px] mb-1 ${task.isCompleted ? 'opacity-40 grayscale' : 'bg-white'}`}
                         style={{ borderLeftColor: sub?.color || '#ccc' }}
                       >
                         <span className={`truncate block ${task.isCompleted ? 'line-through' : 'text-slate-700 font-bold'}`}>

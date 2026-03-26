@@ -1,6 +1,6 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
-import { SuggestedTask } from '../types';
+import { SuggestedTask, QuizQuestion } from '../types';
 
 export const generateStudyPlan = async (goal: string, apiKey: string): Promise<SuggestedTask[] | null> => {
   if (!apiKey) {
@@ -54,6 +54,54 @@ export const generateStudyPlan = async (goal: string, apiKey: string): Promise<S
 
   } catch (error) {
     console.error("Error generating study plan with Gemini:", error);
+    return null;
+  }
+};
+
+export const generateReviewQuestions = async (subjectName: string, apiKey: string): Promise<QuizQuestion[] | null> => {
+  if (!apiKey) {
+    console.error("API key is missing.");
+    return null;
+  }
+
+  const ai = new GoogleGenAI({ apiKey: apiKey });
+  
+  try {
+    const prompt = `あなたは数学の教師です。中学1年生の数学の単元「${subjectName}」に関する、4択のクイズを5問作成してください。
+    各問題には、問題文(question)、4つの選択肢(options)、正解のインデックス(correctAnswerIndex, 0-3)、および解説(explanation)を含めてください。
+    JSON形式の配列で出力してください。`;
+    
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: prompt,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.ARRAY,
+          items: {
+            type: Type.OBJECT,
+            properties: {
+              question: { type: Type.STRING },
+              options: {
+                type: Type.ARRAY,
+                items: { type: Type.STRING },
+              },
+              correctAnswerIndex: { type: Type.INTEGER },
+              explanation: { type: Type.STRING },
+            },
+            required: ["question", "options", "correctAnswerIndex", "explanation"],
+          },
+        },
+      },
+    });
+
+    const text = response.text;
+    if (!text) return null;
+
+    return JSON.parse(text.trim()) as QuizQuestion[];
+
+  } catch (error) {
+    console.error("Error generating review questions with Gemini:", error);
     return null;
   }
 };

@@ -46,3 +46,17 @@ export interface SuggestedTask {
     description: string;
     estimatedHours: number;
 }
+
+export interface QuizQuestion {
+  question: string;
+  options: string[];
+  correctAnswerIndex: number;
+  explanation: string;
+}
+
+export interface ReviewResult {
+  subjectId: string;
+  score: number;
+  total: number;
+  date: string;
+}

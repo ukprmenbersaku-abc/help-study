@@ -147,7 +147,7 @@ const HomeView: React.FC<HomeViewProps> = ({ userProgress, tasks, subjects, onNa
           {/* Deadlines */}
           <section className="bg-white rounded-3xl p-6 shadow-lg border border-slate-200 flex-1 flex flex-col h-full">
             <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-              <Icon name="flag" className="w-6 h-6 text-rose-500" />
+              <Icon name="check" className="w-6 h-6 text-rose-500" />
               直近の締め切り
             </h3>
             <div className="flex-grow space-y-3">

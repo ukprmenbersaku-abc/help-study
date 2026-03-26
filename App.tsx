@@ -10,6 +10,8 @@ import Sidebar from './components/Sidebar';
 import ProgressView from './components/ProgressView';
 import SubjectManager from './components/SubjectManager';
 import HomeView from './components/HomeView';
+import ReviewView from './components/ReviewView';
+import { ReviewResult } from './types';
 
 const SIDEBAR_COLORS = [
   '#F87171', '#FB923C', '#FBBF24', '#A3E635', '#4ADE80', '#34D399', '#2DD4BF', '#60A5FA', '#818CF8', '#A78BFA', '#F472B6'
@@ -27,11 +29,22 @@ const XP_PER_HOUR = 20;
 const XP_PER_DEADLINE = 50;
 const LEVEL_UP_BASE_XP = 100;
 
-export type View = 'home' | 'calendar' | 'progress' | 'subjects';
+const MATH_SUBJECTS: Subject[] = [
+  { id: 'math_1', name: '正負の数', color: '#F87171', goal: '正負の数の計算をマスターする' },
+  { id: 'math_2', name: '文字の式', color: '#FB923C', goal: '文字式の計算をマスターする' },
+  { id: 'math_3', name: '一次方程式', color: '#FBBF24', goal: '一次方程式を解けるようにする' },
+  { id: 'math_4', name: '比例と反比例', color: '#A3E635', goal: '比例・反比例のグラフと式を理解する' },
+  { id: 'math_5', name: '平面図形', color: '#4ADE80', goal: '図形の性質と作図をマスターする' },
+  { id: 'math_6', name: '空間図形', color: '#34D399', goal: '立体の表面積と体積を計算できるようにする' },
+  { id: 'math_7', name: 'データの活用', color: '#2DD4BF', goal: 'データの整理と代表値を理解する' },
+];
+
+export type View = 'home' | 'calendar' | 'progress' | 'subjects' | 'review';
 
 const App: React.FC = () => {
-  const [subjects, setSubjects] = useLocalStorage<Subject[]>('subjects', []);
+  const [subjects, setSubjects] = useLocalStorage<Subject[]>('subjects', MATH_SUBJECTS);
   const [tasks, setTasks] = useLocalStorage<Task[]>('tasks', []);
+  const [reviewResults, setReviewResults] = useLocalStorage<ReviewResult[]>('reviewResults', []);
   const [userProgress, setUserProgress] = useLocalStorage<UserProgress>('userProgress', {
     level: 1,
     xp: 0,
@@ -234,6 +247,15 @@ const App: React.FC = () => {
             SIDEBAR_COLORS={SIDEBAR_COLORS}
             onAddSuggestedTasks={handleAddSuggestedTasks}
             apiKey={apiKey}
+          />
+        );
+      case 'review':
+        return (
+          <ReviewView 
+            subjects={subjects}
+            apiKey={apiKey}
+            reviewResults={reviewResults}
+            onSaveResult={(result) => setReviewResults([...reviewResults, result])}
           />
         );
       default:
