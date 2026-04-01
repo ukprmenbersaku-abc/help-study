@@ -30,13 +30,13 @@ const XP_PER_DEADLINE = 50;
 const LEVEL_UP_BASE_XP = 100;
 
 const MATH_SUBJECTS: Subject[] = [
-  { id: 'math_1', name: '正負の数', color: '#F87171', goal: '正負の数の計算をマスターする' },
-  { id: 'math_2', name: '文字の式', color: '#FB923C', goal: '文字式の計算をマスターする' },
-  { id: 'math_3', name: '一次方程式', color: '#FBBF24', goal: '一次方程式を解けるようにする' },
-  { id: 'math_4', name: '比例と反比例', color: '#A3E635', goal: '比例・反比例のグラフと式を理解する' },
-  { id: 'math_5', name: '平面図形', color: '#4ADE80', goal: '図形の性質と作図をマスターする' },
-  { id: 'math_6', name: '空間図形', color: '#34D399', goal: '立体の表面積と体積を計算できるようにする' },
-  { id: 'math_7', name: 'データの活用', color: '#2DD4BF', goal: 'データの整理と代表値を理解する' },
+  { id: 'math_1', name: '正負の数', color: '#F87171', goal: '正負の数の計算をマスターする', icon: 'plus-minus' },
+  { id: 'math_2', name: '文字の式', color: '#FB923C', goal: '文字式の計算をマスターする', icon: 'algebra' },
+  { id: 'math_3', name: '一次方程式', color: '#FBBF24', goal: '一次方程式を解けるようにする', icon: 'equal' },
+  { id: 'math_4', name: '比例と反比例', color: '#A3E635', goal: '比例・反比例のグラフと式を理解する', icon: 'trending-up' },
+  { id: 'math_5', name: '平面図形', color: '#4ADE80', goal: '図形の性質と作図をマスターする', icon: 'shapes' },
+  { id: 'math_6', name: '空間図形', color: '#34D399', goal: '立体の表面積と体積を計算できるようにする', icon: 'box' },
+  { id: 'math_7', name: 'データの活用', color: '#2DD4BF', goal: 'データの整理と代表値を理解する', icon: 'bar-chart' },
 ];
 
 export type View = 'home' | 'calendar' | 'progress' | 'subjects' | 'review';
@@ -256,6 +256,7 @@ const App: React.FC = () => {
             apiKey={apiKey}
             reviewResults={reviewResults}
             onSaveResult={(result) => setReviewResults([...reviewResults, result])}
+            onOpenSettings={() => setIsSettingsOpen(true)}
           />
         );
       default:

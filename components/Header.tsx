@@ -13,12 +13,6 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onOpenSettings, onNavi
     return (
         <header className="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-30 w-full flex-shrink-0">
             <style>{`
-                .btn-settings:hover .icon-settings {
-                    transform: rotate(45deg);
-                }
-                .icon-settings {
-                    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-                }
                 .logo-clickable:active {
                     transform: scale(0.98);
                 }
@@ -34,7 +28,7 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onOpenSettings, onNavi
                             className="logo-clickable flex items-center gap-2 hover:opacity-80 transition-all duration-200"
                         >
                            <Icon name="calendar" className="w-7 h-7 text-indigo-600" />
-                           <h1 className="text-xl font-bold text-slate-800 tracking-tight hidden sm:block">学習トラッカー</h1>
+                           <h1 className="text-xl font-bold text-slate-800 tracking-tight hidden sm:block">Study-side</h1>
                         </button>
                     </div>
                     <div className="flex items-center gap-4">

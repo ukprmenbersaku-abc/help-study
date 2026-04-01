@@ -4,6 +4,7 @@ export interface Subject {
   name: string;
   color: string;
   goal: string;
+  icon?: string;
 }
 
 export enum TaskType {

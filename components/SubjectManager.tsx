@@ -14,10 +14,15 @@ interface SubjectManagerProps {
     apiKey: string;
 }
 
+const SUBJECT_ICONS = [
+    'book', 'plus-minus', 'algebra', 'variable', 'equal', 'trending-up', 'shapes', 'box', 'bar-chart', 'award', 'sparkles', 'flag'
+];
+
 const SubjectManager: React.FC<SubjectManagerProps> = ({ subjects, setSubjects, tasks, setTasks, SIDEBAR_COLORS, onAddSuggestedTasks, apiKey }) => {
     const [newSubjectName, setNewSubjectName] = useState('');
     const [newSubjectGoal, setNewSubjectGoal] = useState('');
     const [newSubjectColor, setNewSubjectColor] = useState(SIDEBAR_COLORS[0]);
+    const [newSubjectIcon, setNewSubjectIcon] = useState(SUBJECT_ICONS[0]);
     const [editingSubject, setEditingSubject] = useState<Subject | null>(null);
 
     const handleAddSubject = (e: React.FormEvent) => {
@@ -29,11 +34,13 @@ const SubjectManager: React.FC<SubjectManagerProps> = ({ subjects, setSubjects, 
             name: newSubjectName,
             goal: newSubjectGoal,
             color: newSubjectColor,
+            icon: newSubjectIcon,
         };
         setSubjects([...subjects, newSubject]);
         setNewSubjectName('');
         setNewSubjectGoal('');
         setNewSubjectColor(SIDEBAR_COLORS[0]);
+        setNewSubjectIcon(SUBJECT_ICONS[0]);
     };
 
     const handleUpdateSubject = (e: React.FormEvent) => {
@@ -106,6 +113,21 @@ const SubjectManager: React.FC<SubjectManagerProps> = ({ subjects, setSubjects, 
                                     ))}
                                 </div>
                             </div>
+                            <div>
+                                <label className="block text-sm font-bold text-slate-500 mb-2 ml-1">アイコン</label>
+                                <div className="flex flex-wrap gap-3">
+                                    {SUBJECT_ICONS.map(icon => (
+                                        <button 
+                                            type="button" 
+                                            key={icon} 
+                                            onClick={() => setEditingSubject({ ...editingSubject, icon: icon })}
+                                            className={`w-10 h-10 rounded-xl transition-all transform hover:scale-110 flex items-center justify-center border-2 ${editingSubject.icon === icon ? 'border-indigo-500 bg-indigo-50 text-indigo-600 scale-110' : 'border-slate-200 bg-white text-slate-400 hover:border-slate-300'}`}
+                                        >
+                                            <Icon name={icon} className="w-5 h-5" />
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
                         <div className="flex gap-3 justify-end pt-2">
                             <button type="button" onClick={() => setEditingSubject(null)} className="px-6 py-3 bg-white text-slate-600 border border-slate-300 font-bold rounded-2xl hover:bg-slate-50 transition active:scale-95 shadow-sm">キャンセル</button>
@@ -137,24 +159,41 @@ const SubjectManager: React.FC<SubjectManagerProps> = ({ subjects, setSubjects, 
                                 />
                             </div>
                         </div>
-                        <div>
-                             <label className="block text-sm font-bold text-slate-500 mb-2 ml-1">カラー</label>
-                            <div className="flex flex-wrap gap-3">
-                                {SIDEBAR_COLORS.map(color => (
-                                    <button 
-                                        type="button" 
-                                        key={color} 
-                                        onClick={() => setNewSubjectColor(color)}
-                                        className={`w-9 h-9 rounded-full transition-all transform hover:scale-110 shadow-sm relative ${newSubjectColor === color ? 'ring-2 ring-offset-4 ring-indigo-500 scale-110' : 'hover:ring-2 hover:ring-offset-2 hover:ring-slate-300'}`}
-                                        style={{ backgroundColor: color }}
-                                    >
-                                        {newSubjectColor === color && (
-                                            <div className="absolute inset-0 flex items-center justify-center">
-                                                <Icon name="check" className="w-5 h-5 text-white drop-shadow-sm" />
-                                            </div>
-                                        )}
-                                    </button>
-                                ))}
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div>
+                                <label className="block text-sm font-bold text-slate-500 mb-2 ml-1">カラー</label>
+                                <div className="flex flex-wrap gap-2">
+                                    {SIDEBAR_COLORS.slice(0, 6).map(color => (
+                                        <button 
+                                            type="button" 
+                                            key={color} 
+                                            onClick={() => setNewSubjectColor(color)}
+                                            className={`w-8 h-8 rounded-full transition-all transform hover:scale-110 shadow-sm relative ${newSubjectColor === color ? 'ring-2 ring-offset-2 ring-indigo-500 scale-110' : 'hover:ring-2 hover:ring-offset-2 hover:ring-slate-300'}`}
+                                            style={{ backgroundColor: color }}
+                                        >
+                                            {newSubjectColor === color && (
+                                                <div className="absolute inset-0 flex items-center justify-center">
+                                                    <Icon name="check" className="w-4 h-4 text-white drop-shadow-sm" />
+                                                </div>
+                                            )}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="sm:col-span-2">
+                                <label className="block text-sm font-bold text-slate-500 mb-2 ml-1">アイコン</label>
+                                <div className="flex flex-wrap gap-2">
+                                    {SUBJECT_ICONS.map(icon => (
+                                        <button 
+                                            type="button" 
+                                            key={icon} 
+                                            onClick={() => setNewSubjectIcon(icon)}
+                                            className={`w-9 h-9 rounded-xl transition-all transform hover:scale-110 flex items-center justify-center border-2 ${newSubjectIcon === icon ? 'border-indigo-500 bg-indigo-50 text-indigo-600 scale-110' : 'border-slate-200 bg-white text-slate-400 hover:border-slate-300'}`}
+                                        >
+                                            <Icon name={icon} className="w-4 h-4" />
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                         <div className="flex justify-end pt-2">
@@ -172,9 +211,11 @@ const SubjectManager: React.FC<SubjectManagerProps> = ({ subjects, setSubjects, 
                         <div key={subject.id} className="group flex items-center justify-between p-5 bg-white border border-slate-200 rounded-2xl hover:border-indigo-300 hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-300">
                             <div className="flex items-center gap-5">
                                 <div 
-                                    className="w-4 h-4 rounded-full shadow-inner ring-4 ring-slate-50 group-hover:ring-indigo-50 transition-all" 
+                                    className="w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-lg transition-all group-hover:scale-110" 
                                     style={{ backgroundColor: subject.color }}
-                                ></div>
+                                >
+                                    <Icon name={subject.icon || 'book'} className="w-6 h-6" />
+                                </div>
                                 <div >
                                     <p className="font-black text-slate-800 text-lg tracking-tight">{subject.name}</p>
                                     {subject.goal && <p className="text-sm text-slate-400 font-medium mt-0.5">{subject.goal}</p>}

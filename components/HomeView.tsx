@@ -46,13 +46,20 @@ const HomeView: React.FC<HomeViewProps> = ({ userProgress, tasks, subjects, onNa
               "今日は予定がありません。"
             )}
           </p>
-          <div className="flex gap-4">
+          <div className="flex flex-wrap gap-4">
              <button 
                 onClick={() => onNavigate('calendar')}
                 className="bg-white/20 hover:bg-white/30 backdrop-blur-md px-6 py-2.5 rounded-xl font-bold transition-all active:scale-95 flex items-center gap-2"
              >
                 <Icon name="calendar" className="w-5 h-5" />
                 カレンダーを見る
+             </button>
+             <button 
+                onClick={() => onNavigate('review')}
+                className="bg-white/20 hover:bg-white/30 backdrop-blur-md px-6 py-2.5 rounded-xl font-bold transition-all active:scale-95 flex items-center gap-2"
+             >
+                <Icon name="play" className="w-5 h-5" />
+                復習をする（試験的な機能です）
              </button>
              <button 
                 onClick={() => onNavigate('subjects')}
@@ -103,7 +110,9 @@ const HomeView: React.FC<HomeViewProps> = ({ userProgress, tasks, subjects, onNa
                       <div className="flex-grow min-w-0">
                         <p className={`font-bold truncate ${task.isCompleted ? 'line-through text-slate-400' : 'text-slate-700'}`}>{task.title}</p>
                         <div className="flex items-center gap-2 mt-0.5">
-                            <span className="w-2 h-2 rounded-full" style={{ backgroundColor: sub?.color || '#ccc' }}></span>
+                            <div className="w-4 h-4 rounded flex items-center justify-center text-white" style={{ backgroundColor: sub?.color || '#ccc' }}>
+                                <Icon name={sub?.icon || 'book'} className="w-2.5 h-2.5" />
+                            </div>
                             <span className="text-xs text-slate-500">{sub?.name}</span>
                         </div>
                       </div>
