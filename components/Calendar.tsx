@@ -168,6 +168,12 @@ const Calendar: React.FC<CalendarProps> = ({ currentDate, tasks, subjects, onDat
                             <span className="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>
                         </div>
                     )}
+                    {cell.type === 'current' && tasksForDay.length === 0 && hoveredDate === dateStr && (
+                        <div className="hidden sm:flex items-center gap-1 text-[8px] font-black text-indigo-400 animate-fade-in">
+                            <Icon name="plus" className="w-3 h-3" />
+                            <span>予定を追加</span>
+                        </div>
+                    )}
                 </div>
                 
                 <div className={`mt-1.5 space-y-1 overflow-y-auto flex-grow hidden sm:block ${cell.type !== 'current' ? 'opacity-30' : ''}`}>

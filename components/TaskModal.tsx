@@ -138,11 +138,30 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave, subjects
                 </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-600 mb-1">タイプ</label>
+              <label className="block text-sm font-medium text-slate-600 mb-1">タスクの種類</label>
               <div className="flex space-x-4">
-                <button type="button" onClick={() => setType(TaskType.STUDY)} className={`flex-1 py-2 rounded-lg text-sm transition ${type === TaskType.STUDY ? 'bg-indigo-600 text-white shadow' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}>学習</button>
-                <button type="button" onClick={() => setType(TaskType.DEADLINE)} className={`flex-1 py-2 rounded-lg text-sm transition ${type === TaskType.DEADLINE ? 'bg-rose-600 text-white shadow' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}>提出</button>
+                <button 
+                  type="button" 
+                  onClick={() => setType(TaskType.STUDY)} 
+                  className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${type === TaskType.STUDY ? 'bg-indigo-600 text-white shadow-lg scale-[1.02]' : 'bg-slate-100 text-slate-400 hover:bg-slate-200'}`}
+                >
+                  <Icon name="book" className="w-4 h-4 inline-block mr-1.5" />
+                  学習
+                </button>
+                <button 
+                  type="button" 
+                  onClick={() => setType(TaskType.DEADLINE)} 
+                  className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${type === TaskType.DEADLINE ? 'bg-rose-600 text-white shadow-lg scale-[1.02]' : 'bg-slate-100 text-slate-400 hover:bg-slate-200'}`}
+                >
+                  <Icon name="flag" className="w-4 h-4 inline-block mr-1.5" />
+                  提出・期限
+                </button>
               </div>
+              <p className="text-[10px] text-slate-400 mt-2 font-medium">
+                {type === TaskType.STUDY 
+                  ? '日々の学習予定を記録します' 
+                  : '宿題や課題、テストなどの締め切り日を設定します'}
+              </p>
             </div>
             {type === TaskType.STUDY && (
               <div>

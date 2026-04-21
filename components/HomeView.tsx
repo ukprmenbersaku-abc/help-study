@@ -10,10 +10,11 @@ interface HomeViewProps {
   subjects: Subject[];
   onNavigate: (view: View) => void;
   onTaskClick: (task: Task) => void;
+  onAddTask: (date: Date) => void;
   onToggleTaskCompletion: (taskId: string) => void;
 }
 
-const HomeView: React.FC<HomeViewProps> = ({ userProgress, tasks, subjects, onNavigate, onTaskClick, onToggleTaskCompletion }) => {
+const HomeView: React.FC<HomeViewProps> = ({ userProgress, tasks, subjects, onNavigate, onTaskClick, onAddTask, onToggleTaskCompletion }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   
   const today = new Date().toISOString().split('T')[0];
@@ -59,7 +60,14 @@ const HomeView: React.FC<HomeViewProps> = ({ userProgress, tasks, subjects, onNa
                 className="bg-white/20 hover:bg-white/30 backdrop-blur-md px-6 py-2.5 rounded-xl font-bold transition-all active:scale-95 flex items-center gap-2"
              >
                 <Icon name="play" className="w-5 h-5" />
-                復習をする（試験的な機能です）
+                復習をする
+             </button>
+             <button 
+                onClick={() => onNavigate('search')}
+                className="bg-white/20 hover:bg-white/30 backdrop-blur-md px-6 py-2.5 rounded-xl font-bold transition-all active:scale-95 flex items-center gap-2"
+             >
+                <Icon name="search" className="w-5 h-5" />
+                学習検索
              </button>
              <button 
                 onClick={() => onNavigate('subjects')}
@@ -77,18 +85,28 @@ const HomeView: React.FC<HomeViewProps> = ({ userProgress, tasks, subjects, onNa
         {/* Left Column: Today's Tasks */}
         <section className="bg-white rounded-3xl p-6 shadow-lg border border-slate-200 flex flex-col h-full min-h-[400px]">
            <div className="flex items-center justify-between mb-4 flex-shrink-0">
-              <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-                <Icon name="check" className="w-6 h-6 text-green-500" />
-                今日のタスク
-              </h3>
-              {todaysTasks.length > 3 && (
-                <button 
-                  onClick={() => setIsExpanded(!isExpanded)} 
-                  className="text-sm text-indigo-600 hover:underline font-bold transition-all"
-                >
-                  {isExpanded ? '閉じる' : 'すべて表示'}
-                </button>
-              )}
+               <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+                 <Icon name="check" className="w-6 h-6 text-green-500" />
+                 今日のタスク
+               </h3>
+               <div className="flex items-center gap-3">
+                 <button 
+                  onClick={() => onAddTask(new Date())}
+                  className="p-2 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-100 transition-colors flex items-center gap-1.5 text-xs font-black shadow-sm border border-indigo-100 active:scale-95"
+                  title="タスクを追加"
+                 >
+                   <Icon name="plus" className="w-4 h-4" />
+                   追加
+                 </button>
+                 {todaysTasks.length > 3 && (
+                   <button 
+                     onClick={() => setIsExpanded(!isExpanded)} 
+                     className="text-sm text-indigo-600 hover:underline font-bold transition-all"
+                   >
+                     {isExpanded ? '閉じる' : 'すべて表示'}
+                   </button>
+                 )}
+               </div>
            </div>
            
            <div className="flex-grow space-y-3 transition-all duration-300">

@@ -11,6 +11,7 @@ import ProgressView from './components/ProgressView';
 import SubjectManager from './components/SubjectManager';
 import HomeView from './components/HomeView';
 import ReviewView from './components/ReviewView';
+import StudySearchView from './components/StudySearchView';
 import { ReviewResult } from './types';
 
 const SIDEBAR_COLORS = [
@@ -39,7 +40,7 @@ const MATH_SUBJECTS: Subject[] = [
   { id: 'math_7', name: 'データの活用', color: '#2DD4BF', goal: 'データの整理と代表値を理解する', icon: 'bar-chart' },
 ];
 
-export type View = 'home' | 'calendar' | 'progress' | 'subjects' | 'review';
+export type View = 'home' | 'calendar' | 'progress' | 'subjects' | 'review' | 'search';
 
 const App: React.FC = () => {
   const [subjects, setSubjects] = useLocalStorage<Subject[]>('subjects', MATH_SUBJECTS);
@@ -223,6 +224,7 @@ const App: React.FC = () => {
             subjects={subjects}
             onNavigate={setActiveView}
             onTaskClick={handleTaskClick}
+            onAddTask={handleDateClick}
             onToggleTaskCompletion={handleToggleTaskCompletion}
           />
         );
@@ -259,6 +261,8 @@ const App: React.FC = () => {
             onOpenSettings={() => setIsSettingsOpen(true)}
           />
         );
+      case 'search':
+        return <StudySearchView />;
       default:
         return null;
     }
@@ -300,8 +304,8 @@ const App: React.FC = () => {
           ></div>
       )}
 
-      <main className="flex-1 p-4 lg:p-6 overflow-hidden">
-        <div className="h-full w-full overflow-y-auto">
+      <main className={`flex-1 overflow-hidden ${activeView === 'search' ? 'p-0' : 'p-4 lg:p-6'}`}>
+        <div className={`h-full w-full overflow-y-auto ${activeView === 'search' ? 'scrollbar-hide' : ''}`}>
           {renderContent()}
         </div>
       </main>
