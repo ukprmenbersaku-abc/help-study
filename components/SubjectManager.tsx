@@ -15,7 +15,7 @@ interface SubjectManagerProps {
 }
 
 const SUBJECT_ICONS = [
-    'book', 'plus-minus', 'algebra', 'variable', 'equal', 'trending-up', 'shapes', 'box', 'bar-chart', 'award', 'sparkles', 'flag'
+    'book', 'plus-minus', 'algebra', 'variable', 'equal', 'trending-up', 'shapes', 'box', 'bar-chart', 'award', 'sparkles', 'flag', 'music', 'palette', 'home', 'vaulting-horse', 'brush', 'globe', 'flask', 'alphabet', 'math-x'
 ];
 
 const SubjectManager: React.FC<SubjectManagerProps> = ({ subjects, setSubjects, tasks, setTasks, SIDEBAR_COLORS, onAddSuggestedTasks, apiKey }) => {
@@ -51,7 +51,7 @@ const SubjectManager: React.FC<SubjectManagerProps> = ({ subjects, setSubjects, 
     };
 
     const handleDeleteSubject = (subjectId: string) => {
-        if (window.confirm('この科目を削除しますか？関連する全てのタスクも削除されます。')) {
+        if (window.confirm('この教科を削除しますか？関連する全てのタスクも削除されます。')) {
             setSubjects(subjects.filter(s => s.id !== subjectId));
             setTasks(tasks.filter(t => t.subjectId !== subjectId));
         }
@@ -62,21 +62,21 @@ const SubjectManager: React.FC<SubjectManagerProps> = ({ subjects, setSubjects, 
             <div className="bg-white p-6 sm:p-8 rounded-[2rem] shadow-xl border border-slate-200">
                 <h2 className="text-2xl font-black text-slate-800 mb-6 tracking-tight flex items-center gap-3">
                     <Icon name="book" className="w-8 h-8 text-indigo-600" />
-                    科目管理
+                    教科管理
                 </h2>
                 
                 {/* Edit Form */}
                 {editingSubject ? (
                     <form onSubmit={handleUpdateSubject} className="space-y-6 p-6 bg-slate-50 rounded-3xl mb-8 border border-slate-200 shadow-inner animate-modal-enter">
                         <div className="flex items-center justify-between">
-                            <h3 className="font-bold text-xl text-slate-800">科目を編集</h3>
+                            <h3 className="font-bold text-xl text-slate-800">教科を編集</h3>
                             <button type="button" onClick={() => setEditingSubject(null)} className="text-slate-400 hover:text-slate-600 transition-colors">
                                 <Icon name="x" className="w-6 h-6" />
                             </button>
                         </div>
                         <div className="space-y-4">
                             <div>
-                                <label htmlFor="edit-name" className="block text-sm font-bold text-slate-500 mb-1.5 ml-1">科目名</label>
+                                <label htmlFor="edit-name" className="block text-sm font-bold text-slate-500 mb-1.5 ml-1">教科名</label>
                                 <input
                                     id="edit-name" type="text" value={editingSubject.name}
                                     onChange={(e) => setEditingSubject({ ...editingSubject, name: e.target.value })}
@@ -137,10 +137,10 @@ const SubjectManager: React.FC<SubjectManagerProps> = ({ subjects, setSubjects, 
                 ) : (
                 /* Add Form */
                     <form onSubmit={handleAddSubject} className="space-y-6 p-6 bg-slate-50/50 rounded-3xl mb-10 border border-slate-200">
-                         <h3 className="font-bold text-xl text-slate-800">新しい科目を追加</h3>
+                         <h3 className="font-bold text-xl text-slate-800">新しい教科を追加</h3>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label htmlFor="new-name" className="block text-sm font-bold text-slate-500 mb-1.5 ml-1">科目名</label>
+                                <label htmlFor="new-name" className="block text-sm font-bold text-slate-500 mb-1.5 ml-1">教科名</label>
                                 <input
                                     id="new-name" type="text" value={newSubjectName}
                                     onChange={(e) => setNewSubjectName(e.target.value)}
@@ -241,7 +241,7 @@ const SubjectManager: React.FC<SubjectManagerProps> = ({ subjects, setSubjects, 
                     ))}
                      {subjects.length === 0 && !editingSubject && (
                         <div className="text-center py-12 bg-slate-50/50 rounded-3xl border-2 border-dashed border-slate-200">
-                             <p className="text-slate-400 font-medium">まだ科目がありません。<br/>新しい科目を追加して学習を始めましょう！</p>
+                             <p className="text-slate-400 font-medium">まだ教科がありません。<br/>新しい教科を追加して学習を始めましょう！</p>
                         </div>
                     )}
                 </div>

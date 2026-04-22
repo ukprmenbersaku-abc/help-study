@@ -87,6 +87,32 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave, subjects
         <form onSubmit={handleSubmit} className="flex-grow flex flex-col min-h-0">
           <div className="overflow-y-auto space-y-4 pr-4 -mr-4 mb-4">
             <div>
+              <label className="block text-sm font-medium text-slate-600 mb-1">タスクの種類</label>
+              <div className="flex space-x-4">
+                <button 
+                  type="button" 
+                  onClick={() => setType(TaskType.STUDY)} 
+                  className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${type === TaskType.STUDY ? 'bg-indigo-600 text-white shadow-lg scale-[1.02]' : 'bg-slate-100 text-slate-400 hover:bg-slate-200'}`}
+                >
+                  <Icon name="book" className="w-4 h-4 inline-block mr-1.5" />
+                  学習
+                </button>
+                <button 
+                  type="button" 
+                  onClick={() => setType(TaskType.DEADLINE)} 
+                  className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${type === TaskType.DEADLINE ? 'bg-rose-600 text-white shadow-lg scale-[1.02]' : 'bg-slate-100 text-slate-400 hover:bg-slate-200'}`}
+                >
+                  <Icon name="flag" className="w-4 h-4 inline-block mr-1.5" />
+                  提出・期限
+                </button>
+              </div>
+              <p className="text-[10px] text-slate-400 mt-2 font-medium">
+                {type === TaskType.STUDY 
+                  ? '日々の学習予定を記録します' 
+                  : '宿題や課題、テストなどの締め切り日を設定します'}
+              </p>
+            </div>
+            <div>
               <label htmlFor="title" className="block text-sm font-medium text-slate-600 mb-1">タイトル <span className="text-rose-500">*</span></label>
               <input
                 type="text"
@@ -99,7 +125,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave, subjects
               />
             </div>
             <div>
-              <label htmlFor="subject" className="block text-sm font-medium text-slate-600 mb-1">科目 <span className="text-rose-500">*</span></label>
+              <label htmlFor="subject" className="block text-sm font-medium text-slate-600 mb-1">教科 <span className="text-rose-500">*</span></label>
               <select
                 id="subject"
                 value={subjectId}
@@ -107,7 +133,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave, subjects
                 className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition bg-white"
                 required
               >
-                <option value="" disabled>科目を選択</option>
+                <option value="" disabled>教科を選択</option>
                 {subjects.map((s) => (
                   <option key={s.id} value={s.id}>{s.name}</option>
                 ))}
@@ -136,32 +162,6 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave, subjects
                     placeholder="例: p.24-28"
                   />
                 </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-600 mb-1">タスクの種類</label>
-              <div className="flex space-x-4">
-                <button 
-                  type="button" 
-                  onClick={() => setType(TaskType.STUDY)} 
-                  className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${type === TaskType.STUDY ? 'bg-indigo-600 text-white shadow-lg scale-[1.02]' : 'bg-slate-100 text-slate-400 hover:bg-slate-200'}`}
-                >
-                  <Icon name="book" className="w-4 h-4 inline-block mr-1.5" />
-                  学習
-                </button>
-                <button 
-                  type="button" 
-                  onClick={() => setType(TaskType.DEADLINE)} 
-                  className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${type === TaskType.DEADLINE ? 'bg-rose-600 text-white shadow-lg scale-[1.02]' : 'bg-slate-100 text-slate-400 hover:bg-slate-200'}`}
-                >
-                  <Icon name="flag" className="w-4 h-4 inline-block mr-1.5" />
-                  提出・期限
-                </button>
-              </div>
-              <p className="text-[10px] text-slate-400 mt-2 font-medium">
-                {type === TaskType.STUDY 
-                  ? '日々の学習予定を記録します' 
-                  : '宿題や課題、テストなどの締め切り日を設定します'}
-              </p>
             </div>
             {type === TaskType.STUDY && (
               <div>

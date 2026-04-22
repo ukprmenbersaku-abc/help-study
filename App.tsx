@@ -30,20 +30,23 @@ const XP_PER_HOUR = 20;
 const XP_PER_DEADLINE = 50;
 const LEVEL_UP_BASE_XP = 100;
 
-const MATH_SUBJECTS: Subject[] = [
-  { id: 'math_1', name: '正負の数', color: '#F87171', goal: '正負の数の計算をマスターする', icon: 'plus-minus' },
-  { id: 'math_2', name: '文字の式', color: '#FB923C', goal: '文字式の計算をマスターする', icon: 'algebra' },
-  { id: 'math_3', name: '一次方程式', color: '#FBBF24', goal: '一次方程式を解けるようにする', icon: 'equal' },
-  { id: 'math_4', name: '比例と反比例', color: '#A3E635', goal: '比例・反比例のグラフと式を理解する', icon: 'trending-up' },
-  { id: 'math_5', name: '平面図形', color: '#4ADE80', goal: '図形の性質と作図をマスターする', icon: 'shapes' },
-  { id: 'math_6', name: '空間図形', color: '#34D399', goal: '立体の表面積と体積を計算できるようにする', icon: 'box' },
-  { id: 'math_7', name: 'データの活用', color: '#2DD4BF', goal: 'データの整理と代表値を理解する', icon: 'bar-chart' },
+const DEFAULT_SUBJECTS: Subject[] = [
+  { id: 'math', name: '数学', color: '#60A5FA', goal: '数学をマスターする', icon: 'math-x' },
+  { id: 'japanese', name: '国語', color: '#F87171', goal: '国語をマスターする', icon: 'book' },
+  { id: 'english', name: '英語', color: '#FBBF24', goal: '英語をマスターする', icon: 'alphabet' },
+  { id: 'science', name: '理科', color: '#4ADE80', goal: '理科をマスターする', icon: 'flask' },
+  { id: 'social', name: '社会', color: '#FB923C', goal: '社会をマスターする', icon: 'globe' },
+  { id: 'music', name: '音楽', color: '#A78BFA', goal: '音楽を楽しむ', icon: 'music' },
+  { id: 'art', name: '美術', color: '#F472B6', goal: '創作を楽しむ', icon: 'brush' },
+  { id: 'pe', name: '保健体育', color: '#A3E635', goal: '健康を保つ', icon: 'vaulting-horse' },
+  { id: 'tech', name: '技術', color: '#2DD4BF', goal: '技術を学ぶ', icon: 'settings' },
+  { id: 'home_ec', name: '家庭', color: '#818CF8', goal: '生活を学ぶ', icon: 'home' },
 ];
 
 export type View = 'home' | 'calendar' | 'progress' | 'subjects' | 'review' | 'search';
 
 const App: React.FC = () => {
-  const [subjects, setSubjects] = useLocalStorage<Subject[]>('subjects', MATH_SUBJECTS);
+  const [subjects, setSubjects] = useLocalStorage<Subject[]>('subjects', DEFAULT_SUBJECTS);
   const [tasks, setTasks] = useLocalStorage<Task[]>('tasks', []);
   const [reviewResults, setReviewResults] = useLocalStorage<ReviewResult[]>('reviewResults', []);
   const [userProgress, setUserProgress] = useLocalStorage<UserProgress>('userProgress', {

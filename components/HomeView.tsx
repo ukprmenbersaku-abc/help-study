@@ -73,7 +73,7 @@ const HomeView: React.FC<HomeViewProps> = ({ userProgress, tasks, subjects, onNa
                 onClick={() => onNavigate('subjects')}
                 className="bg-white text-indigo-600 px-6 py-2.5 rounded-xl font-bold transition-all hover:bg-indigo-50 active:scale-95 shadow-lg"
              >
-                新しい科目を追加
+                新しい教科を追加
              </button>
           </div>
         </div>
@@ -173,10 +173,20 @@ const HomeView: React.FC<HomeViewProps> = ({ userProgress, tasks, subjects, onNa
 
           {/* Deadlines */}
           <section className="bg-white rounded-3xl p-6 shadow-lg border border-slate-200 flex-1 flex flex-col h-full">
-            <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-              <Icon name="check" className="w-6 h-6 text-rose-500" />
-              直近の締め切り
-            </h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+                <Icon name="check" className="w-6 h-6 text-rose-500" />
+                直近の締め切り
+              </h3>
+              <button 
+                onClick={() => onAddTask(new Date())}
+                className="p-2 bg-rose-50 text-rose-600 rounded-xl hover:bg-rose-100 transition-colors flex items-center gap-1.5 text-xs font-black shadow-sm border border-rose-100 active:scale-95"
+                title="締め切りを追加"
+              >
+                <Icon name="plus" className="w-4 h-4" />
+                追加
+              </button>
+            </div>
             <div className="flex-grow space-y-3">
                {upcomingDeadlines.length > 0 ? (
                  upcomingDeadlines.map(task => {

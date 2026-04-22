@@ -163,7 +163,7 @@ const ReviewView: React.FC<ReviewViewProps> = ({ subjects, apiKey, reviewResults
                       <Icon name={subject?.icon || 'book'} className="w-7 h-7" />
                     </div>
                     <div>
-                      <p className="text-xl font-black text-slate-900">{subject?.name || '不明な科目'}</p>
+                      <p className="text-xl font-black text-slate-900">{subject?.name || '不明な教科'}</p>
                       <p className="text-sm font-bold text-slate-400 flex items-center gap-1.5 mt-1">
                         <Icon name="clock" className="w-3.5 h-3.5" />
                         {new Date(result.date).toLocaleString()}

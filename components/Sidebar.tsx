@@ -71,7 +71,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activeView, onNaviga
                 />
                 <NavItem 
                     iconName="book"
-                    label="科目管理"
+                    label="教科管理"
                     isActive={activeView === 'subjects'}
                     onClick={() => onNavigate('subjects')}
                 />

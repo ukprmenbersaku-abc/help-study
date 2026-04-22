@@ -142,7 +142,7 @@ const GeminiSuggester: React.FC<GeminiSuggesterProps> = ({ subjects, onAddSugges
                             className="w-full sm:w-auto flex-grow px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition bg-white shadow-sm cursor-pointer"
                             defaultValue=""
                         >
-                            <option value="" disabled>どの科目に追加しますか？</option>
+                            <option value="" disabled>どの教科に追加しますか？</option>
                             {subjects.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
                         </select>
                          <button onClick={() => setSuggestedTasks([])} className="w-full sm:w-auto px-6 py-3 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition">
