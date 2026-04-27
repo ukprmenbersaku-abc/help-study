@@ -102,7 +102,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave, subjects
                   onClick={() => setType(TaskType.DEADLINE)} 
                   className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${type === TaskType.DEADLINE ? 'bg-rose-600 text-white shadow-lg scale-[1.02]' : 'bg-slate-100 text-slate-400 hover:bg-slate-200'}`}
                 >
-                  <Icon name="flag" className="w-4 h-4 inline-block mr-1.5" />
+                  <Icon name="check-circle" className="w-4 h-4 inline-block mr-1.5" />
                   提出・期限
                 </button>
               </div>
@@ -178,7 +178,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave, subjects
               </div>
             )}
              <div>
-                <label htmlFor="date" className="block text-sm font-medium text-slate-600 mb-1">日付 <span className="text-rose-500">*</span></label>
+                <label htmlFor="date" className="block text-sm font-medium text-slate-600 mb-1">期限 <span className="text-rose-500">*</span></label>
                 <input
                   type="date"
                   id="date"
