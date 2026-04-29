@@ -135,6 +135,130 @@ const FALLBACK_QUIZZES: { [key: string]: QuizQuestion[] } = {
       correctAnswerIndex: 1,
       explanation: '小さい順に並べたときの中央の値です。5つあるので3番目の「5」が中央値です。'
     }
+  ],
+  '数学': [
+    {
+      question: '2³ - (-5) の計算結果は？',
+      options: ['1', '3', '11', '13'],
+      correctAnswerIndex: 3,
+      explanation: '2³ = 8 です。8 - (-5) = 8 + 5 = 13 となります。'
+    },
+    {
+      question: '方程式 3x + 5 = 20 の解は？',
+      options: ['x = 5', 'x = 15', 'x = 25', 'x = 3'],
+      correctAnswerIndex: 0,
+      explanation: '3x = 20 - 5 より 3x = 15。両辺を3で割って x = 5 です。'
+    },
+    {
+      question: 'yがxに比例し、x=3のときy=12である。x=5のときのyの値は？',
+      options: ['15', '20', '8', '24'],
+      correctAnswerIndex: 1,
+      explanation: 'y=ax より 12=3a で a=4。よって y=4x。x=5 を代入すると y=4×5=20 です。'
+    },
+    {
+      question: '底辺が 6cm、高さが 4cm の三角形の面積は？',
+      options: ['10 cm²', '12 cm²', '24 cm²', '48 cm²'],
+      correctAnswerIndex: 1,
+      explanation: '三角形の面積 = 底辺 × 高さ ÷ 2 = 6 × 4 ÷ 2 = 12 cm² です。'
+    },
+    {
+      question: '(-0.5) × (-8) の計算結果は？',
+      options: ['-4', '-0.4', '0.4', '4'],
+      correctAnswerIndex: 3,
+      explanation: '負の数どうしの掛け算なので符号はプラスになります。0.5 × 8 = 4 です。'
+    },
+    {
+      question: '1/2 + 1/3 の計算結果は？',
+      options: ['2/5', '1/6', '5/6', '1/5'],
+      correctAnswerIndex: 2,
+      explanation: '通分すると 3/6 + 2/6 = 5/6 となります。'
+    },
+    {
+      question: '2(a + 3b) - 3(a - b) を簡潔にすると？',
+      options: ['-a + 9b', '-a + 3b', '5a + 9b', 'a + 3b'],
+      correctAnswerIndex: 0,
+      explanation: '2a + 6b - 3a + 3b = (2-3)a + (6+3)b = -a + 9b です。'
+    },
+    {
+      question: '√36 の値は？',
+      options: ['6', '18', '72', '6と-6'],
+      correctAnswerIndex: 0,
+      explanation: '√a は「2乗してaになる正の数」を表します。6² = 36 なので 6 です。（平方根を求めよ、と言われた場合は±6になります）'
+    },
+    {
+      question: '五角形の内角の和は何点？',
+      options: ['360度', '540度', '720度', '900度'],
+      correctAnswerIndex: 1,
+      explanation: 'n角形の内角の和は 180 × (n - 2) で求められます。180 × (5 - 2) = 180 × 3 = 540度です。'
+    },
+    {
+      question: 'サイコロを1回振ったとき、素数（2, 3, 5）の目が出る確率は？',
+      options: ['1/6', '1/3', '1/2', '2/3'],
+      correctAnswerIndex: 2,
+      explanation: 'サイコロの目は全部で6通り。素数は2, 3, 5の3通り。確率は 3/6 = 1/2 です。'
+    }
+  ],
+  '国語': [
+    {
+      question: '「雰囲気」の正しい読み方は？',
+      options: ['ふんいき', 'ふいんき', 'ふんいき', 'ふんいぎ'],
+      correctAnswerIndex: 0,
+      explanation: '正しくは「ふん・い・き」です。「ふいんき」と読み間違えやすいので注意しましょう。'
+    },
+    {
+      question: '「詳細」の正しい読み方は？',
+      options: ['しょうさい', 'しょうさ', 'こまさい', 'じょうさい'],
+      correctAnswerIndex: 0,
+      explanation: '「しょうさい」と読みます。非常にくわしいこと、という意味です。'
+    },
+    {
+      question: '四字熟語「（　）一失」の空欄に入る言葉は？',
+      options: ['百慮', '万慮', '千慮', '一慮'],
+      correctAnswerIndex: 2,
+      explanation: '「千慮（せんりょ）の一失」。賢い人でも、千回に一度くらいは考え違いをすることがあるという意味です。'
+    },
+    {
+      question: 'ことわざ「（　）も筆の誤り」の空欄に入る言葉は？',
+      options: ['聖徳太子', '弘法', '小野道風', '菅原道真'],
+      correctAnswerIndex: 1,
+      explanation: '「弘法（こうぼう）も筆の誤り」。その道の達人でも、時には失敗することがあるというたとえです。'
+    },
+    {
+      question: '「行く」の尊敬語として正しいものは？',
+      options: ['うかがう', '行かれる', '参る', 'いらっしゃる'],
+      correctAnswerIndex: 3,
+      explanation: '「いらっしゃる」や「おいでになる」が尊敬語です。「参る」や「うかがう」は謙譲語です。'
+    },
+    {
+      question: '「慎重」の反対の意味を持つ言葉は？',
+      options: ['大胆', '丁寧', '軽率', '冷淡'],
+      correctAnswerIndex: 2,
+      explanation: '「慎重」は注意深いこと。対義語は、よく考えずに物事を行う「軽率（けいそつ）」です。'
+    },
+    {
+      question: '三字熟語「（　）三昧」の空欄に入る、何かに夢中になる様子を表す言葉は？',
+      options: ['娯楽', '読書', '勉強', '生活'],
+      correctAnswerIndex: 1,
+      explanation: '「読書三昧（どくしょざんまい）」。他のことを忘れて、読書にふけることです。'
+    },
+    {
+      question: '「ひまわり」が季語として使われる季節はいつ？',
+      options: ['春', '夏', '秋', '冬'],
+      correctAnswerIndex: 1,
+      explanation: 'ひまわりは夏に咲く花なので、俳句などでは夏の季語として扱われます。'
+    },
+    {
+      question: '小説『吾輩は猫である』の著者は誰？',
+      options: ['芥川龍之介', '太宰治', '夏目漱石', '森鴎外'],
+      correctAnswerIndex: 2,
+      explanation: '夏目漱石の代表作の一つです。語り手が猫という設定で当時の社会を風刺した作品です。'
+    },
+    {
+      question: '「を」「へ」「は」など、言葉の後に付いて関係を表す言葉を何という？',
+      options: ['助動詞', '助詞', '接続詞', '副詞'],
+      correctAnswerIndex: 1,
+      explanation: 'これらは「助詞」と呼ばれます。自立語の後に付いて、その言葉の役割（主語、目的語など）を示します。'
+    }
   ]
 };
 

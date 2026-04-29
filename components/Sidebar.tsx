@@ -70,6 +70,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activeView, onNaviga
                     onClick={() => onNavigate('search')}
                 />
                 <NavItem 
+                    iconName="book-open"
+                    label="学習記事"
+                    isActive={activeView === 'articles'}
+                    onClick={() => onNavigate('articles')}
+                />
+                <NavItem 
                     iconName="book"
                     label="教科管理"
                     isActive={activeView === 'subjects'}

@@ -12,6 +12,7 @@ import SubjectManager from './components/SubjectManager';
 import HomeView from './components/HomeView';
 import ReviewView from './components/ReviewView';
 import StudySearchView from './components/StudySearchView';
+import ArticlesView from './components/ArticlesView';
 import { ReviewResult } from './types';
 
 const SIDEBAR_COLORS = [
@@ -43,7 +44,7 @@ const DEFAULT_SUBJECTS: Subject[] = [
   { id: 'home_ec', name: '家庭', color: '#818CF8', goal: '生活を学ぶ', icon: 'home' },
 ];
 
-export type View = 'home' | 'calendar' | 'progress' | 'subjects' | 'review' | 'search';
+export type View = 'home' | 'calendar' | 'progress' | 'subjects' | 'review' | 'search' | 'articles';
 
 const App: React.FC = () => {
   const [subjects, setSubjects] = useLocalStorage<Subject[]>('subjects', DEFAULT_SUBJECTS);
@@ -266,6 +267,8 @@ const App: React.FC = () => {
         );
       case 'search':
         return <StudySearchView />;
+      case 'articles':
+        return <ArticlesView onNavigate={setActiveView} />;
       default:
         return null;
     }
