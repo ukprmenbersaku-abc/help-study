@@ -48,122 +48,254 @@ Gemini AI を活用して、学習内容に基づいたクイズを生成でき�
 ---
 Study-side を活用して、理想の学習習慣を身につけましょう！
     `
+  },
+  {
+    id: 'history-clans',
+    title: '「源・北条・足利」をごっちゃにしない！歴史人物まとめ',
+    category: '社会',
+    date: '2026-05-05',
+    icon: 'globe',
+    content: `
+# 「源・北条・足利」をごっちゃにしない！歴史人物まとめ
+
+歴史のテストでよく迷うのが「源（みなもと）」「北条（ほうじょう）」「足利（あしかが）」の名字を持つ人々です。
+時代背景と役職をセットで、スッキリ整理しましょう！
+
+## 1. 源氏（みなもと）｜鎌倉幕府を開いたリーダー
+源氏は「武士」のトップとして、初めて本格的な武家政権を作りました。
+
+- **源 頼朝（よりとも）**: 鎌倉幕府を開いた初代将軍（1192年）。
+- **源 義経（よしつね）**: 頼朝の弟。壇ノ浦の戦いで平氏を倒した天才的な戦いのヒーロー。
+
+## 2. 北条氏（ほうじょう）｜鎌倉幕府の「執権（しっけん）」
+源氏の将軍が3代で途絶えた後、実権を握ったのが「北条氏」です。彼らは将軍ではなく「執権」という役職で政治を行いました。
+
+- **北条 政子（まさこ）**: 頼朝の妻。「尼将軍」と呼ばれ、頼朝の死後も幕府を支えた。
+- **北条 泰時（やすとき）**: 第3代執権。「御成敗式目（ごせいばいしきもく）」を定め、武士のための公平な法律を作った。
+- **北条 時宗（ときむね）**: 第8代執権。モンゴル軍が攻めてきた「元寇（げんこう）」の時に、日本を守る指揮を執った。
+
+## 3. 足利氏（あしかが）｜室町幕府を開いたリーダー
+鎌倉幕府を倒し、新しい幕府（室町幕府）を作ったのが足利氏です。また将軍の時代に戻ります。
+
+- **足利 尊氏（たかうじ）**: 室町幕府を開いた初代将軍。
+- **足利 義満（よしみつ）**: 第3代将軍。金閣（鹿苑寺）を建て、日明貿易（勘合貿易）を始めて幕府の全盛期を築いた。
+- **足利 義政（よしまさ）**: 第8代将軍。銀閣（慈照寺）を建て、東山文化を広めた。応仁の乱のきっかけにもなった人物。
+
+---
+## まとめ：覚え方のコツ
+- **源氏** ＝ 鎌倉幕府の **「将軍」**
+- **北条氏** ＝ 鎌倉幕府を操る **「執権」** （将軍じゃない！）
+- **足利氏** ＝ 室町幕府の **「将軍」**
+
+「鎌倉 ＝ 源 ＆ 北条」、「室町 ＝ 足利」という時代ごとのセットで覚えると、名前が混ざらなくなりますよ！
+    `
   }
 ];
+
+const CATEGORY_THEMES: Record<string, { bg: string; text: string; accent: string; light: string }> = {
+  '社会': { bg: 'bg-amber-100', text: 'text-amber-700', accent: 'bg-amber-600', light: 'bg-amber-50' },
+  '国語': { bg: 'bg-red-100', text: 'text-red-700', accent: 'bg-red-600', light: 'bg-red-50' },
+  '数学': { bg: 'bg-blue-100', text: 'text-blue-700', accent: 'bg-blue-600', light: 'bg-blue-50' },
+  '理科': { bg: 'bg-emerald-100', text: 'text-emerald-700', accent: 'bg-emerald-600', light: 'bg-emerald-50' },
+  '英語': { bg: 'bg-indigo-100', text: 'text-indigo-700', accent: 'bg-indigo-600', light: 'bg-indigo-50' },
+  'チュートリアル': { bg: 'bg-slate-100', text: 'text-slate-700', accent: 'bg-indigo-600', light: 'bg-slate-50' },
+  'default': { bg: 'bg-slate-100', text: 'text-slate-700', accent: 'bg-slate-600', light: 'bg-slate-50' }
+};
 
 const ArticlesView: React.FC<ArticlesViewProps> = ({ onNavigate }) => {
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
 
   if (selectedArticle) {
+    const theme = CATEGORY_THEMES[selectedArticle.category] || CATEGORY_THEMES.default;
+
     return (
       <div className="animate-fade-in max-w-4xl mx-auto">
         <button 
           onClick={() => setSelectedArticle(null)}
-          className="flex items-center gap-2 text-slate-500 hover:text-indigo-600 transition-colors mb-6 font-bold"
+          className="flex items-center gap-2 text-slate-500 hover:text-indigo-600 transition-colors mb-6 font-bold group"
         >
-          <Icon name="chevronLeft" className="w-5 h-5" />
+          <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-indigo-100 transition-colors">
+            <Icon name="chevronLeft" className="w-5 h-5" />
+          </div>
           記事一覧に戻る
         </button>
 
-        <article className="bg-white rounded-[2.5rem] shadow-xl border border-slate-200 overflow-hidden">
-          <div className="bg-gradient-to-br from-indigo-600 to-violet-600 p-8 md:p-12 text-white">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                {selectedArticle.category}
-              </span>
-              <span className="text-white/60 text-xs font-medium">
-                {selectedArticle.date}
-              </span>
+        <article className="bg-white rounded-[2.5rem] shadow-2xl border border-slate-200 overflow-hidden mb-12">
+          <div className={`${theme.accent} p-8 md:p-12 text-white relative overflow-hidden`}>
+            {/* Background Decoration */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-20 -mt-20 blur-3xl"></div>
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-black/10 rounded-full -ml-20 -mb-20 blur-2xl"></div>
+            
+            <div className="relative z-10">
+              <div className="flex items-center gap-3 mb-6">
+                <span className="bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest border border-white/20">
+                  {selectedArticle.category}
+                </span>
+                <span className="text-white/80 text-sm font-bold flex items-center gap-1">
+                  <Icon name="calendar" className="w-4 h-4" />
+                  {selectedArticle.date}
+                </span>
+              </div>
+              <h1 className="text-3xl md:text-5xl font-black mb-0 leading-[1.2] drop-shadow-sm">
+                {selectedArticle.title}
+              </h1>
             </div>
-            <h1 className="text-3xl md:text-4xl font-black mb-0 leading-tight">
-              {selectedArticle.title}
-            </h1>
           </div>
           
           <div className="p-8 md:p-12 prose prose-slate max-w-none">
             {selectedArticle.content.split('\n').map((line, i) => {
-              if (line.startsWith('# ')) {
-                return <h1 key={i} className="text-3xl font-black text-slate-800 mb-6 mt-8">{line.replace('# ', '')}</h1>;
+              const trimmed = line.trim();
+              if (trimmed.startsWith('# ')) {
+                return (
+                  <h1 key={i} className="text-3xl md:text-4xl font-black text-slate-800 mb-8 mt-4 border-b-8 border-slate-100 pb-4">
+                    {line.replace('# ', '')}
+                  </h1>
+                );
               }
-              if (line.startsWith('## ')) {
-                return <h2 key={i} className="text-2xl font-bold text-slate-800 mb-4 mt-8 border-l-4 border-indigo-600 pl-4">{line.replace('## ', '')}</h2>;
+              if (trimmed.startsWith('## ')) {
+                return (
+                  <h2 key={i} className={`text-2xl font-black text-slate-800 mb-6 mt-10 flex items-center gap-3`}>
+                    <span className={`w-2 h-8 ${theme.accent} rounded-full`}></span>
+                    {line.replace('## ', '')}
+                  </h2>
+                );
               }
-              if (line.startsWith('- ')) {
-                  return <li key={i} className="text-slate-600 mb-2 ml-4 list-disc">{line.replace('- ', '')}</li>;
+              if (trimmed.startsWith('- ')) {
+                  const [label, ...desc] = line.replace('- ', '').split(':');
+                  return (
+                    <div key={i} className="flex gap-4 mb-4 items-start pl-2">
+                        <div className={`mt-1.5 w-5 h-5 rounded-full ${theme.accent} flex-shrink-0 flex items-center justify-center text-white`}>
+                           <Icon name="check" className="w-3 h-3 stoke-[4px]" />
+                        </div>
+                        <div className="text-slate-700 leading-relaxed">
+                            {label && desc.length > 0 ? (
+                                <>
+                                    <strong className="text-slate-900 block font-black text-lg">{label}</strong>
+                                    <span className="text-slate-600">{desc.join(':')}</span>
+                                </>
+                            ) : (
+                                <span className="font-bold">{line.replace('- ', '')}</span>
+                            )}
+                        </div>
+                    </div>
+                  );
               }
-              if (line.trim() === '---') {
-                return <hr key={i} className="my-8 border-slate-200" />;
+              if (trimmed === '---') {
+                return <div key={i} className="my-12 flex justify-center"><div className="flex gap-2"><div className="w-2 h-2 rounded-full bg-slate-200"></div><div className="w-2 h-2 rounded-full bg-slate-300"></div><div className="w-2 h-2 rounded-full bg-slate-200"></div></div></div>;
               }
-              if (line.trim() === '') {
-                return <br key={i} />;
+              if (trimmed === '') {
+                return <div key={i} className="h-2" />;
               }
-              return <p key={i} className="text-slate-600 leading-relaxed mb-4">{line}</p>;
+              // 特殊なまとめボックス（最後の方の「まとめ」に対応）
+              if (trimmed.includes('まとめ：') || trimmed.includes('覚え方のコツ')) {
+                return (
+                   <div key={i} className={`${theme.light} border-2 border-dashed ${theme.accent.replace('bg-', 'border-')} rounded-3xl p-8 my-8`}>
+                      <h3 className={`text-xl font-black ${theme.text} mb-4 flex items-center gap-2`}>
+                        <Icon name="lightbulb" className="w-6 h-6" />
+                        ポイントまとめ
+                      </h3>
+                      <p className="text-slate-700 leading-relaxed font-bold">{trimmed}</p>
+                   </div>
+                );
+              }
+
+              return <p key={i} className="text-slate-600 leading-relaxed mb-6 text-lg font-medium">{line}</p>;
             })}
           </div>
         </article>
 
-        <div className="mt-10 bg-indigo-50 rounded-3xl p-8 text-center border border-indigo-100">
-            <h3 className="text-xl font-bold text-indigo-900 mb-2">準備はできましたか？</h3>
-            <p className="text-indigo-700/80 mb-6">さっそく今日の学習スケジュールを立ててみましょう。</p>
-            <button 
-                onClick={() => onNavigate('home')}
-                className="bg-indigo-600 text-white px-8 py-3 rounded-xl font-black shadow-lg hover:bg-indigo-700 transition-all active:scale-95"
-            >
-                ホームに戻る
-            </button>
+        <div className={`mt-10 ${theme.bg} rounded-[3rem] p-10 text-center border-4 border-white shadow-xl relative overflow-hidden`}>
+            <div className="relative z-10">
+              <h3 className={`text-2xl font-black ${theme.text} mb-3`}>知識は力なり！</h3>
+              <p className={`${theme.text} opacity-80 mb-8 font-bold`}>今日学んだことを忘れないうちに、タスクを完了させましょう。</p>
+              <button 
+                  onClick={() => onNavigate('home')}
+                  className={`${theme.accent} text-white px-10 py-4 rounded-2xl font-black shadow-lg hover:scale-105 transition-all active:scale-95 flex items-center gap-3 mx-auto`}
+              >
+                  <Icon name="home" className="w-6 h-6" />
+                  ホームに戻って学習を続ける
+              </button>
+            </div>
+            {/* Decoration */}
+            <div className="absolute top-1/2 left-0 w-24 h-24 bg-white/20 rounded-full -ml-12 blur-xl"></div>
+            <div className="absolute top-1/2 right-0 w-32 h-32 bg-white/20 rounded-full -mr-16 blur-xl"></div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-8 animate-fade-in max-w-5xl mx-auto pb-10">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-        <div>
-          <h2 className="text-3xl font-black text-slate-800 tracking-tight flex items-center gap-3">
-            <Icon name="book-open" className="w-10 h-10 text-indigo-600" />
-            学習記事を見る
-          </h2>
-          <p className="text-slate-500 font-medium mt-2">
-            学習のコツやツールの活用方法をチェックしましょう。
-          </p>
+    <div className="space-y-12 animate-fade-in max-w-6xl mx-auto pb-20">
+      <div className="relative p-10 rounded-[3rem] bg-white shadow-xl border border-slate-100 overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-50 rounded-full -mr-32 -mt-32 blur-3xl"></div>
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div>
+            <h2 className="text-4xl md:text-5xl font-black text-slate-800 tracking-tight flex items-center gap-4">
+              <div className="w-16 h-16 bg-indigo-600 rounded-3xl flex items-center justify-center text-white shadow-lg shadow-indigo-200">
+                <Icon name="book-open" className="w-10 h-10" />
+              </div>
+              <div>
+                学習記事ラボ
+                <p className="text-slate-500 font-bold text-lg mt-1 tracking-normal">
+                  スキマ時間で知識をアップデート！
+                </p>
+              </div>
+            </h2>
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {ARTICLES.map(article => (
-          <div 
-            key={article.id}
-            onClick={() => setSelectedArticle(article)}
-            className="group bg-white rounded-[2rem] p-6 shadow-lg border border-slate-200 cursor-pointer transition-all hover:border-indigo-400 hover:shadow-xl hover:-translate-y-1"
-          >
-            <div className="w-12 h-12 bg-indigo-100 rounded-2xl flex items-center justify-center text-indigo-600 mb-6 group-hover:scale-110 transition-transform">
-              <Icon name={article.icon || 'book-open'} className="w-6 h-6" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {ARTICLES.map(article => {
+          const theme = CATEGORY_THEMES[article.category] || CATEGORY_THEMES.default;
+          return (
+            <div 
+              key={article.id}
+              onClick={() => setSelectedArticle(article)}
+              className="group bg-white rounded-[2.5rem] p-8 shadow-lg border border-slate-200 cursor-pointer transition-all hover:border-indigo-400 hover:shadow-2xl hover:-translate-y-2 relative overflow-hidden"
+            >
+              {/* Category light bg highlight */}
+              <div className={`absolute top-0 left-0 w-full h-2 ${theme.accent}`}></div>
+              
+              <div className={`w-14 h-14 ${theme.bg} ${theme.text} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
+                <Icon name={article.icon || 'book-open'} className="w-8 h-8" />
+              </div>
+              
+              <div className="flex items-center gap-2 mb-4">
+                <span className={`${theme.bg} ${theme.text} px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest`}>
+                  {article.category}
+                </span>
+                <span className="text-[11px] font-bold text-slate-400 flex items-center gap-1">
+                  <Icon name="calendar" className="w-3 h-3" />
+                  {article.date}
+                </span>
+              </div>
+              
+              <h3 className="text-2xl font-black text-slate-800 mb-4 group-hover:text-indigo-600 transition-colors leading-tight">
+                {article.title}
+              </h3>
+              
+              <p className="text-slate-500 font-medium text-sm line-clamp-3 leading-relaxed mb-6">
+                {article.content.replace(/[#*-]/g, '').trim()}
+              </p>
+
+              <div className="flex items-center text-indigo-600 font-black text-sm gap-1 group-hover:gap-2 transition-all">
+                記事を読む
+                <Icon name="chevronRight" className="w-4 h-4" />
+              </div>
             </div>
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full uppercase tracking-wider">
-                {article.category}
-              </span>
-              <span className="text-[10px] font-medium text-slate-400">
-                {article.date}
-              </span>
-            </div>
-            <h3 className="text-xl font-bold text-slate-800 mb-3 group-hover:text-indigo-600 transition-colors">
-              {article.title}
-            </h3>
-            <p className="text-slate-500 text-sm line-clamp-2 leading-relaxed">
-              {article.content.replace(/[#*-]/g, '').trim()}
-            </p>
-          </div>
-        ))}
+          );
+        })}
 
         {/* Placeholder for more articles */}
-        <div className="bg-slate-100 rounded-[2rem] border-2 border-dashed border-slate-300 flex flex-col items-center justify-center p-8 text-center min-h-[240px]">
-           <div className="w-12 h-12 bg-slate-200 rounded-full flex items-center justify-center text-slate-400 mb-4">
-             <Icon name="plus" className="w-6 h-6" />
+        <div className="bg-slate-50 rounded-[2.5rem] border-4 border-dashed border-slate-200 flex flex-col items-center justify-center p-10 text-center min-h-[320px] transition-all hover:bg-slate-100">
+           <div className="w-16 h-16 bg-white rounded-full shadow-md flex items-center justify-center text-slate-300 mb-6 scale-110">
+             <Icon name="plus" className="w-8 h-8" />
            </div>
-           <p className="text-slate-400 font-bold">今後の更新をお楽しみに！</p>
-           <p className="text-slate-400 text-xs mt-1">学習のアドバイスや新しい機能を随時紹介していきます。</p>
+           <p className="text-slate-400 font-black text-xl">Coming Soon...</p>
+           <p className="text-slate-400 font-bold text-sm mt-2 max-w-[200px]">
+             新しい解説記事や学習ハックを準備中です！お楽しみに！
+           </p>
         </div>
       </div>
     </div>
