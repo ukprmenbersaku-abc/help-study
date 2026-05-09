@@ -142,64 +142,92 @@ const ArticlesView: React.FC<ArticlesViewProps> = ({ onNavigate }) => {
             </div>
           </div>
           
-          <div className="p-8 md:p-12 prose prose-slate max-w-none">
-            {selectedArticle.content.split('\n').map((line, i) => {
+          <div className="p-8 md:p-16 prose prose-slate max-w-none">
+            {selectedArticle.content.split('\n').filter(l => l.trim() !== '').map((line, i) => {
               const trimmed = line.trim();
+              
+              const parseInlines = (text: string) => {
+                const parts = text.split(/(\*\*.*?\*\*)/);
+                return parts.map((part, idx) => {
+                  if (part.startsWith('**') && part.endsWith('**')) {
+                    return <strong key={idx} className={`font-black text-slate-900 bg-slate-100 px-1.5 py-0.5 rounded-md border-b-2 ${theme.accent.replace('bg-', 'border-')} mx-0.5`}>{part.slice(2, -2)}</strong>;
+                  }
+                  return part;
+                });
+              };
+
               if (trimmed.startsWith('# ')) {
                 return (
-                  <h1 key={i} className="text-3xl md:text-4xl font-black text-slate-800 mb-8 mt-4 border-b-8 border-slate-100 pb-4">
-                    {line.replace('# ', '')}
+                  <h1 key={i} className="text-4xl md:text-5xl font-black text-slate-800 mb-12 mt-4 text-center">
+                    {parseInlines(line.replace('# ', ''))}
+                    <div className={`h-2 w-24 ${theme.accent} mx-auto mt-6 rounded-full opacity-30`}></div>
                   </h1>
                 );
               }
+
               if (trimmed.startsWith('## ')) {
+                const title = trimmed.replace('## ', '');
                 return (
-                  <h2 key={i} className={`text-2xl font-black text-slate-800 mb-6 mt-10 flex items-center gap-3`}>
-                    <span className={`w-2 h-8 ${theme.accent} rounded-full`}></span>
-                    {line.replace('## ', '')}
-                  </h2>
+                  <div key={i} className={`mt-16 mb-8 p-6 md:p-8 rounded-[2rem] ${theme.bg} border-2 ${theme.accent.replace('bg-', 'border-')} shadow-inner`}>
+                    <h2 className={`text-2xl md:text-3xl font-black ${theme.text} flex items-center gap-4`}>
+                      <div className={`w-12 h-12 rounded-2xl ${theme.accent} text-white flex items-center justify-center shadow-lg`}>
+                        <Icon name="book" className="w-6 h-6" />
+                      </div>
+                      {parseInlines(title)}
+                    </h2>
+                  </div>
                 );
               }
+
               if (trimmed.startsWith('- ')) {
-                  const [label, ...desc] = line.replace('- ', '').split(':');
+                  const content = line.replace('- ', '');
+                  const [label, ...desc] = content.split(':');
+                  
                   return (
-                    <div key={i} className="flex gap-4 mb-4 items-start pl-2">
-                        <div className={`mt-1.5 w-5 h-5 rounded-full ${theme.accent} flex-shrink-0 flex items-center justify-center text-white`}>
-                           <Icon name="check" className="w-3 h-3 stoke-[4px]" />
+                    <div key={i} className="bg-white rounded-3xl p-6 mb-4 border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex gap-5 items-start">
+                        <div className={`mt-1 w-8 h-8 rounded-xl ${theme.bg} ${theme.text} flex-shrink-0 flex items-center justify-center font-black text-lg`}>
+                           {i % 4 === 0 ? '✦' : i % 4 === 1 ? '◆' : i % 4 === 2 ? '■' : '▲'}
                         </div>
                         <div className="text-slate-700 leading-relaxed">
                             {label && desc.length > 0 ? (
                                 <>
-                                    <strong className="text-slate-900 block font-black text-lg">{label}</strong>
-                                    <span className="text-slate-600">{desc.join(':')}</span>
+                                    <strong className="text-slate-900 block font-black text-xl mb-1">{parseInlines(label)}</strong>
+                                    <span className="text-slate-600 text-lg">{parseInlines(desc.join(':'))}</span>
                                 </>
                             ) : (
-                                <span className="font-bold">{line.replace('- ', '')}</span>
+                                <span className="font-bold text-lg">{parseInlines(content)}</span>
                             )}
                         </div>
                     </div>
                   );
               }
+
               if (trimmed === '---') {
-                return <div key={i} className="my-12 flex justify-center"><div className="flex gap-2"><div className="w-2 h-2 rounded-full bg-slate-200"></div><div className="w-2 h-2 rounded-full bg-slate-300"></div><div className="w-2 h-2 rounded-full bg-slate-200"></div></div></div>;
+                return <div key={i} className="my-16 flex justify-center items-center gap-4 text-slate-200"><div className="h-px w-20 bg-current"></div><Icon name="sparkles" className="w-6 h-6 opacity-40" /><div className="h-px w-20 bg-current"></div></div>;
               }
-              if (trimmed === '') {
-                return <div key={i} className="h-2" />;
-              }
-              // 特殊なまとめボックス（最後の方の「まとめ」に対応）
+
               if (trimmed.includes('まとめ：') || trimmed.includes('覚え方のコツ')) {
                 return (
-                   <div key={i} className={`${theme.light} border-2 border-dashed ${theme.accent.replace('bg-', 'border-')} rounded-3xl p-8 my-8`}>
-                      <h3 className={`text-xl font-black ${theme.text} mb-4 flex items-center gap-2`}>
-                        <Icon name="lightbulb" className="w-6 h-6" />
-                        ポイントまとめ
+                   <div key={i} className={`bg-slate-900 rounded-[2.5rem] p-10 my-12 text-white relative overflow-hidden shadow-2xl group`}>
+                      <div className={`absolute top-0 right-0 w-48 h-48 ${theme.accent} rounded-full -mr-20 -mt-20 blur-3xl opacity-20 group-hover:opacity-40 transition-opacity`}></div>
+                      <h3 className={`text-2xl font-black mb-6 flex items-center gap-3 relative z-10`}>
+                        <div className={`w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center`}>
+                          <Icon name="lightbulb" className="w-6 h-6 text-yellow-400" />
+                        </div>
+                        今日の大事なポイント！
                       </h3>
-                      <p className="text-slate-700 leading-relaxed font-bold">{trimmed}</p>
+                      <div className="text-slate-200 leading-loose font-bold text-xl relative z-10">
+                        {parseInlines(trimmed)}
+                      </div>
                    </div>
                 );
               }
 
-              return <p key={i} className="text-slate-600 leading-relaxed mb-6 text-lg font-medium">{line}</p>;
+              return (
+                <p key={i} className="text-slate-600 leading-loose mb-8 text-xl font-medium px-2">
+                  {parseInlines(line)}
+                </p>
+              );
             })}
           </div>
         </article>
