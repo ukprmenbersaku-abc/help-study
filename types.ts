@@ -69,4 +69,5 @@ export interface Article {
   date: string;
   category: string;
   icon?: string;
+  tags?: string[];
 }

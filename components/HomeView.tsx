@@ -123,7 +123,7 @@ const HomeView: React.FC<HomeViewProps> = ({ userProgress, tasks, subjects, onNa
                   return (
                     <div 
                         key={task.id} 
-                        className={`group flex items-center gap-3 p-3 rounded-2xl border transition-all cursor-pointer animate-fade-in ${task.isCompleted ? 'bg-slate-50 border-slate-100 opacity-60' : 'bg-white border-slate-200 hover:border-indigo-300 hover:shadow-md'}`}
+                        className={`group flex items-center gap-3 p-3 rounded-2xl border transition-all cursor-pointer animate-fade-in ${task.isCompleted ? 'bg-slate-50 border-slate-100 opacity-60' : 'bg-white border-slate-200 hover:border-indigo-400 hover:shadow-lg'}`}
                         onClick={() => onTaskClick(task)}
                     >
                       <button 
@@ -135,8 +135,8 @@ const HomeView: React.FC<HomeViewProps> = ({ userProgress, tasks, subjects, onNa
                       <div className="flex-grow min-w-0">
                         <p className={`font-bold truncate ${task.isCompleted ? 'line-through text-slate-400' : 'text-slate-700'}`}>{task.title}</p>
                         <div className="flex items-center gap-2 mt-0.5">
-                            <div className="w-4 h-4 rounded flex items-center justify-center text-white" style={{ backgroundColor: sub?.color || '#ccc' }}>
-                                <Icon name={sub?.icon || 'book'} className="w-2.5 h-2.5" />
+                            <div className="w-5 h-5 rounded-md flex items-center justify-center text-white shadow-sm" style={{ backgroundColor: sub?.color || '#ccc' }}>
+                                <Icon name={sub?.icon || 'book'} className="w-3 h-3" />
                             </div>
                             <span className="text-xs text-slate-500">{sub?.name}</span>
                         </div>
@@ -201,7 +201,7 @@ const HomeView: React.FC<HomeViewProps> = ({ userProgress, tasks, subjects, onNa
                    return (
                      <div 
                         key={task.id}
-                        className="flex items-center justify-between p-3.5 bg-rose-50/50 border border-rose-100 rounded-2xl cursor-pointer hover:shadow-md hover:border-rose-200 transition-all active:scale-[0.98]"
+                        className="flex items-center justify-between p-3.5 bg-rose-50/50 border border-rose-100 rounded-2xl cursor-pointer hover:shadow-xl hover:border-rose-300 transition-all active:scale-[0.98]"
                         onClick={() => onTaskClick(task)}
                      >
                         <div className="min-w-0">

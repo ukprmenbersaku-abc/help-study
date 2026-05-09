@@ -92,7 +92,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave, subjects
                 <button 
                   type="button" 
                   onClick={() => setType(TaskType.STUDY)} 
-                  className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${type === TaskType.STUDY ? 'bg-indigo-600 text-white shadow-lg scale-[1.02]' : 'bg-slate-100 text-slate-400 hover:bg-slate-200'}`}
+                  className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${type === TaskType.STUDY ? 'bg-indigo-600 text-white shadow-lg' : 'bg-slate-100 text-slate-400 hover:bg-slate-200'}`}
                 >
                   <Icon name="book" className="w-4 h-4 inline-block mr-1.5" />
                   学習
@@ -100,7 +100,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave, subjects
                 <button 
                   type="button" 
                   onClick={() => setType(TaskType.DEADLINE)} 
-                  className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${type === TaskType.DEADLINE ? 'bg-rose-600 text-white shadow-lg scale-[1.02]' : 'bg-slate-100 text-slate-400 hover:bg-slate-200'}`}
+                  className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${type === TaskType.DEADLINE ? 'bg-rose-600 text-white shadow-lg' : 'bg-slate-100 text-slate-400 hover:bg-slate-200'}`}
                 >
                   <Icon name="check-circle" className="w-4 h-4 inline-block mr-1.5" />
                   提出・期限
@@ -228,7 +228,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave, subjects
               </div>
           </div>
           <div className="flex justify-end pt-4 mt-auto border-t border-slate-200 flex-shrink-0">
-            <button type="submit" className="px-6 py-2.5 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all transform hover:scale-105">
+            <button type="submit" className="px-6 py-2.5 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all font-bold">
               {taskToEdit ? '更新' : '追加'}
             </button>
           </div>

@@ -80,11 +80,11 @@ const ReviewView: React.FC<ReviewViewProps> = ({ subjects, apiKey, reviewResults
           return (
             <div 
               key={subject.id}
-              className="group relative bg-white rounded-[2.5rem] p-8 shadow-sm border border-slate-200 hover:shadow-xl hover:shadow-indigo-100/50 hover:-translate-y-1 transition-all duration-500 flex flex-col"
+              className="group relative bg-white rounded-[2.5rem] p-8 shadow-sm border border-slate-200 hover:shadow-2xl hover:shadow-indigo-500/10 hover:border-indigo-400 transition-all duration-500 flex flex-col"
             >
               <div className="flex items-start justify-between mb-8">
                 <div 
-                  className="w-16 h-16 rounded-[1.5rem] flex items-center justify-center text-white shadow-xl transform group-hover:rotate-6 transition-transform duration-500"
+                  className="w-16 h-16 rounded-[1.5rem] flex items-center justify-center text-white shadow-xl transition-transform duration-500"
                   style={{ backgroundColor: subject.color }}
                 >
                   <Icon name={subject.icon || 'book-open'} className="w-8 h-8" />
@@ -123,7 +123,7 @@ const ReviewView: React.FC<ReviewViewProps> = ({ subjects, apiKey, reviewResults
                 
                 <button
                   onClick={() => handleStartReview(subject)}
-                  className="w-full py-4 bg-slate-900 text-white rounded-2xl font-black hover:bg-indigo-600 transition-all duration-300 flex items-center justify-center gap-3 shadow-lg shadow-slate-200 group-hover:scale-[1.02]"
+                  className="w-full py-4 bg-slate-900 text-white rounded-2xl font-black hover:bg-indigo-600 transition-all duration-300 flex items-center justify-center gap-3 shadow-lg shadow-slate-200"
                 >
                   <Icon name="play" className="w-5 h-5 fill-current" />
                   テストを開始

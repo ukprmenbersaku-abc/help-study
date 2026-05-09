@@ -186,10 +186,14 @@ const Calendar: React.FC<CalendarProps> = ({ currentDate, tasks, subjects, onDat
                             e.stopPropagation();
                             onTaskClick(task);
                         }}
-                        className={`px-1.5 py-1 rounded-lg text-[9px] lg:text-[10px] truncate border-l-[3px] mb-1 ${task.isCompleted ? 'opacity-40 grayscale' : 'bg-white'}`}
-                        style={{ borderLeftColor: sub?.color || '#ccc' }}
+                        className={`px-1.5 py-1 rounded-lg text-[9px] lg:text-[10px] truncate mb-1 relative overflow-hidden transition-all duration-200 ${task.isCompleted ? 'opacity-40 grayscale' : 'bg-white shadow-sm border border-slate-100'}`}
                       >
-                        <span className={`truncate block ${task.isCompleted ? 'line-through' : 'text-slate-700 font-bold'}`}>
+                        {/* Rounded color indicator on the left */}
+                        <div 
+                          className="absolute left-0 top-0 bottom-0 w-[4px] rounded-l-lg" 
+                          style={{ backgroundColor: sub?.color || '#ccc' }}
+                        />
+                        <span className={`pl-2 truncate block relative z-10 ${task.isCompleted ? 'line-through' : 'text-slate-700 font-bold'}`}>
                           {task.title}
                         </span>
                       </div>

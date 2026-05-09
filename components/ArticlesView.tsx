@@ -15,6 +15,7 @@ const ARTICLES: Article[] = [
     category: 'チュートリアル',
     date: '2026-04-29',
     icon: 'info',
+    tags: ['使い方', '入門', '基本'],
     content: `
 # Study-side へようこそ！
 
@@ -55,6 +56,7 @@ Study-side を活用して、理想の学習習慣を身につけましょう！
     category: '社会',
     date: '2026-05-05',
     icon: 'globe',
+    tags: ['中1', '中2', '歴史', '暗記'],
     content: `
 # 「源・北条・足利」をごっちゃにしない！歴史人物まとめ
 
@@ -127,10 +129,15 @@ const ArticlesView: React.FC<ArticlesViewProps> = ({ onNavigate }) => {
             <div className="absolute bottom-0 left-0 w-48 h-48 bg-black/10 rounded-full -ml-20 -mb-20 blur-2xl"></div>
             
             <div className="relative z-10">
-              <div className="flex items-center gap-3 mb-6">
+              <div className="flex items-center gap-3 mb-6 flex-wrap">
                 <span className="bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest border border-white/20">
                   {selectedArticle.category}
                 </span>
+                {selectedArticle.tags?.map(tag => (
+                  <span key={tag} className="bg-black/10 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold border border-white/10">
+                    #{tag}
+                  </span>
+                ))}
                 <span className="text-white/80 text-sm font-bold flex items-center gap-1">
                   <Icon name="calendar" className="w-4 h-4" />
                   {selectedArticle.date}
@@ -238,7 +245,7 @@ const ArticlesView: React.FC<ArticlesViewProps> = ({ onNavigate }) => {
               <p className={`${theme.text} opacity-80 mb-8 font-bold`}>今日学んだことを忘れないうちに、タスクを完了させましょう。</p>
               <button 
                   onClick={() => onNavigate('home')}
-                  className={`${theme.accent} text-white px-10 py-4 rounded-2xl font-black shadow-lg hover:scale-105 transition-all active:scale-95 flex items-center gap-3 mx-auto`}
+                  className={`${theme.accent} text-white px-10 py-4 rounded-2xl font-black shadow-lg transition-all active:scale-95 flex items-center gap-3 mx-auto`}
               >
                   <Icon name="home" className="w-6 h-6" />
                   ホームに戻って学習を続ける
@@ -280,12 +287,12 @@ const ArticlesView: React.FC<ArticlesViewProps> = ({ onNavigate }) => {
             <div 
               key={article.id}
               onClick={() => setSelectedArticle(article)}
-              className="group bg-white rounded-[2.5rem] p-8 shadow-lg border border-slate-200 cursor-pointer transition-all hover:border-indigo-400 hover:shadow-2xl hover:-translate-y-2 relative overflow-hidden"
+              className="group bg-white rounded-[2.5rem] p-8 shadow-lg border border-slate-200 cursor-pointer transition-all hover:border-indigo-400 hover:shadow-2xl relative overflow-hidden"
             >
               {/* Category light bg highlight */}
               <div className={`absolute top-0 left-0 w-full h-2 ${theme.accent}`}></div>
               
-              <div className={`w-14 h-14 ${theme.bg} ${theme.text} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
+              <div className={`w-14 h-14 ${theme.bg} ${theme.text} rounded-2xl flex items-center justify-center mb-6 transition-all duration-300`}>
                 <Icon name={article.icon || 'book-open'} className="w-8 h-8" />
               </div>
               
@@ -299,15 +306,25 @@ const ArticlesView: React.FC<ArticlesViewProps> = ({ onNavigate }) => {
                 </span>
               </div>
               
-              <h3 className="text-2xl font-black text-slate-800 mb-4 group-hover:text-indigo-600 transition-colors leading-tight">
+              <h3 className="text-2xl font-black text-slate-800 mb-3 group-hover:text-indigo-600 transition-colors leading-tight">
                 {article.title}
               </h3>
+
+              {article.tags && (
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {article.tags.map(tag => (
+                    <span key={tag} className="text-[10px] font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-md border border-slate-100">
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              )}
               
               <p className="text-slate-500 font-medium text-sm line-clamp-3 leading-relaxed mb-6">
                 {article.content.replace(/[#*-]/g, '').trim()}
               </p>
 
-              <div className="flex items-center text-indigo-600 font-black text-sm gap-1 group-hover:gap-2 transition-all">
+              <div className="flex items-center text-indigo-600 font-black text-sm gap-1 transition-all">
                 記事を読む
                 <Icon name="chevronRight" className="w-4 h-4" />
               </div>
@@ -316,8 +333,8 @@ const ArticlesView: React.FC<ArticlesViewProps> = ({ onNavigate }) => {
         })}
 
         {/* Placeholder for more articles */}
-        <div className="bg-slate-50 rounded-[2.5rem] border-4 border-dashed border-slate-200 flex flex-col items-center justify-center p-10 text-center min-h-[320px] transition-all hover:bg-slate-100">
-           <div className="w-16 h-16 bg-white rounded-full shadow-md flex items-center justify-center text-slate-300 mb-6 scale-110">
+        <div className="bg-slate-50 rounded-[2.5rem] border-4 border-dashed border-slate-200 flex flex-col items-center justify-center p-10 text-center min-h-[320px] transition-all hover:bg-slate-100 hover:border-slate-300">
+           <div className="w-16 h-16 bg-white rounded-full shadow-md flex items-center justify-center text-slate-300 mb-6">
              <Icon name="plus" className="w-8 h-8" />
            </div>
            <p className="text-slate-400 font-black text-xl">Coming Soon...</p>

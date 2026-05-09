@@ -215,7 +215,7 @@ const QuizComponent: React.FC<QuizComponentProps> = ({ subjectId, subjectName, a
                     key={idx}
                     disabled={selectedOption !== null}
                     onClick={() => handleAnswer(idx)}
-                    className={`group relative w-full p-4 sm:p-5 text-left border-2 rounded-2xl sm:rounded-[1.5rem] transition-all duration-300 flex items-center gap-4 ${stateClasses} ${selectedOption === null ? 'active:scale-[0.98] hover:-translate-y-0.5' : ''}`}
+                    className={`group relative w-full p-4 sm:p-5 text-left border-2 rounded-2xl sm:rounded-[1.5rem] transition-all duration-300 flex items-center gap-4 ${stateClasses} ${selectedOption === null ? 'active:scale-[0.98] hover:shadow-md hover:border-indigo-400' : ''}`}
                   >
                     <span className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center text-sm sm:text-base font-black shrink-0 transition-colors duration-300 ${iconContainerClasses}`}>
                       {selectedOption !== null && idx === currentQuestion.correctAnswerIndex ? (
@@ -256,7 +256,7 @@ const QuizComponent: React.FC<QuizComponentProps> = ({ subjectId, subjectName, a
               className="w-full py-5 sm:py-6 bg-slate-900 text-white rounded-2xl sm:rounded-[1.5rem] font-black hover:bg-indigo-600 transition-all duration-300 active:scale-95 flex items-center justify-center gap-3 shadow-xl shadow-slate-200 text-lg sm:text-xl group"
             >
               <span>{currentIndex < questions.length - 1 ? '次の問題へ' : '結果を見る'}</span>
-              <Icon name="arrow-right" className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+              <Icon name="arrow-right" className="w-6 h-6 transition-transform" />
             </button>
           )}
         </div>

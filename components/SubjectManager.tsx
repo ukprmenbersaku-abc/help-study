@@ -101,7 +101,7 @@ const SubjectManager: React.FC<SubjectManagerProps> = ({ subjects, setSubjects, 
                                             type="button" 
                                             key={color} 
                                             onClick={() => setEditingSubject({ ...editingSubject, color: color })}
-                                            className={`w-9 h-9 rounded-full transition-all transform hover:scale-110 shadow-sm relative ${editingSubject.color === color ? 'ring-2 ring-offset-4 ring-indigo-500 scale-110' : 'hover:ring-2 hover:ring-offset-2 hover:ring-slate-300'}`}
+                                            className={`w-9 h-9 rounded-full transition-all shadow-sm relative ${editingSubject.color === color ? 'ring-2 ring-offset-4 ring-indigo-500' : 'hover:ring-2 hover:ring-offset-2 hover:ring-slate-300'}`}
                                             style={{ backgroundColor: color }}
                                         >
                                             {editingSubject.color === color && (
@@ -121,7 +121,7 @@ const SubjectManager: React.FC<SubjectManagerProps> = ({ subjects, setSubjects, 
                                             type="button" 
                                             key={icon} 
                                             onClick={() => setEditingSubject({ ...editingSubject, icon: icon })}
-                                            className={`w-10 h-10 rounded-xl transition-all transform hover:scale-110 flex items-center justify-center border-2 ${editingSubject.icon === icon ? 'border-indigo-500 bg-indigo-50 text-indigo-600 scale-110' : 'border-slate-200 bg-white text-slate-400 hover:border-slate-300'}`}
+                                            className={`w-10 h-10 rounded-xl transition-all flex items-center justify-center border-2 ${editingSubject.icon === icon ? 'border-indigo-500 bg-indigo-50 text-indigo-600' : 'border-slate-200 bg-white text-slate-400 hover:border-indigo-300 hover:bg-indigo-50/50'}`}
                                         >
                                             <Icon name={icon} className="w-5 h-5" />
                                         </button>
@@ -168,7 +168,7 @@ const SubjectManager: React.FC<SubjectManagerProps> = ({ subjects, setSubjects, 
                                             type="button" 
                                             key={color} 
                                             onClick={() => setNewSubjectColor(color)}
-                                            className={`w-8 h-8 rounded-full transition-all transform hover:scale-110 shadow-sm relative ${newSubjectColor === color ? 'ring-2 ring-offset-2 ring-indigo-500 scale-110' : 'hover:ring-2 hover:ring-offset-2 hover:ring-slate-300'}`}
+                                            className={`w-8 h-8 rounded-full transition-all shadow-sm relative ${newSubjectColor === color ? 'ring-2 ring-offset-2 ring-indigo-500' : 'hover:ring-2 hover:ring-offset-2 hover:ring-slate-300'}`}
                                             style={{ backgroundColor: color }}
                                         >
                                             {newSubjectColor === color && (
@@ -188,7 +188,7 @@ const SubjectManager: React.FC<SubjectManagerProps> = ({ subjects, setSubjects, 
                                             type="button" 
                                             key={icon} 
                                             onClick={() => setNewSubjectIcon(icon)}
-                                            className={`w-9 h-9 rounded-xl transition-all transform hover:scale-110 flex items-center justify-center border-2 ${newSubjectIcon === icon ? 'border-indigo-500 bg-indigo-50 text-indigo-600 scale-110' : 'border-slate-200 bg-white text-slate-400 hover:border-slate-300'}`}
+                                            className={`w-9 h-9 rounded-xl transition-all flex items-center justify-center border-2 ${newSubjectIcon === icon ? 'border-indigo-500 bg-indigo-50 text-indigo-600' : 'border-slate-200 bg-white text-slate-400 hover:border-indigo-300 hover:bg-indigo-50/50'}`}
                                         >
                                             <Icon name={icon} className="w-4 h-4" />
                                         </button>
@@ -208,10 +208,10 @@ const SubjectManager: React.FC<SubjectManagerProps> = ({ subjects, setSubjects, 
                 {/* Subject List */}
                 <div className="grid grid-cols-1 gap-4">
                     {subjects.map(subject => (
-                        <div key={subject.id} className="group flex items-center justify-between p-5 bg-white border border-slate-200 rounded-2xl hover:border-indigo-300 hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-300">
+                        <div key={subject.id} className="group flex items-center justify-between p-5 bg-white border border-slate-200 rounded-2xl hover:border-indigo-400 hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-300">
                             <div className="flex items-center gap-5">
                                 <div 
-                                    className="w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-lg transition-all group-hover:scale-110" 
+                                    className="w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-lg transition-all" 
                                     style={{ backgroundColor: subject.color }}
                                 >
                                     <Icon name={subject.icon || 'book'} className="w-6 h-6" />
