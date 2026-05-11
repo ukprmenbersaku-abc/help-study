@@ -69,7 +69,7 @@ const StudySearchView: React.FC = () => {
       <div className="flex flex-col h-full items-center justify-center bg-slate-50 p-6 animate-fade-in">
         <div className="max-w-2xl w-full space-y-8 text-center">
           <div className="space-y-4">
-            <div className="inline-flex p-4 bg-indigo-600 text-white rounded-[2rem] shadow-xl shadow-indigo-200 mb-2">
+            <div className="inline-flex p-4 bg-indigo-600 text-white rounded-[2rem] mb-2">
               <Icon name="search" className="w-12 h-12" />
             </div>
             <h1 className="text-4xl font-black text-slate-900 tracking-tight">学習検索ホーム</h1>
@@ -78,7 +78,7 @@ const StudySearchView: React.FC = () => {
             </p>
           </div>
 
-          <div className="bg-white p-8 rounded-[2.5rem] shadow-xl border border-slate-100 space-y-6">
+          <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 space-y-6">
             <form onSubmit={(e) => handleSearch(e)} className="relative group">
               <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
                 <Icon name="search" className="w-6 h-6 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
@@ -88,14 +88,14 @@ const StudySearchView: React.FC = () => {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="キーワードを入力..."
-                className="w-full pl-14 pr-4 py-5 bg-slate-50 border-2 border-transparent focus:border-indigo-500 focus:bg-white rounded-2xl outline-none transition-all font-bold text-xl shadow-inner"
+                className="w-full pl-14 pr-4 py-5 bg-slate-50 border-2 border-transparent focus:border-indigo-500 focus:bg-white rounded-2xl outline-none transition-all font-bold text-xl"
               />
             </form>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <button
                 onClick={() => handleSearch(undefined, 'google')}
-                className="flex flex-col items-center p-6 bg-indigo-600 text-white rounded-3xl hover:bg-indigo-700 transition-all group active:scale-95 shadow-lg shadow-indigo-100"
+                className="flex flex-col items-center p-6 bg-indigo-600 text-white rounded-3xl hover:bg-indigo-700 transition-all group active:scale-95"
               >
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-xl font-black">Google 検索</span>
@@ -157,7 +157,7 @@ const StudySearchView: React.FC = () => {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={`${engine === 'google' ? 'Google' : 'DuckDuckGo'}で検索...`}
-            className="w-full pl-9 pr-20 py-1.5 bg-white border border-slate-200 rounded-xl focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 outline-none transition-all font-medium text-sm shadow-sm"
+            className="w-full pl-9 pr-20 py-1.5 bg-white border border-slate-200 rounded-xl focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 outline-none transition-all font-medium text-sm"
           />
           <button
             type="submit"
@@ -170,7 +170,7 @@ const StudySearchView: React.FC = () => {
         <div className="flex items-center gap-2 shrink-0">
            <button 
              onClick={toggleEngine}
-             className={`flex items-center gap-1.5 px-3 py-1.5 border rounded-xl text-[10px] font-black transition-all shadow-sm ${
+             className={`flex items-center gap-1.5 px-3 py-1.5 border rounded-xl text-[10px] font-black transition-all ${
                engine === 'google' 
                ? 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50' 
                : 'bg-indigo-50 border-indigo-100 text-indigo-600 hover:bg-indigo-100'
@@ -183,7 +183,7 @@ const StudySearchView: React.FC = () => {
            
            <button 
              onClick={openInNewTab}
-             className={`flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 border border-indigo-700 rounded-xl text-white text-[10px] font-black hover:bg-indigo-700 transition-all shadow-md ${isInactive ? 'animate-pulse-custom' : ''}`}
+             className={`flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 border border-indigo-700 rounded-xl text-white text-[10px] font-black hover:bg-indigo-700 transition-all ${isInactive ? 'animate-pulse-custom' : ''}`}
              title="新しいタブで開く"
            >
              <Icon name="arrow-right" className="w-3 h-3" />

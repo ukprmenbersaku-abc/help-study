@@ -20,7 +20,7 @@ const NavItem: React.FC<{
         onClick={onClick}
         className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl text-left transition-colors duration-200 ${
             isActive
-                ? 'bg-indigo-100 text-indigo-700 font-bold shadow-sm'
+                ? 'bg-indigo-100 text-indigo-700 font-bold'
                 : 'text-slate-600 hover:bg-slate-200/60'
         }`}
     >
@@ -71,7 +71,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activeView, onNaviga
                 />
                 <NavItem 
                     iconName="book-open"
-                    label="学習記事"
+                    label="学習記事集"
                     isActive={activeView === 'articles'}
                     onClick={() => onNavigate('articles')}
                 />

@@ -20,6 +20,7 @@ export interface Task {
   type: TaskType;
   duration?: number; // in hours
   isCompleted: boolean;
+  isImportant?: boolean;
   assignment?: string;
   pages?: string;
   memo?: string;
@@ -70,4 +71,5 @@ export interface Article {
   category: string;
   icon?: string;
   tags?: string[];
+  relatedWords?: string[];
 }

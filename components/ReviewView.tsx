@@ -54,7 +54,7 @@ const ReviewView: React.FC<ReviewViewProps> = ({ subjects, apiKey, reviewResults
         </div>
         {!apiKey && (
           <div className="flex flex-col items-start md:items-end gap-3">
-            <div className="flex items-center gap-2 px-4 py-2 bg-amber-50 border border-amber-200 rounded-2xl text-amber-700 text-xs font-bold shadow-sm">
+            <div className="flex items-center gap-2 px-4 py-2 bg-amber-50 border border-amber-200 rounded-2xl text-amber-700 text-xs font-bold">
               <Icon name="info" className="w-4 h-4" />
               <span>APIキー未設定: プリセット問題を使用中</span>
             </div>
@@ -80,11 +80,11 @@ const ReviewView: React.FC<ReviewViewProps> = ({ subjects, apiKey, reviewResults
           return (
             <div 
               key={subject.id}
-              className="group relative bg-white rounded-[2.5rem] p-8 shadow-sm border border-slate-200 hover:shadow-2xl hover:shadow-indigo-500/10 hover:border-indigo-400 transition-all duration-500 flex flex-col"
+              className="group relative bg-white rounded-[2.5rem] p-8 border border-slate-200 hover:border-indigo-400 transition-all duration-500 flex flex-col"
             >
               <div className="flex items-start justify-between mb-8">
                 <div 
-                  className="w-16 h-16 rounded-[1.5rem] flex items-center justify-center text-white shadow-xl transition-transform duration-500"
+                  className="w-16 h-16 rounded-[1.5rem] flex items-center justify-center text-white transition-transform duration-500"
                   style={{ backgroundColor: subject.color }}
                 >
                   <Icon name={subject.icon || 'book-open'} className="w-8 h-8" />
@@ -123,7 +123,7 @@ const ReviewView: React.FC<ReviewViewProps> = ({ subjects, apiKey, reviewResults
                 
                 <button
                   onClick={() => handleStartReview(subject)}
-                  className="w-full py-4 bg-slate-900 text-white rounded-2xl font-black hover:bg-indigo-600 transition-all duration-300 flex items-center justify-center gap-3 shadow-lg shadow-slate-200"
+                  className="w-full py-4 bg-slate-900 text-white rounded-2xl font-black hover:bg-indigo-600 transition-all duration-300 flex items-center justify-center gap-3"
                 >
                   <Icon name="play" className="w-5 h-5 fill-current" />
                   テストを開始
@@ -135,7 +135,7 @@ const ReviewView: React.FC<ReviewViewProps> = ({ subjects, apiKey, reviewResults
       </div>
 
       {reviewResults.length > 0 && (
-        <section className="bg-white rounded-[3rem] p-8 sm:p-12 shadow-sm border border-slate-200 overflow-hidden relative">
+        <section className="bg-white rounded-[3rem] p-8 sm:p-12 border border-slate-200 overflow-hidden relative">
           <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-50 rounded-full blur-3xl -mr-32 -mt-32 opacity-50"></div>
           
           <div className="relative flex items-center justify-between mb-10">
@@ -153,11 +153,11 @@ const ReviewView: React.FC<ReviewViewProps> = ({ subjects, apiKey, reviewResults
               return (
                 <div 
                   key={idx} 
-                  className="group flex flex-col sm:flex-row sm:items-center justify-between p-6 bg-slate-50 hover:bg-white rounded-[2rem] border border-transparent hover:border-slate-200 hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300 gap-4"
+                  className="group flex flex-col sm:flex-row sm:items-center justify-between p-6 bg-slate-50 hover:bg-white rounded-[2rem] border border-transparent hover:border-slate-200 transition-all duration-300 gap-4"
                 >
                   <div className="flex items-center gap-5">
                     <div 
-                      className="w-14 h-14 rounded-2xl flex items-center justify-center text-white shadow-lg shrink-0" 
+                      className="w-14 h-14 rounded-2xl flex items-center justify-center text-white shrink-0" 
                       style={{ backgroundColor: subject?.color || '#ccc' }}
                     >
                       <Icon name={subject?.icon || 'book'} className="w-7 h-7" />

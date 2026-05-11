@@ -61,9 +61,9 @@ const GeminiSuggester: React.FC<GeminiSuggesterProps> = ({ subjects, onAddSugges
     };
 
     return (
-        <div className="bg-white p-6 rounded-2xl shadow-lg border border-slate-200 mt-6 bg-gradient-to-br from-white to-indigo-50/30">
+        <div className="bg-white p-6 rounded-2xl border border-slate-200 mt-6 bg-gradient-to-br from-white to-indigo-50/30">
             <div className="flex items-center gap-3 mb-2">
-                <div className="bg-gradient-to-br from-yellow-300 to-amber-500 p-2 rounded-lg text-white shadow-md">
+                <div className="bg-gradient-to-br from-yellow-300 to-amber-500 p-2 rounded-lg text-white">
                    <Icon name="sparkles" className="w-5 h-5" />
                 </div>
                 <h3 className="text-xl font-bold text-slate-800">AI 学習プランナー</h3>
@@ -92,12 +92,12 @@ const GeminiSuggester: React.FC<GeminiSuggesterProps> = ({ subjects, onAddSugges
                         value={goal}
                         onChange={(e) => setGoal(e.target.value)}
                         placeholder="例: 中間テストで数学80点以上取るための計画"
-                        className="flex-grow px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition shadow-sm"
+                        className="flex-grow px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
                         disabled={isLoading}
                     />
                     <button
                         onClick={handleGeneratePlan}
-                        className="px-6 py-3 bg-indigo-600 text-white font-bold rounded-xl shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition flex items-center justify-center gap-2 disabled:bg-indigo-300 active:scale-95 whitespace-nowrap"
+                        className="px-6 py-3 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition flex items-center justify-center gap-2 disabled:bg-indigo-300 active:scale-95 whitespace-nowrap"
                         disabled={isLoading}
                     >
                         {isLoading ? (
@@ -127,7 +127,7 @@ const GeminiSuggester: React.FC<GeminiSuggesterProps> = ({ subjects, onAddSugges
                     </h4>
                     <ul className="space-y-3 max-h-80 overflow-y-auto pr-2 custom-scrollbar">
                         {suggestedTasks.map((task, index) => (
-                            <li key={index} className="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex justify-between items-start gap-3 hover:shadow-md transition-shadow">
+                            <li key={index} className="bg-white p-4 rounded-xl border border-slate-100 flex justify-between items-start gap-3 transition-shadow">
                                 <div>
                                     <p className="font-bold text-slate-800">{task.title}</p>
                                     <p className="text-sm text-slate-500 mt-1 leading-relaxed">{task.description}</p>
@@ -139,7 +139,7 @@ const GeminiSuggester: React.FC<GeminiSuggesterProps> = ({ subjects, onAddSugges
                      <div className="mt-6 flex flex-col sm:flex-row gap-3 items-center">
                         <select
                             onChange={(e) => handleAddTasks(e.target.value)}
-                            className="w-full sm:w-auto flex-grow px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition bg-white shadow-sm cursor-pointer"
+                            className="w-full sm:w-auto flex-grow px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition bg-white cursor-pointer"
                             defaultValue=""
                         >
                             <option value="" disabled>どの教科に追加しますか？</option>

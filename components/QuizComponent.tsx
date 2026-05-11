@@ -101,7 +101,7 @@ const QuizComponent: React.FC<QuizComponentProps> = ({ subjectId, subjectName, a
         </div>
         <button 
           onClick={onCancel} 
-          className="px-8 py-4 bg-slate-900 text-white rounded-2xl font-black hover:bg-slate-800 transition-all active:scale-95 shadow-lg shadow-slate-200"
+          className="px-8 py-4 bg-slate-900 text-white rounded-2xl font-black hover:bg-slate-800 transition-all active:scale-95"
         >
           戻る
         </button>
@@ -113,10 +113,10 @@ const QuizComponent: React.FC<QuizComponentProps> = ({ subjectId, subjectName, a
     return (
       <div className="max-w-md mx-auto p-8 text-center animate-modal-enter space-y-8">
         <div className="relative">
-          <div className="w-32 h-32 bg-indigo-600 text-white rounded-[2.5rem] flex items-center justify-center mx-auto shadow-2xl shadow-indigo-200 rotate-3">
+          <div className="w-32 h-32 bg-indigo-600 text-white rounded-[2.5rem] flex items-center justify-center mx-auto rotate-3">
             <Icon name="award" className="w-16 h-16" />
           </div>
-          <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-amber-400 text-white rounded-2xl flex items-center justify-center shadow-lg rotate-12">
+          <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-amber-400 text-white rounded-2xl flex items-center justify-center rotate-12">
             <Icon name="star" className="w-6 h-6 fill-current" />
           </div>
         </div>
@@ -126,7 +126,7 @@ const QuizComponent: React.FC<QuizComponentProps> = ({ subjectId, subjectName, a
           <p className="text-slate-500 font-bold text-lg">お疲れ様でした。結果を確認しましょう。</p>
         </div>
 
-        <div className="bg-white rounded-[2rem] p-8 border-2 border-slate-100 shadow-sm">
+        <div className="bg-white rounded-[2rem] p-8 border-2 border-slate-100">
           <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">スコア</p>
           <div className="flex items-baseline justify-center gap-2">
             <span className="text-6xl font-black text-indigo-600">{score}</span>
@@ -136,7 +136,7 @@ const QuizComponent: React.FC<QuizComponentProps> = ({ subjectId, subjectName, a
 
         <button
           onClick={handleFinish}
-          className="w-full py-6 bg-slate-900 text-white rounded-[1.5rem] font-black hover:bg-indigo-600 transition-all duration-300 shadow-xl shadow-slate-200 text-xl active:scale-95"
+          className="w-full py-6 bg-slate-900 text-white rounded-[1.5rem] font-black hover:bg-indigo-600 transition-all duration-300 text-xl active:scale-95"
         >
           結果を保存して戻る
         </button>
@@ -186,7 +186,7 @@ const QuizComponent: React.FC<QuizComponentProps> = ({ subjectId, subjectName, a
 
       <div className="flex-1 space-y-6 sm:space-y-8">
         {/* Question Card */}
-        <div className="bg-white rounded-[2rem] sm:rounded-[3rem] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+        <div className="bg-white rounded-[2rem] sm:rounded-[3rem] border border-slate-100 overflow-hidden">
           <div className="p-6 sm:p-10 md:p-12">
             <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-8 sm:mb-12 leading-[1.4] tracking-tight">
               {currentQuestion.question}
@@ -199,10 +199,10 @@ const QuizComponent: React.FC<QuizComponentProps> = ({ subjectId, subjectName, a
                 
                 if (selectedOption !== null) {
                   if (idx === currentQuestion.correctAnswerIndex) {
-                    stateClasses = 'bg-emerald-50 border-emerald-500 text-emerald-800 shadow-sm shadow-emerald-100';
+                    stateClasses = 'bg-emerald-50 border-emerald-500 text-emerald-800';
                     iconContainerClasses = 'bg-emerald-500 text-white';
                   } else if (idx === selectedOption) {
-                    stateClasses = 'bg-rose-50 border-rose-500 text-rose-800 shadow-sm shadow-rose-100';
+                    stateClasses = 'bg-rose-50 border-rose-500 text-rose-800';
                     iconContainerClasses = 'bg-rose-500 text-white';
                   } else {
                     stateClasses = 'bg-slate-50 border-slate-100 text-slate-400 opacity-60';
@@ -215,7 +215,7 @@ const QuizComponent: React.FC<QuizComponentProps> = ({ subjectId, subjectName, a
                     key={idx}
                     disabled={selectedOption !== null}
                     onClick={() => handleAnswer(idx)}
-                    className={`group relative w-full p-4 sm:p-5 text-left border-2 rounded-2xl sm:rounded-[1.5rem] transition-all duration-300 flex items-center gap-4 ${stateClasses} ${selectedOption === null ? 'active:scale-[0.98] hover:shadow-md hover:border-indigo-400' : ''}`}
+                    className={`group relative w-full p-4 sm:p-5 text-left border-2 rounded-2xl sm:rounded-[1.5rem] transition-all duration-300 flex items-center gap-4 ${stateClasses} ${selectedOption === null ? 'active:scale-[0.98] hover:border-indigo-400' : ''}`}
                   >
                     <span className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center text-sm sm:text-base font-black shrink-0 transition-colors duration-300 ${iconContainerClasses}`}>
                       {selectedOption !== null && idx === currentQuestion.correctAnswerIndex ? (
@@ -237,7 +237,7 @@ const QuizComponent: React.FC<QuizComponentProps> = ({ subjectId, subjectName, a
         {/* Explanation & Next Action */}
         <div className="space-y-4 sm:space-y-6 pb-8">
           {showExplanation && (
-            <div className="bg-indigo-900 text-white rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-8 animate-fade-in shadow-xl shadow-indigo-200">
+            <div className="bg-indigo-900 text-white rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-8 animate-fade-in">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
                   <Icon name="info" className="w-4 h-4" />
@@ -253,7 +253,7 @@ const QuizComponent: React.FC<QuizComponentProps> = ({ subjectId, subjectName, a
           {selectedOption !== null && (
             <button
               onClick={handleNext}
-              className="w-full py-5 sm:py-6 bg-slate-900 text-white rounded-2xl sm:rounded-[1.5rem] font-black hover:bg-indigo-600 transition-all duration-300 active:scale-95 flex items-center justify-center gap-3 shadow-xl shadow-slate-200 text-lg sm:text-xl group"
+              className="w-full py-5 sm:py-6 bg-slate-900 text-white rounded-2xl sm:rounded-[1.5rem] font-black hover:bg-indigo-600 transition-all duration-300 active:scale-95 flex items-center justify-center gap-3 text-lg sm:text-xl group"
             >
               <span>{currentIndex < questions.length - 1 ? '次の問題へ' : '結果を見る'}</span>
               <Icon name="arrow-right" className="w-6 h-6 transition-transform" />

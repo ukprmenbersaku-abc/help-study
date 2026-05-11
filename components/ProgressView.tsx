@@ -11,7 +11,7 @@ const ProgressView: React.FC<ProgressViewProps> = ({ userProgress, xpForNextLeve
   const xpPercentage = xpForNextLevel > 0 ? (userProgress.xp / xpForNextLevel) * 100 : 0;
 
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-lg border border-slate-200 animate-fade-in">
+    <div className="bg-white p-6 rounded-2xl border border-slate-200 animate-fade-in">
       <h2 className="text-2xl font-bold text-slate-800 mb-6">学習の進捗</h2>
       
       {/* Level and XP */}
@@ -38,7 +38,7 @@ const ProgressView: React.FC<ProgressViewProps> = ({ userProgress, xpForNextLeve
                 key={badge.id}
                 className={`p-4 rounded-lg flex items-center gap-4 transition-all duration-300 ${
                   badge.achieved
-                    ? 'bg-amber-100 border border-amber-300 shadow-sm'
+                    ? 'bg-amber-100 border border-amber-300'
                     : 'bg-slate-100 border border-slate-200 opacity-60'
                 }`}
               >

@@ -11,7 +11,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onOpenSettings, onNavigate }) => {
     return (
-        <header className="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-30 w-full flex-shrink-0">
+        <header className="bg-white/80 backdrop-blur-lg sticky top-0 z-30 w-full flex-shrink-0">
             <style>{`
                 .logo-clickable:active {
                     transform: scale(0.98);

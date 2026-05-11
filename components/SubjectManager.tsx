@@ -15,7 +15,7 @@ interface SubjectManagerProps {
 }
 
 const SUBJECT_ICONS = [
-    'book', 'plus-minus', 'algebra', 'variable', 'equal', 'trending-up', 'shapes', 'box', 'bar-chart', 'award', 'sparkles', 'flag', 'music', 'palette', 'home', 'vaulting-horse', 'brush', 'globe', 'flask', 'alphabet', 'math-x'
+    'book', 'alphabet-a', 'plus-minus', 'variable', 'equal', 'trending-up', 'shapes', 'box', 'bar-chart', 'award', 'sparkles', 'music', 'home', 'brush', 'globe', 'flask', 'math-x', 'ball'
 ];
 
 const SubjectManager: React.FC<SubjectManagerProps> = ({ subjects, setSubjects, tasks, setTasks, SIDEBAR_COLORS, onAddSuggestedTasks, apiKey }) => {
@@ -24,6 +24,28 @@ const SubjectManager: React.FC<SubjectManagerProps> = ({ subjects, setSubjects, 
     const [newSubjectColor, setNewSubjectColor] = useState(SIDEBAR_COLORS[0]);
     const [newSubjectIcon, setNewSubjectIcon] = useState(SUBJECT_ICONS[0]);
     const [editingSubject, setEditingSubject] = useState<Subject | null>(null);
+
+    // Auto-select icon based on subject name
+    React.useEffect(() => {
+        const name = newSubjectName.toLowerCase();
+        if (name.includes('体育') || name.includes('スポーツ') || name.includes('運動')) {
+            setNewSubjectIcon('ball');
+        } else if (name.includes('数学') || name.includes('算数')) {
+            setNewSubjectIcon('plus-minus');
+        } else if (name.includes('音楽') || name.includes('ピアノ')) {
+            setNewSubjectIcon('music');
+        } else if (name.includes('図工') || name.includes('美術') || name.includes('アート')) {
+            setNewSubjectIcon('brush');
+        } else if (name.includes('理科') || name.includes('科学')) {
+            setNewSubjectIcon('flask');
+        } else if (name.includes('社会') || name.includes('地理') || name.includes('歴史')) {
+            setNewSubjectIcon('globe');
+        } else if (name.includes('英語')) {
+            setNewSubjectIcon('alphabet-a');
+        } else if (name.includes('国語')) {
+            setNewSubjectIcon('book');
+        }
+    }, [newSubjectName]);
 
     const handleAddSubject = (e: React.FormEvent) => {
         e.preventDefault();
@@ -59,7 +81,7 @@ const SubjectManager: React.FC<SubjectManagerProps> = ({ subjects, setSubjects, 
 
     return (
         <div className="space-y-6 animate-fade-in max-w-4xl mx-auto">
-            <div className="bg-white p-6 sm:p-8 rounded-[2rem] shadow-xl border border-slate-200">
+            <div className="bg-white p-6 sm:p-8 rounded-[2rem] border border-slate-200">
                 <h2 className="text-2xl font-black text-slate-800 mb-6 tracking-tight flex items-center gap-3">
                     <Icon name="book" className="w-8 h-8 text-indigo-600" />
                     教科管理
@@ -67,7 +89,7 @@ const SubjectManager: React.FC<SubjectManagerProps> = ({ subjects, setSubjects, 
                 
                 {/* Edit Form */}
                 {editingSubject ? (
-                    <form onSubmit={handleUpdateSubject} className="space-y-6 p-6 bg-slate-50 rounded-3xl mb-8 border border-slate-200 shadow-inner animate-modal-enter">
+                    <form onSubmit={handleUpdateSubject} className="space-y-6 p-6 bg-slate-50 rounded-3xl mb-8 border border-slate-200 animate-modal-enter">
                         <div className="flex items-center justify-between">
                             <h3 className="font-bold text-xl text-slate-800">教科を編集</h3>
                             <button type="button" onClick={() => setEditingSubject(null)} className="text-slate-400 hover:text-slate-600 transition-colors">
@@ -101,12 +123,12 @@ const SubjectManager: React.FC<SubjectManagerProps> = ({ subjects, setSubjects, 
                                             type="button" 
                                             key={color} 
                                             onClick={() => setEditingSubject({ ...editingSubject, color: color })}
-                                            className={`w-9 h-9 rounded-full transition-all shadow-sm relative ${editingSubject.color === color ? 'ring-2 ring-offset-4 ring-indigo-500' : 'hover:ring-2 hover:ring-offset-2 hover:ring-slate-300'}`}
+                                            className={`w-9 h-9 rounded-full transition-all relative ${editingSubject.color === color ? 'ring-2 ring-offset-4 ring-indigo-500' : 'hover:ring-2 hover:ring-offset-2 hover:ring-slate-300'}`}
                                             style={{ backgroundColor: color }}
                                         >
                                             {editingSubject.color === color && (
                                                 <div className="absolute inset-0 flex items-center justify-center">
-                                                    <Icon name="check" className="w-5 h-5 text-white drop-shadow-sm" />
+                                                    <Icon name="check" className="w-5 h-5 text-white" />
                                                 </div>
                                             )}
                                         </button>
@@ -130,8 +152,8 @@ const SubjectManager: React.FC<SubjectManagerProps> = ({ subjects, setSubjects, 
                             </div>
                         </div>
                         <div className="flex gap-3 justify-end pt-2">
-                            <button type="button" onClick={() => setEditingSubject(null)} className="px-6 py-3 bg-white text-slate-600 border border-slate-300 font-bold rounded-2xl hover:bg-slate-50 transition active:scale-95 shadow-sm">キャンセル</button>
-                            <button type="submit" className="px-8 py-3 bg-indigo-600 text-white font-bold rounded-2xl shadow-lg hover:bg-indigo-700 transition active:scale-95">更新</button>
+                            <button type="button" onClick={() => setEditingSubject(null)} className="px-6 py-3 bg-white text-slate-600 border border-slate-300 font-bold rounded-2xl hover:bg-slate-50 transition active:scale-95">キャンセル</button>
+                            <button type="submit" className="px-8 py-3 bg-indigo-600 text-white font-bold rounded-2xl hover:bg-indigo-700 transition active:scale-95">更新</button>
                         </div>
                     </form>
                 ) : (
@@ -145,7 +167,7 @@ const SubjectManager: React.FC<SubjectManagerProps> = ({ subjects, setSubjects, 
                                     id="new-name" type="text" value={newSubjectName}
                                     onChange={(e) => setNewSubjectName(e.target.value)}
                                     placeholder="例: 数学I"
-                                    className="w-full px-5 py-3 bg-white text-slate-800 border border-slate-300 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition outline-none shadow-sm" 
+                                    className="w-full px-5 py-3 bg-white text-slate-800 border border-slate-300 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition outline-none" 
                                     required
                                 />
                             </div>
@@ -155,7 +177,7 @@ const SubjectManager: React.FC<SubjectManagerProps> = ({ subjects, setSubjects, 
                                     id="new-goal" type="text" value={newSubjectGoal}
                                     onChange={(e) => setNewSubjectGoal(e.target.value)}
                                     placeholder="例: 期末テストで90点以上"
-                                    className="w-full px-5 py-3 bg-white text-slate-800 border border-slate-300 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition outline-none shadow-sm"
+                                    className="w-full px-5 py-3 bg-white text-slate-800 border border-slate-300 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition outline-none"
                                 />
                             </div>
                         </div>
@@ -168,12 +190,12 @@ const SubjectManager: React.FC<SubjectManagerProps> = ({ subjects, setSubjects, 
                                             type="button" 
                                             key={color} 
                                             onClick={() => setNewSubjectColor(color)}
-                                            className={`w-8 h-8 rounded-full transition-all shadow-sm relative ${newSubjectColor === color ? 'ring-2 ring-offset-2 ring-indigo-500' : 'hover:ring-2 hover:ring-offset-2 hover:ring-slate-300'}`}
+                                            className={`w-8 h-8 rounded-full transition-all relative ${newSubjectColor === color ? 'ring-2 ring-offset-2 ring-indigo-500' : 'hover:ring-2 hover:ring-offset-2 hover:ring-slate-300'}`}
                                             style={{ backgroundColor: color }}
                                         >
                                             {newSubjectColor === color && (
                                                 <div className="absolute inset-0 flex items-center justify-center">
-                                                    <Icon name="check" className="w-4 h-4 text-white drop-shadow-sm" />
+                                                    <Icon name="check" className="w-4 h-4 text-white" />
                                                 </div>
                                             )}
                                         </button>
@@ -197,7 +219,7 @@ const SubjectManager: React.FC<SubjectManagerProps> = ({ subjects, setSubjects, 
                             </div>
                         </div>
                         <div className="flex justify-end pt-2">
-                            <button type="submit" className="px-8 py-3.5 bg-indigo-600 text-white font-bold rounded-2xl shadow-xl hover:bg-indigo-700 transition flex items-center gap-2 transform active:scale-95 group">
+                            <button type="submit" className="px-8 py-3.5 bg-indigo-600 text-white font-bold rounded-2xl hover:bg-indigo-700 transition flex items-center gap-2 transform active:scale-95 group">
                                 <Icon name="plus" className="w-6 h-6 transition-transform group-hover:rotate-90" />
                                 <span>追加する</span>
                             </button>
@@ -208,10 +230,10 @@ const SubjectManager: React.FC<SubjectManagerProps> = ({ subjects, setSubjects, 
                 {/* Subject List */}
                 <div className="grid grid-cols-1 gap-4">
                     {subjects.map(subject => (
-                        <div key={subject.id} className="group flex items-center justify-between p-5 bg-white border border-slate-200 rounded-2xl hover:border-indigo-400 hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-300">
+                        <div key={subject.id} className="group flex items-center justify-between p-5 bg-white border border-slate-200 rounded-2xl hover:border-indigo-400 transition-all duration-300">
                             <div className="flex items-center gap-5">
                                 <div 
-                                    className="w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-lg transition-all" 
+                                    className="w-10 h-10 rounded-xl flex items-center justify-center text-white transition-all" 
                                     style={{ backgroundColor: subject.color }}
                                 >
                                     <Icon name={subject.icon || 'book'} className="w-6 h-6" />

@@ -29,12 +29,21 @@ const isJapaneseHoliday = (date: Date): boolean => {
     '05-03', '05-04', '05-05', '05-06', '07-21', '08-11', '09-15', 
     '09-23', '10-13', '11-03', '11-23', '11-24'
   ]);
+
+  const holidays2026 = new Set([
+    '01-01', '01-12', '02-11', '02-23', '03-20', '04-29', 
+    '05-03', '05-04', '05-05', '05-06', '07-20', '08-11', '09-21', 
+    '09-22', '09-23', '10-12', '11-03', '11-23'
+  ]);
   
   if (year === 2024) {
     return holidays2024.has(monthDay);
   }
   if (year === 2025) {
     return holidays2025.has(monthDay);
+  }
+  if (year === 2026) {
+    return holidays2026.has(monthDay);
   }
   
   return false;
@@ -186,16 +195,19 @@ const Calendar: React.FC<CalendarProps> = ({ currentDate, tasks, subjects, onDat
                             e.stopPropagation();
                             onTaskClick(task);
                         }}
-                        className={`px-1.5 py-1 rounded-lg text-[9px] lg:text-[10px] truncate mb-1 relative overflow-hidden transition-all duration-200 ${task.isCompleted ? 'opacity-40 grayscale' : 'bg-white shadow-sm border border-slate-100'}`}
+                        className={`px-1.5 py-1 rounded-lg text-[9px] lg:text-[10px] truncate mb-1 relative overflow-hidden transition-all duration-200 ${task.isCompleted ? 'opacity-40 grayscale' : task.isImportant ? 'bg-amber-50/50 border-amber-200 shadow-sm' : 'bg-white border border-slate-100'}`}
                       >
                         {/* Rounded color indicator on the left */}
                         <div 
                           className="absolute left-0 top-0 bottom-0 w-[4px] rounded-l-lg" 
                           style={{ backgroundColor: sub?.color || '#ccc' }}
                         />
-                        <span className={`pl-2 truncate block relative z-10 ${task.isCompleted ? 'line-through' : 'text-slate-700 font-bold'}`}>
-                          {task.title}
-                        </span>
+                        <div className="flex items-center gap-1 pl-2">
+                          {task.isImportant && <Icon name="sparkles" className="w-2.5 h-2.5 text-amber-500 shrink-0" />}
+                          <span className={`truncate block relative z-10 ${task.isCompleted ? 'line-through' : 'text-slate-700 font-bold'}`}>
+                            {task.title}
+                          </span>
+                        </div>
                       </div>
                     );
                   })}
@@ -206,7 +218,7 @@ const Calendar: React.FC<CalendarProps> = ({ currentDate, tasks, subjects, onDat
 
                 {/* Hover Popover (当月のみ) */}
                 {hoveredDate === dateStr && cell.type === 'current' && tasksForDay.length > 0 && (
-                    <div className="absolute top-0 left-full ml-3 z-[60] w-64 bg-white/95 backdrop-blur-md rounded-[1.5rem] shadow-2xl border border-slate-200 p-4 animate-popover pointer-events-none md:pointer-events-auto">
+                    <div className="absolute top-0 left-full ml-3 z-[60] w-64 bg-white/95 backdrop-blur-md rounded-[1.5rem] border border-slate-200 p-4 animate-popover pointer-events-none md:pointer-events-auto">
                         <div className="flex items-center justify-between mb-4 border-b border-slate-100 pb-2">
                             <h4 className="font-black text-slate-800 flex items-center gap-2">
                                 <Icon name="calendar" className="w-4 h-4 text-indigo-500" />
@@ -219,16 +231,24 @@ const Calendar: React.FC<CalendarProps> = ({ currentDate, tasks, subjects, onDat
                                 return (
                                     <div 
                                       key={task.id} 
-                                      className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 hover:bg-white transition-colors cursor-pointer"
+                                      className={`p-2.5 rounded-xl border transition-colors cursor-pointer ${task.isImportant ? 'bg-amber-50/50 border-amber-200 shadow-sm ring-1 ring-amber-100' : 'bg-slate-50 border-slate-100 hover:bg-white'}`}
                                       onClick={(e) => {
                                         e.stopPropagation();
                                         onTaskClick(task);
                                       }}
                                     >
                                         <div className="flex items-start gap-2.5">
-                                            <div className="w-2.5 h-2.5 rounded-full mt-1 flex-shrink-0 shadow-sm" style={{ backgroundColor: sub?.color || '#ccc' }}></div>
+                                            <div className="w-2.5 h-2.5 rounded-full mt-1 flex-shrink-0" style={{ backgroundColor: sub?.color || '#ccc' }}></div>
                                             <div className="min-w-0 flex-1">
-                                                <p className={`text-sm font-bold leading-tight ${task.isCompleted ? 'line-through text-slate-400' : 'text-slate-700'}`}>{task.title}</p>
+                                                <div className="flex items-center gap-1.5 flex-wrap">
+                                                    {task.isImportant && (
+                                                        <span className="flex items-center gap-0.5 px-1.5 py-0.5 rounded-md bg-amber-100 text-amber-700 text-[8px] font-black uppercase">
+                                                            <Icon name="sparkles" className="w-2 h-2" />
+                                                            重要
+                                                        </span>
+                                                    )}
+                                                    <p className={`text-sm font-bold leading-tight ${task.isCompleted ? 'line-through text-slate-400' : 'text-slate-700'}`}>{task.title}</p>
+                                                </div>
                                                 <div className="flex items-center gap-2 mt-1.5">
                                                     <span className={`text-[9px] px-1.5 py-0.5 rounded-md font-black uppercase ${task.type === TaskType.STUDY ? 'bg-indigo-100 text-indigo-600' : 'bg-rose-100 text-rose-600'}`}>
                                                       {task.type === TaskType.STUDY ? '学習' : '提出'}

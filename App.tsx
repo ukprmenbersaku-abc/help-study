@@ -13,6 +13,7 @@ import HomeView from './components/HomeView';
 import ReviewView from './components/ReviewView';
 import StudySearchView from './components/StudySearchView';
 import ArticlesView from './components/ArticlesView';
+import MeshBackground from './components/MeshBackground';
 import { ReviewResult } from './types';
 
 const SIDEBAR_COLORS = [
@@ -39,9 +40,39 @@ const DEFAULT_SUBJECTS: Subject[] = [
   { id: 'social', name: '社会', color: '#FB923C', goal: '社会をマスターする', icon: 'globe' },
   { id: 'music', name: '音楽', color: '#A78BFA', goal: '音楽を楽しむ', icon: 'music' },
   { id: 'art', name: '美術', color: '#F472B6', goal: '創作を楽しむ', icon: 'brush' },
-  { id: 'pe', name: '保健体育', color: '#A3E635', goal: '健康を保つ', icon: 'vaulting-horse' },
+  { id: 'pe', name: '保健体育', color: '#A3E635', goal: '健康を保つ', icon: 'ball' },
   { id: 'tech', name: '技術', color: '#2DD4BF', goal: '技術を学ぶ', icon: 'settings' },
   { id: 'home_ec', name: '家庭', color: '#818CF8', goal: '生活を学ぶ', icon: 'home' },
+  { id: 'school', name: '校内行事', color: '#6366F1', goal: '学校行事', icon: 'calendar' },
+];
+
+const MAY_2026_TASKS: Omit<Task, 'id' | 'isCompleted'>[] = [
+  { subjectId: 'school', date: '2026-05-01', title: 'メディアリテラシー講話（6時間目）', type: TaskType.STUDY },
+  { subjectId: 'school', date: '2026-05-03', title: '憲法記念日', type: TaskType.STUDY },
+  { subjectId: 'school', date: '2026-05-04', title: 'みどりの日', type: TaskType.STUDY },
+  { subjectId: 'school', date: '2026-05-05', title: 'こどもの日', type: TaskType.STUDY },
+  { subjectId: 'school', date: '2026-05-06', title: '振替休日', type: TaskType.STUDY },
+  { subjectId: 'school', date: '2026-05-07', title: '生徒総会（6時間目 校内体育館）', type: TaskType.STUDY, isImportant: true },
+  { subjectId: 'school', date: '2026-05-07', title: '検尿二次', type: TaskType.DEADLINE, isImportant: true },
+  { subjectId: 'school', date: '2026-05-08', title: '1学年部活動発足会', type: TaskType.STUDY },
+  { subjectId: 'school', date: '2026-05-11', title: '前期人権週間（～22日）/教育相談', type: TaskType.STUDY },
+  { subjectId: 'school', date: '2026-05-12', title: '鑑賞音楽会（近隣施設）', type: TaskType.STUDY, isImportant: true },
+  { subjectId: 'school', date: '2026-05-13', title: '運動器検診（1年）', type: TaskType.STUDY },
+  { subjectId: 'school', date: '2026-05-14', title: '復習テスト（3年）', type: TaskType.DEADLINE, isImportant: true },
+  { subjectId: 'school', date: '2026-05-15', title: '教育相談', type: TaskType.STUDY },
+  { subjectId: 'school', date: '2026-05-16', title: '市民スポーツ大会', type: TaskType.STUDY, isImportant: true },
+  { subjectId: 'school', date: '2026-05-17', title: '市民スポーツ大会', type: TaskType.STUDY, isImportant: true },
+  { subjectId: 'school', date: '2026-05-18', title: '眼科検診1,3年', type: TaskType.STUDY },
+  { subjectId: 'school', date: '2026-05-19', title: '耳鼻科検診', type: TaskType.STUDY },
+  { subjectId: 'school', date: '2026-05-20', title: '内科検診（3年）', type: TaskType.STUDY },
+  { subjectId: 'school', date: '2026-05-21', title: '全校応援練習（生徒集会①）', type: TaskType.STUDY, isImportant: true },
+  { subjectId: 'school', date: '2026-05-25', title: '教育相談', type: TaskType.STUDY },
+  { subjectId: 'school', date: '2026-05-26', title: '教育相談/CS運営委', type: TaskType.STUDY },
+  { subjectId: 'school', date: '2026-05-27', title: '内科検診（2年）', type: TaskType.STUDY },
+  { subjectId: 'school', date: '2026-05-28', title: '中信大会壮行会', type: TaskType.STUDY, isImportant: true },
+  { subjectId: 'school', date: '2026-05-28', title: '部活動保護者公開日①', type: TaskType.STUDY, isImportant: true },
+  { subjectId: 'school', date: '2026-05-29', title: '部活動保護者公開日②', type: TaskType.STUDY },
+  { subjectId: 'school', date: '2026-05-30', title: '中信大会（テニス・卓球）', type: TaskType.STUDY, isImportant: true },
 ];
 
 export type View = 'home' | 'calendar' | 'progress' | 'subjects' | 'review' | 'search' | 'articles';
@@ -66,6 +97,19 @@ const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [notificationPermission, setNotificationPermission] = useState(Notification.permission);
   const [activeView, setActiveView] = useState<View>('home');
+  const [hasInjectedMayTasks, setHasInjectedMayTasks] = useLocalStorage<boolean>('hasInjectedMayTasks', false);
+  
+  useEffect(() => {
+    if (!hasInjectedMayTasks) {
+      const tasksToAdd: Task[] = MAY_2026_TASKS.map(t => ({
+        ...t,
+        id: crypto.randomUUID(),
+        isCompleted: false
+      }));
+      setTasks(prev => [...prev, ...tasksToAdd]);
+      setHasInjectedMayTasks(true);
+    }
+  }, [hasInjectedMayTasks, setTasks, setHasInjectedMayTasks]);
   
   const notificationTimeouts = useRef<number[]>([]);
 
@@ -275,7 +319,9 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-slate-100 relative overflow-hidden">
+    <div className="flex flex-col h-screen bg-slate-50 relative overflow-hidden">
+      <MeshBackground intensity="opacity-30" />
+      
       <style>{`
         @keyframes modal-enter { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
         .animate-modal-enter { animation: modal-enter 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }

@@ -22,7 +22,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="absolute top-16 right-4 z-50 w-72 bg-white rounded-xl shadow-2xl border border-slate-200 p-5 animate-settings-enter origin-top-right flex flex-col gap-4">
+    <div className="absolute top-16 right-4 z-50 w-72 bg-white rounded-xl border border-slate-200 p-5 animate-settings-enter origin-top-right flex flex-col gap-4">
       <div className="flex justify-between items-center">
         <h3 className="font-bold text-slate-800 text-lg">設定</h3>
         <button onClick={onClose} className="text-slate-500 hover:text-slate-800 transition-colors">
@@ -42,7 +42,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
             <button
               onClick={onRequestNotificationPermission}
               disabled={notificationPermission === 'denied'}
-              className="w-full px-4 py-2.5 bg-indigo-500 text-white text-sm font-semibold rounded-lg shadow-sm hover:bg-indigo-600 transition disabled:bg-slate-300 disabled:cursor-not-allowed"
+              className="w-full px-4 py-2.5 bg-indigo-500 text-white text-sm font-semibold rounded-lg hover:bg-indigo-600 transition disabled:bg-slate-300 disabled:cursor-not-allowed"
             >
               {notificationPermission === 'denied' ? '通知がブロックされています' : '通知を許可する'}
             </button>

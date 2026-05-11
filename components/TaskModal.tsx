@@ -22,6 +22,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave, subjects
   const [memo, setMemo] = useState('');
   const [startTime, setStartTime] = useState('09:00');
   const [notificationEnabled, setNotificationEnabled] = useState(false);
+  const [isImportant, setIsImportant] = useState(false);
 
 
   useEffect(() => {
@@ -36,6 +37,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave, subjects
       setMemo(taskToEdit.memo || '');
       setStartTime(taskToEdit.startTime || '09:00');
       setNotificationEnabled(taskToEdit.notificationEnabled || false);
+      setIsImportant(taskToEdit.isImportant || false);
     } else {
       // Reset form for new task
       setTitle('');
@@ -47,6 +49,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave, subjects
       setMemo('');
       setStartTime('09:00');
       setNotificationEnabled(false);
+      setIsImportant(false);
     }
   }, [taskToEdit, subjects]);
 
@@ -71,13 +74,14 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave, subjects
       memo: memo || undefined,
       startTime: notificationEnabled ? startTime : undefined,
       notificationEnabled,
+      isImportant,
     });
     onClose();
   };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 sm:p-8 transform transition-all animate-modal-enter flex flex-col max-h-[90vh]">
+      <div className="bg-white rounded-2xl w-full max-w-md p-6 sm:p-8 transform transition-all animate-modal-enter flex flex-col max-h-[90vh]">
         <div className="flex justify-between items-center mb-6 flex-shrink-0">
           <h2 className="text-2xl font-bold text-slate-800">{taskToEdit ? 'タスクを編集' : '新しいタスク'}</h2>
           <button onClick={onClose} className="text-slate-500 hover:text-slate-800 transition-colors">
@@ -92,7 +96,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave, subjects
                 <button 
                   type="button" 
                   onClick={() => setType(TaskType.STUDY)} 
-                  className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${type === TaskType.STUDY ? 'bg-indigo-600 text-white shadow-lg' : 'bg-slate-100 text-slate-400 hover:bg-slate-200'}`}
+                  className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${type === TaskType.STUDY ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-400 hover:bg-slate-200'}`}
                 >
                   <Icon name="book" className="w-4 h-4 inline-block mr-1.5" />
                   学習
@@ -100,7 +104,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave, subjects
                 <button 
                   type="button" 
                   onClick={() => setType(TaskType.DEADLINE)} 
-                  className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${type === TaskType.DEADLINE ? 'bg-rose-600 text-white shadow-lg' : 'bg-slate-100 text-slate-400 hover:bg-slate-200'}`}
+                  className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${type === TaskType.DEADLINE ? 'bg-rose-600 text-white' : 'bg-slate-100 text-slate-400 hover:bg-slate-200'}`}
                 >
                   <Icon name="check-circle" className="w-4 h-4 inline-block mr-1.5" />
                   提出・期限
@@ -215,6 +219,27 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave, subjects
                     </div>
                 )}
              </div>
+             
+             {/* Important Task Toggle */}
+             <div className={`p-4 rounded-xl border-2 transition-all ${isImportant ? 'bg-amber-50 border-amber-200' : 'bg-slate-50 border-transparent'}`}>
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Icon name="sparkles" className={`w-5 h-5 ${isImportant ? 'text-amber-500' : 'text-slate-400'}`} />
+                      <div>
+                        <label htmlFor="important" className="text-sm font-bold text-slate-700 block">最重要行事</label>
+                        <p className="text-[10px] text-slate-400">カレンダーで目立たせます</p>
+                      </div>
+                    </div>
+                    <label htmlFor="important-switch" className="flex items-center cursor-pointer">
+                      <div className="relative">
+                        <input type="checkbox" id="important-switch" className="sr-only" checked={isImportant} onChange={() => setIsImportant(!isImportant)} />
+                        <div className={`block w-10 h-6 rounded-full transition ${isImportant ? 'bg-amber-500' : 'bg-slate-300'}`}></div>
+                        <div className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${isImportant ? 'transform translate-x-4' : ''}`}></div>
+                      </div>
+                    </label>
+                </div>
+             </div>
+
             <div>
                 <label htmlFor="memo" className="block text-sm font-medium text-slate-600 mb-1">詳しいメモ</label>
                 <textarea
@@ -228,7 +253,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave, subjects
               </div>
           </div>
           <div className="flex justify-end pt-4 mt-auto border-t border-slate-200 flex-shrink-0">
-            <button type="submit" className="px-6 py-2.5 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all font-bold">
+            <button type="submit" className="px-6 py-2.5 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all font-bold">
               {taskToEdit ? '更新' : '追加'}
             </button>
           </div>

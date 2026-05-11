@@ -40,11 +40,18 @@ const icons: { [key: string]: React.JSX.Element } = {
   globe: <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9 9 0 100-18 9 9 0 000 18z M12 3v18 M3 12h18 M5.6 5.6c2 2 2 10.8 0 12.8 M18.4 5.6c-2 2-2 10.8 0 12.8" />,
   flask: <path strokeLinecap="round" strokeLinejoin="round" d="M9 3h6M10 3v6.5a1 1 0 01-.293.707l-3.414 3.414A2 2 0 006 15v3a2 2 0 002 2h8a2 2 0 002-2v-3a2 2 0 00-.293-1.379l-3.414-3.414A1 1 0 0114 9.5V3" />,
   alphabet: <path strokeLinecap="round" strokeLinejoin="round" d="M3 13h4M3 7l2-4 2 4M3 13l2 4 2-4M13 13h4M13 7l2-4 2 4M13 13l2 4 2-4M10 21h4M10 15l2-4 2 4M10 21l2 4 2-4" />,
+  'alphabet-a': <path strokeLinecap="round" strokeLinejoin="round" d="M6 20l6-16 6 16M9 14h6" />,
   'math-x': <path strokeLinecap="round" strokeLinejoin="round" d="M7 7l10 10M17 7L7 17" />,
   'arrow-right': <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />,
   'check-circle': <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />,
   'x-circle': <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />,
   search: <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />,
+  ball: (
+    <g fill="none" stroke="currentColor" strokeWidth="1.5">
+      <circle cx="12" cy="12" r="9" />
+      <path strokeLinecap="round" d="M12 3c0 6 3 9 9 9m-18 0c6 0 9-3 9-9m0 18c0-6-3-9-9-9m18 0c-6 0-9 3-9 9" />
+    </g>
+  ),
   'plus-minus': (
     <g fill="none" stroke="currentColor" strokeWidth="1.5">
       <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v6m-3-3h6M9 17h6" />
