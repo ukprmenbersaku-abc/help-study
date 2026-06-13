@@ -7,6 +7,7 @@ import MeshBackground from './MeshBackground';
 
 interface ArticlesViewProps {
   onNavigate: (view: View) => void;
+  onReadArticle?: (articleId: string) => void;
 }
 
 const ARTICLES: Article[] = [
@@ -53,6 +54,7 @@ Study-side を活用して、理想の学習習慣を身につけましょう！
 
 ## 更新履歴（アップデート情報）
 
+- **v1.3.0 (2026-05-23)**: 「このツールについて」詳細画面＆多機能「似た検索」一覧を追加。ホーム画面のアクション構成を最適化。
 - **v1.2.0 (2026-05-09)**: 記事タグ機能（全学年向け/学年別）を追加。UIの視認性を向上し、履歴データを整理。
 - **v1.1.0 (2026-05-05)**: Gemini AIによる復習クイズ作成・学習検索機能を追加。
 - **v1.0.0 (2026-04-29)**: 初版リリース。主要な学習管理機能を実装。
@@ -113,7 +115,7 @@ const CATEGORY_THEMES: Record<string, { bg: string; text: string; accent: string
   'default': { bg: 'bg-slate-50', text: 'text-slate-700', accent: 'bg-indigo-400', light: 'bg-slate-50/50', mesh: 'bg-indigo-100' }
 };
 
-const ArticlesView: React.FC<ArticlesViewProps> = ({ onNavigate }) => {
+const ArticlesView: React.FC<ArticlesViewProps> = ({ onNavigate, onReadArticle }) => {
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -355,7 +357,12 @@ const ArticlesView: React.FC<ArticlesViewProps> = ({ onNavigate }) => {
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ delay: idx * 0.05 }}
                   key={article.id}
-                  onClick={() => setSelectedArticle(article)}
+                  onClick={() => {
+                    setSelectedArticle(article);
+                    if (onReadArticle) {
+                      onReadArticle(article.id);
+                    }
+                  }}
                   className="group bg-white rounded-[2.5rem] p-10 border border-white cursor-pointer transition-all hover:-translate-y-2 relative overflow-hidden flex flex-col h-full active:scale-98 duration-300"
                 >
                   {/* Subtle card mesh hover */}

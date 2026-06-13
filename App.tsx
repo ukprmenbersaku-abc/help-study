@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Subject, Task, TaskType, UserProgress, Badge } from './types';
 import useLocalStorage from './hooks/useLocalStorage';
+import useCookieState from './hooks/useCookieState';
 import Calendar from './components/Calendar';
 import TaskModal from './components/TaskModal';
 import Header from './components/Header';
@@ -13,6 +14,7 @@ import HomeView from './components/HomeView';
 import ReviewView from './components/ReviewView';
 import StudySearchView from './components/StudySearchView';
 import ArticlesView from './components/ArticlesView';
+import AboutView from './components/AboutView';
 import MeshBackground from './components/MeshBackground';
 import { ReviewResult } from './types';
 
@@ -75,16 +77,21 @@ const MAY_2026_TASKS: Omit<Task, 'id' | 'isCompleted'>[] = [
   { subjectId: 'school', date: '2026-05-30', title: '中信大会（テニス・卓球）', type: TaskType.STUDY, isImportant: true },
 ];
 
-export type View = 'home' | 'calendar' | 'progress' | 'subjects' | 'review' | 'search' | 'articles';
+export type View = 'home' | 'calendar' | 'progress' | 'subjects' | 'review' | 'search' | 'articles' | 'about';
 
 const App: React.FC = () => {
   const [subjects, setSubjects] = useLocalStorage<Subject[]>('subjects', DEFAULT_SUBJECTS);
   const [tasks, setTasks] = useLocalStorage<Task[]>('tasks', []);
   const [reviewResults, setReviewResults] = useLocalStorage<ReviewResult[]>('reviewResults', []);
-  const [userProgress, setUserProgress] = useLocalStorage<UserProgress>('userProgress', {
+  const [userProgress, setUserProgress] = useCookieState<UserProgress>('userProgress', {
     level: 1,
     xp: 0,
     badges: INITIAL_BADGES,
+    unlockedTitles: ['ひよこ研究者'],
+    activeTitle: 'ひよこ研究者',
+    articlesReadCount: 0,
+    reviewsCompletedCount: 0,
+    isMember: false
   });
   const [apiKey, setApiKey] = useLocalStorage<string>('gemini_api_key', '');
 
@@ -157,15 +164,21 @@ const App: React.FC = () => {
     let changed = false;
     let totalXpGained = 0;
 
-    const updateBadge = (id: string, condition: boolean) => {
+    const isMember = !!newProgress.isMember;
+
+    const updateBadge = (id: string, condition: boolean, isPremium: boolean = false) => {
         const badge = newBadges.find(b => b.id === id);
         if (badge && !badge.achieved && condition) {
+            if (isPremium && !isMember) {
+                return; // Requires member login to unlock
+            }
             badge.achieved = true;
             totalXpGained += (badge.xpReward || 0);
             changed = true;
         }
     };
 
+    // Standard Badges
     updateBadge('first_step', tasks.some(t => t.isCompleted));
 
     const totalStudyHours = tasks
@@ -173,10 +186,16 @@ const App: React.FC = () => {
       .reduce((sum, task) => sum + (task.duration || 0), 0);
     
     updateBadge('study_10h', totalStudyHours >= 10);
-    updateBadge('study_50h', totalStudyHours >= 50);
+
+    // Premium Badges (requires Member login)
+    updateBadge('study_50h', totalStudyHours >= 50, true);
+    
+    // perfect_week condition: e.g. at least 7 completed tasks
+    const completedTasksCount = tasks.filter(t => t.isCompleted).length;
+    updateBadge('perfect_week', completedTasksCount >= 7, true);
 
     const completedDeadlines = tasks.filter(t => t.type === TaskType.DEADLINE && t.isCompleted).length;
-    updateBadge('deadline_master', completedDeadlines >= 5);
+    updateBadge('deadline_master', completedDeadlines >= 5, true);
     
     let currentXp = newProgress.xp + totalXpGained;
     let currentLevel = newProgress.level;
@@ -190,16 +209,83 @@ const App: React.FC = () => {
     newProgress.level = currentLevel;
     newProgress.xp = currentXp;
 
+    // Check titles
+    const unlockedTitles = [...(newProgress.unlockedTitles || ['ひよこ研究者'])];
+    const newTitles: string[] = [];
+
+    // Level-based titles (10+ or 15+ are Premium)
+    if (currentLevel >= 5 && !unlockedTitles.includes('学習の達人')) {
+      newTitles.push('学習の達人');
+      changed = true;
+    }
+    if (currentLevel >= 10 && !unlockedTitles.includes('知恵の賢者')) {
+      if (isMember) {
+        newTitles.push('知恵の賢者');
+        changed = true;
+      }
+    }
+    if (currentLevel >= 15 && !unlockedTitles.includes('全知全能の開拓者')) {
+      if (isMember) {
+        newTitles.push('全知全能の開拓者');
+        changed = true;
+      }
+    }
+
+    // Article-based titles (10+ is Premium)
+    const completedArticles = newProgress.articlesReadCount || 0;
+    if (completedArticles >= 1 && !unlockedTitles.includes('読書家')) {
+      newTitles.push('読書家');
+      changed = true;
+    }
+    if (completedArticles >= 5 && !unlockedTitles.includes('情報通')) {
+      newTitles.push('情報通');
+      changed = true;
+    }
+    if (completedArticles >= 10 && !unlockedTitles.includes('博識')) {
+      if (isMember) {
+        newTitles.push('博識');
+        changed = true;
+      }
+    }
+
+    // Review-based titles (5+ or PerfectQuiz are Premium)
+    const completedReviews = newProgress.reviewsCompletedCount || 0;
+    if (completedReviews >= 1 && !unlockedTitles.includes('振り返る主')) {
+      newTitles.push('振り返る主');
+      changed = true;
+    }
+    if (completedReviews >= 5 && !unlockedTitles.includes('復習ハッカー')) {
+      if (isMember) {
+        newTitles.push('復習ハッカー');
+        changed = true;
+      }
+    }
+    const hasPerfectScore = reviewResults.some(r => r.score === r.total && r.total > 0);
+    if (hasPerfectScore && !unlockedTitles.includes('クイズマスター')) {
+      if (isMember) {
+        newTitles.push('クイズマスター');
+        changed = true;
+      }
+    }
+
+    if (newTitles.length > 0) {
+      newProgress.unlockedTitles = [...unlockedTitles, ...newTitles];
+    }
+
+    if (!newProgress.activeTitle) {
+      newProgress.activeTitle = 'ひよこ研究者';
+      changed = true;
+    }
+
     if (changed) {
       newProgress.badges = newBadges;
       setUserProgress(newProgress);
     }
-  }, [tasks, userProgress, setUserProgress]);
+  }, [tasks, userProgress, reviewResults, setUserProgress]);
 
   useEffect(() => {
     checkAchievements();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tasks]);
+  }, [tasks, reviewResults, userProgress.articlesReadCount, userProgress.reviewsCompletedCount, userProgress.isMember, checkAchievements]);
 
   const handleDateClick = (date: Date) => {
     setSelectedDate(date);
@@ -251,6 +337,27 @@ const App: React.FC = () => {
     setUserProgress(prev => ({...prev, xp: Math.max(0, prev.xp + xpGained)}));
     setTasks(updatedTasks);
   };
+
+  const handleReadArticle = (_articleId: string) => {
+    setUserProgress(prev => {
+      const updatedCount = (prev.articlesReadCount || 0) + 1;
+      return {
+        ...prev,
+        articlesReadCount: updatedCount
+      };
+    });
+  };
+
+  const handleReviewComplete = (result: ReviewResult) => {
+    setReviewResults([...reviewResults, result]);
+    setUserProgress(prev => {
+      const updatedCount = (prev.reviewsCompletedCount || 0) + 1;
+      return {
+        ...prev,
+        reviewsCompletedCount: updatedCount
+      };
+    });
+  };
   
   const handleAddSuggestedTasks = (newTasks: Omit<Task, 'id' | 'isCompleted'>[]) => {
       const tasksToAdd: Task[] = newTasks.map(t => ({
@@ -286,7 +393,15 @@ const App: React.FC = () => {
           />
         );
       case 'progress':
-        return <ProgressView userProgress={userProgress} xpForNextLevel={xpForNextLevel} />;
+        return (
+          <ProgressView 
+            userProgress={userProgress} 
+            xpForNextLevel={xpForNextLevel} 
+            tasks={tasks}
+            onSetActiveTitle={(title) => setUserProgress(prev => ({ ...prev, activeTitle: title }))}
+            onToggleMemberStatus={(status) => setUserProgress(prev => ({ ...prev, isMember: status }))}
+          />
+        );
       case 'subjects':
         return (
           <SubjectManager 
@@ -305,14 +420,16 @@ const App: React.FC = () => {
             subjects={subjects}
             apiKey={apiKey}
             reviewResults={reviewResults}
-            onSaveResult={(result) => setReviewResults([...reviewResults, result])}
+            onSaveResult={handleReviewComplete}
             onOpenSettings={() => setIsSettingsOpen(true)}
           />
         );
       case 'search':
         return <StudySearchView />;
       case 'articles':
-        return <ArticlesView onNavigate={setActiveView} />;
+        return <ArticlesView onNavigate={setActiveView} onReadArticle={handleReadArticle} />;
+      case 'about':
+        return <AboutView />;
       default:
         return null;
     }

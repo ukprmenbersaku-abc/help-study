@@ -70,17 +70,18 @@ const HomeView: React.FC<HomeViewProps> = ({ userProgress, tasks, subjects, onNa
                 学習検索
              </button>
              <button 
-                onClick={() => onNavigate('articles')}
+                onClick={() => onNavigate('subjects')}
                 className="bg-white/20 hover:bg-white/30 backdrop-blur-md px-6 py-2.5 rounded-xl font-bold transition-all active:scale-95 flex items-center gap-2"
              >
-                <Icon name="book-open" className="w-5 h-5" />
-                学習記事
+                <Icon name="plus" className="w-5 h-5" />
+                新しい教科を追加
              </button>
              <button 
-                onClick={() => onNavigate('subjects')}
-                className="bg-white text-indigo-600 px-6 py-2.5 rounded-xl font-bold transition-all hover:bg-indigo-50 active:scale-95"
+                onClick={() => onNavigate('articles')}
+                className="bg-white text-indigo-600 px-6 py-2.5 rounded-xl font-bold transition-all hover:bg-indigo-50 active:scale-95 flex items-center gap-2 shadow-sm"
              >
-                新しい教科を追加
+                <Icon name="book-open" className="w-5 h-5 text-indigo-600" />
+                学習記事
              </button>
           </div>
         </div>
@@ -173,9 +174,17 @@ const HomeView: React.FC<HomeViewProps> = ({ userProgress, tasks, subjects, onNa
               <Icon name="sparkles" className="w-6 h-6 text-amber-500" />
               ステータス
             </h3>
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-3xl font-black text-indigo-600">Lv.{userProgress.level}</span>
-              <span className="text-sm font-bold text-slate-400 bg-slate-50 px-3 py-1 rounded-full border border-slate-100">XP {Math.round(userProgress.xp)} / {userProgress.level * 100}</span>
+            <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
+              <div>
+                <span className="text-3xl font-black text-indigo-600">Lv.{userProgress.level}</span>
+                {userProgress.activeTitle && (
+                  <div className="flex items-center gap-1.5 mt-2 bg-amber-50 text-amber-800 font-extrabold text-[10px] px-2.5 py-1 rounded-lg border border-amber-200 shadow-sm animate-fade-in">
+                    <Icon name="award" className="w-3.5 h-3.5 text-amber-500" />
+                    <span>{userProgress.activeTitle}</span>
+                  </div>
+                )}
+              </div>
+              <span className="text-sm font-bold text-slate-400 bg-slate-50 px-3 py-1 rounded-full border border-slate-100 self-start">XP {Math.round(userProgress.xp)} / {userProgress.level * 100}</span>
             </div>
             <div className="w-full bg-slate-100 rounded-full h-4 overflow-hidden">
                <div 

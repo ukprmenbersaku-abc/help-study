@@ -41,6 +41,11 @@ export interface UserProgress {
   level: number;
   xp: number;
   badges: Badge[];
+  unlockedTitles?: string[];
+  activeTitle?: string;
+  articlesReadCount?: number;
+  reviewsCompletedCount?: number;
+  isMember?: boolean;
 }
 
 export interface SuggestedTask {

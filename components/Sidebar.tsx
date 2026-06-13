@@ -81,6 +81,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activeView, onNaviga
                     isActive={activeView === 'subjects'}
                     onClick={() => onNavigate('subjects')}
                 />
+                <div className="border-t border-slate-200/60 my-2 pt-2">
+                    <NavItem 
+                        iconName="info"
+                        label="このツールについて"
+                        isActive={activeView === 'about'}
+                        onClick={() => onNavigate('about')}
+                    />
+                </div>
             </nav>
         </aside>
     );
