@@ -32,7 +32,7 @@ const HomeView: React.FC<HomeViewProps> = ({ userProgress, tasks, subjects, onNa
   const getSubject = (id: string) => subjects.find(s => s.id === id);
 
   return (
-    <div className="space-y-6 animate-fade-in max-w-5xl mx-auto pb-10">
+    <div className="space-y-6 animate-fade-in w-full max-w-7xl mx-auto pb-10 px-2 sm:px-4">
       {/* Welcome Card */}
       <section className="bg-gradient-to-r from-indigo-600 to-violet-600 rounded-3xl p-8 text-white relative overflow-hidden">
         <div className="relative z-10">

@@ -220,7 +220,7 @@ const ProgressView: React.FC<ProgressViewProps> = ({
   const unlockLogs = generateUnlockLogs();
 
   return (
-    <div className="space-y-8 animate-fade-in max-w-5xl mx-auto pb-12">
+    <div className="space-y-8 animate-fade-in w-full max-w-7xl mx-auto pb-12 px-2 sm:px-4">
       
       {/* 会員専用ログイン・メンバーシップステータス管理 */}
       <div className="bg-slate-950 border border-slate-900 rounded-3xl p-6 text-white relative overflow-hidden shadow-xl">

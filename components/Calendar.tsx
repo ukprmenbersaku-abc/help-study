@@ -122,7 +122,7 @@ const Calendar: React.FC<CalendarProps> = ({
   const pendingDeadlinesCount = monthlyTasks.filter(t => t.type === TaskType.DEADLINE && !t.isCompleted).length;
 
   return (
-    <div className="bg-white p-4 sm:p-6 pb-8 rounded-3xl border border-slate-200 flex flex-col space-y-6 animate-fade-in max-w-5xl mx-auto">
+    <div className="bg-white p-4 sm:p-6 pb-8 rounded-3xl border border-slate-200 flex flex-col space-y-6 animate-fade-in w-full max-w-7xl mx-auto px-2 sm:px-4">
       <style>{`
         @keyframes popover-enter {
           from { opacity: 0; transform: scale(0.95) translateY(5px); }
