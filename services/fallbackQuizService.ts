@@ -259,6 +259,118 @@ const FALLBACK_QUIZZES: { [key: string]: QuizQuestion[] } = {
       correctAnswerIndex: 1,
       explanation: 'これらは「助詞」と呼ばれます。自立語の後に付いて、その言葉の役割（主語、目的語など）を示します。'
     }
+  ],
+  '中学1年 数学': [
+    {
+      question: '(-7) + (+4) の計算結果は？',
+      options: ['-11', '-3', '3', '11'],
+      correctAnswerIndex: 1,
+      explanation: '負の数と正の数の足し算です。絶対値の大きいほうの符号（マイナス）を使用し、差を求めます。(7 - 4 = 3) なので結果は -3 です。'
+    },
+    {
+      question: '方程式 3x - 5 = 10 の解は？',
+      options: ['x = 3', 'x = 5', 'x = 15', 'x = -5'],
+      correctAnswerIndex: 1,
+      explanation: '-5を右辺に移項すると 3x = 10 + 5 となり 3x = 15 です。両辺を3で割ると x = 5 となります。'
+    }
+  ],
+  '中学2年 数学': [
+    {
+      question: '連立方程式 x + y = 5, x - y = 1 の解は？',
+      options: ['x=3, y=2', 'x=2, y=3', 'x=4, y=1', 'x=3, y=1'],
+      correctAnswerIndex: 0,
+      explanation: '2つの式を足すと 2x = 6 より x = 3。これを上の式に代入すると 3 + y = 5 より y = 2 となります。'
+    },
+    {
+      question: '一次関数 y = 2x + 3 において、xが 1 から 4 まで増加したとき、yの増加量は？',
+      options: ['3', '6', '9', '11'],
+      correctAnswerIndex: 1,
+      explanation: '一次関数 y = ax + b の変化の割合（yの増加量 / xの増加量）は一定です。yの増加量 = 変化の割合(2) × xの増加量(3) = 6 となります。'
+    }
+  ],
+  '中学3年 数学': [
+    {
+      question: '(x + 3)(x - 2) を展開した結果は？',
+      options: ['x² + 5x - 6', 'x² + x - 6', 'x² - x - 6', 'x² + x + 6'],
+      correctAnswerIndex: 1,
+      explanation: '公式 (x+a)(x+b) = x² + (a+b)x + ab を使います。a=3, b=-2 なので、x² + (3-2)x + (3×-2) = x² + x - 6 です。'
+    },
+    {
+      question: '√45 を簡単に表したものは？',
+      options: ['5√3', '3√5', '9√5', '15√3'],
+      correctAnswerIndex: 1,
+      explanation: '√45 = √(9 × 5) = √(3² × 5) = 3√5 となります。'
+    }
+  ],
+  '中学1年 英語': [
+    {
+      question: '「私はテニスが好きです」を表す英語の空欄に入る語は？ "I ( ) tennis."',
+      options: ['is', 'like', 'likes', 'am like'],
+      correctAnswerIndex: 1,
+      explanation: '主語が I（1人称単数）なので、一般動詞の原形 like を使います。'
+    },
+    {
+      question: '「あなたは泳ぐことができますか？」を表す英語の空欄に入る語は？ "( ) you swim?"',
+      options: ['Do', 'Are', 'Can', 'Is'],
+      correctAnswerIndex: 2,
+      explanation: '「〜できる」という能力を表す助動詞 can を使って、疑問文にするため Can you swim? とします。'
+    }
+  ],
+  '中学2年 英語': [
+    {
+      question: '「英語を勉強することは楽しいです」を表す英語の空欄に入る語は？ "( ) English is fun."',
+      options: ['Study', 'Studying', 'Studied', 'Studies'],
+      correctAnswerIndex: 1,
+      explanation: '「〜すること」という主語を作るために、動名詞 Studying（または不定詞 To study）を使用します。'
+    },
+    {
+      question: '「この本はあの本よりも面白いです」を表す英語の空欄に入る語は？ "This book is ( ) interesting than that one."',
+      options: ['more', 'most', 'very', 'as'],
+      correctAnswerIndex: 0,
+      explanation: '比較級の文です。interesting のような長い単語の比較級は more を前に置きます。'
+    }
+  ],
+  '中学3年 英語': [
+    {
+      question: '「私は3年間東京に住んでいます（継続）」を表す英語の空欄に入る語は？ "I ( ) in Tokyo for three years."',
+      options: ['lived', 'have lived', 'has lived', 'am living'],
+      correctAnswerIndex: 1,
+      explanation: '過去から現在までの継続を表す現在完了形（have + 過去分詞）を使います。主語が I なので have lived となります。'
+    },
+    {
+      question: '「これは日本で作られた車です」を表す英語の空欄に入る語は？ "This is a car ( ) was made in Japan."',
+      options: ['who', 'which', 'whom', 'where'],
+      correctAnswerIndex: 1,
+      explanation: '先行詞 a car（物）を修飾する主格の関係代名詞 which (または that) を使います。'
+    }
+  ],
+  '理科': [
+    {
+      question: '植物の葉に日光が当たることで、二酸化炭素と水からデンプンと酸素を作る働きを何という？',
+      options: ['呼吸', '光合成', '蒸散', '吸収'],
+      correctAnswerIndex: 1,
+      explanation: '光のエネルギーを利用して有機物を作る「光合成」です。酸素が放出されます。'
+    },
+    {
+      question: '地震の揺れのうち、最初に届き小さな揺れを引き起こす波を何という？',
+      options: ['S波', 'P波', '初期微動', '主要動'],
+      correctAnswerIndex: 1,
+      explanation: 'もっとも速いプライマリー（Primary）な波である「P波」です。'
+    }
+  ],
+  '社会': [
+    {
+      question: '日本の本州、四国、九州の間に広がる、古くから海上交通の要衝となっている海を何という？',
+      options: ['日本海', 'オホーツク海', '瀬戸内海', '太平洋'],
+      correctAnswerIndex: 2,
+      explanation: '本州、四国、九州に囲まれた風穏やかな内海「瀬戸内海」です。'
+    },
+    {
+      question: '1603年に江戸幕府を開き、長きにわたる平穏な江戸時代の礎を築いた武将は誰？',
+      options: ['織田信長', '豊臣秀吉', '徳川家康', '足利尊氏'],
+      correctAnswerIndex: 2,
+      explanation: '関ヶ原の戦いに勝利し、江戸幕府の初代将軍となった「徳川家康」です。'
+    }
   ]
 };
 
@@ -454,12 +566,41 @@ const generateSolidGeometryQuestions = (): QuizQuestion[] => {
 };
 
 export const getFallbackQuestions = (subjectName: string): QuizQuestion[] => {
-  if (subjectName === '正負の数') return generatePositiveNegativeQuestions();
-  if (subjectName === '一次方程式') return generateEquationQuestions();
-  if (subjectName === '文字の式') return generateAlgebraQuestions();
-  if (subjectName === '比例と反比例') return generateProportionQuestions();
-  if (subjectName === '平面図形') return generateGeometryQuestions();
-  if (subjectName === '空間図形') return generateSolidGeometryQuestions();
+  // 1. Exact match checking
+  if (FALLBACK_QUIZZES[subjectName]) return FALLBACK_QUIZZES[subjectName];
+
+  let cleanSubject = subjectName.trim();
+
+  if (cleanSubject.includes('正負の数')) return generatePositiveNegativeQuestions();
+  if (cleanSubject.includes('一次方程式')) return generateEquationQuestions();
+  if (cleanSubject.includes('文字の式')) return generateAlgebraQuestions();
+  if (cleanSubject.includes('比例と反比例')) return generateProportionQuestions();
+  if (cleanSubject.includes('平面図形')) return generateGeometryQuestions();
+  if (cleanSubject.includes('空間図形')) return generateSolidGeometryQuestions();
+
+  // Parse "中学1年 数学" or "中1 数学" etc.
+  const gradeMatch = subjectName.match(/(中学[1-3]年|中[1-3])\s*(.*)/);
+  if (gradeMatch) {
+    const grade = gradeMatch[1];
+    const sub = gradeMatch[2].trim();
+    
+    let normalizedGrade = grade;
+    if (grade.startsWith('中') && !grade.endsWith('年')) {
+      const num = grade.replace('中', '');
+      normalizedGrade = `中学${num}年`;
+    }
+
+    const gradeSubjectKey = `${normalizedGrade} ${sub}`;
+    if (FALLBACK_QUIZZES[gradeSubjectKey]) return FALLBACK_QUIZZES[gradeSubjectKey];
+    if (FALLBACK_QUIZZES[sub]) return FALLBACK_QUIZZES[sub];
+    cleanSubject = sub;
+  }
+
+  if (cleanSubject === '数学' || cleanSubject.includes('算数')) return FALLBACK_QUIZZES['数学'];
+  if (cleanSubject === '国語') return FALLBACK_QUIZZES['国語'];
+  if (cleanSubject === '英語') return FALLBACK_QUIZZES['英語'];
+  if (cleanSubject === '理科') return FALLBACK_QUIZZES['理科'] || FALLBACK_QUIZZES['数学'];
+  if (cleanSubject === '社会') return FALLBACK_QUIZZES['社会'] || FALLBACK_QUIZZES['国語'];
 
   return FALLBACK_QUIZZES[subjectName] || [
     {

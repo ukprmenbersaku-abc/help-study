@@ -25,6 +25,13 @@ const ARTICLES: Article[] = [
 Study-side は、あなたの学習を最大限にサポートするためのデジタル学習手帳です。
 このガイドでは、Study-side の主な機能と効果的な使い方をご紹介します。
 
+## 💡 公式note記事「推し機能３選」
+Study-sideの魅力をギュッと3つに凝縮して紹介した、公式note記事「推し機能３選」をこちらに埋め込んでいます！カレンダー管理やAI復習など、勉強が楽しくなる仕掛けが詳しく解説されているので、ぜひ参考にしてみてください。
+
+[NOTE_EMBED]
+
+---
+
 ## 1. 教科の管理
 まずは「教科管理」から、あなたが学習している教科を登録しましょう。
 各教科に目標（ゴール）を設定することで、モチベーションを維持しやすくなります。
@@ -81,11 +88,12 @@ Study-side を活用して、理想の学習習慣を身につけましょう！
 - **源 義経（よしつね）**: 頼朝の弟。壇ノ浦の戦いで平氏を倒した天才的な戦いのヒーロー。
 
 ## 2. 北条氏（ほうじょう）｜鎌倉幕府の「執権（しっけん）」
-源氏の将軍が3代で途絶えた後、実権を握ったのが「北条氏」です。彼らは将軍ではなく「執権」という役職で政治を行いました。
+源氏の将軍が3代で途絶えた後、実権を握ったのが、頼朝の妻の実家である「北条氏」です。彼らは将軍ではなく「執権（しっけん）」という最高役職について政治を行いました。
 
-- **北条 政子（まさこ）**: 頼朝の妻。「尼将軍」と呼ばれ、頼朝の死後も幕府を支えた。
-- **北条 泰時（やすとき）**: 第3代執権。「御成敗式目（ごせいばいしきもく）」を定め、武士のための公平な法律を作った。
-- **北条 時宗（ときむね）**: 第8代執権。モンゴル軍が攻めてきた「元寇（げんこう）」の時に、日本を守る指揮を執った。
+- **北条 政子（まさこ）**: 源頼朝の妻（尼将軍）。頼朝の死後、後鳥羽上皇が幕府を倒しようと挙兵した「承久の乱（1221年）」の際、動揺する御家人たちに「頼朝公の恩は山よりも高く海よりも深い」と感動的な演説を行い、結束を固めて幕府軍を勝利に導きました。
+- **北条 義時（よしとき）**: 第2代執権（政子の弟）。頼朝亡き後の幕府をリードし、執権政治の始まりとなる強固な体制を作りました。後鳥羽上皇による「承久の乱」で朝廷の追討令の対象となりますが、政子と共に武士たちをまとめ上げ、見事に朝廷軍を破りました（※もしかしたら中学テストでは直接問われないこともありますが、実質的に執権政治をスタートさせた超重要人物です！）。
+- **北条 泰時（やすとき）**: 第3代執権（義時の子）。武士のための最初の法律「御成敗式目（ごせいばいしきもく）」を定め、公平な裁判の基準を作って武士や民衆のための安心できる政治を行いました。
+- **北条 時宗（ときむね）**: 第8代執権。13世紀後半、世界帝国モンゴル（元）が日本へ攻めてきた「元寇（げんこう）」の際、若いリーダーとして武士たちを率いて日本を守り抜きました。
 
 ## 3. 足利氏（あしかが）｜室町幕府を開いたリーダー
 鎌倉幕府を倒し、新しい幕府（室町幕府）を作ったのが足利氏です。また将軍の時代に戻ります。
@@ -118,6 +126,21 @@ const CATEGORY_THEMES: Record<string, { bg: string; text: string; accent: string
 const ArticlesView: React.FC<ArticlesViewProps> = ({ onNavigate, onReadArticle }) => {
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+
+  React.useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://note.com/scripts/embed.js';
+    script.async = true;
+    script.charset = 'utf-8';
+    document.body.appendChild(script);
+    return () => {
+      try {
+        document.body.removeChild(script);
+      } catch (e) {
+        // ignore
+      }
+    };
+  }, [selectedArticle]);
 
   const filteredArticles = ARTICLES.filter(article => {
     const query = searchQuery.toLowerCase();
@@ -191,6 +214,24 @@ const ArticlesView: React.FC<ArticlesViewProps> = ({ onNavigate, onReadArticle }
                   return part;
                 });
               };
+
+              if (trimmed === '[NOTE_EMBED]') {
+                return (
+                  <div key={i} className="my-8 flex justify-center w-full relative z-10 animate-fade-in">
+                    <div className="w-full max-w-[494px] bg-white rounded-3xl border border-slate-100 shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 p-1 sm:p-2 bg-gradient-to-tr from-slate-50 to-indigo-50/35">
+                      <div className="rounded-[1.3rem] overflow-hidden bg-white shadow-inner relative">
+                        <iframe 
+                          className="note-embed w-full" 
+                          src="https://note.com/embed/notes/ncb284ce15a46" 
+                          style={{ border: 0, display: 'block', maxWidth: '100%', margin: '0 auto', position: 'static', visibility: 'visible' }} 
+                          height="400"
+                          title="note-embed"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
 
               if (trimmed.startsWith('# ')) {
                 return (

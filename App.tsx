@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Subject, Task, TaskType, UserProgress, Badge } from './types';
-import useLocalStorage from './hooks/useLocalStorage';
-import useCookieState from './hooks/useCookieState';
+import useCookieState, { getRawCookie, setCookie, deleteCookie } from './hooks/useCookieState';
+import Icon from './components/Icon';
 import Calendar from './components/Calendar';
 import TaskModal from './components/TaskModal';
 import Header from './components/Header';
@@ -16,6 +16,7 @@ import StudySearchView from './components/StudySearchView';
 import ArticlesView from './components/ArticlesView';
 import AboutView from './components/AboutView';
 import MeshBackground from './components/MeshBackground';
+import SyncView from './components/SyncView';
 import { ReviewResult } from './types';
 
 const SIDEBAR_COLORS = [
@@ -77,12 +78,12 @@ const MAY_2026_TASKS: Omit<Task, 'id' | 'isCompleted'>[] = [
   { subjectId: 'school', date: '2026-05-30', title: '中信大会（テニス・卓球）', type: TaskType.STUDY, isImportant: true },
 ];
 
-export type View = 'home' | 'calendar' | 'progress' | 'subjects' | 'review' | 'search' | 'articles' | 'about';
+export type View = 'home' | 'calendar' | 'progress' | 'subjects' | 'review' | 'search' | 'articles' | 'about' | 'sync';
 
 const App: React.FC = () => {
-  const [subjects, setSubjects] = useLocalStorage<Subject[]>('subjects', DEFAULT_SUBJECTS);
-  const [tasks, setTasks] = useLocalStorage<Task[]>('tasks', []);
-  const [reviewResults, setReviewResults] = useLocalStorage<ReviewResult[]>('reviewResults', []);
+  const [subjects, setSubjects] = useCookieState<Subject[]>('subjects', DEFAULT_SUBJECTS);
+  const [tasks, setTasks] = useCookieState<Task[]>('tasks', []);
+  const [reviewResults, setReviewResults] = useCookieState<ReviewResult[]>('reviewResults', []);
   const [userProgress, setUserProgress] = useCookieState<UserProgress>('userProgress', {
     level: 1,
     xp: 0,
@@ -93,7 +94,7 @@ const App: React.FC = () => {
     reviewsCompletedCount: 0,
     isMember: false
   });
-  const [apiKey, setApiKey] = useLocalStorage<string>('gemini_api_key', '');
+  const [apiKey, setApiKey] = useCookieState<string>('gemini_api_key', '');
 
   const [currentDate, setCurrentDate] = useState(new Date());
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -104,7 +105,80 @@ const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [notificationPermission, setNotificationPermission] = useState(Notification.permission);
   const [activeView, setActiveView] = useState<View>('home');
-  const [hasInjectedMayTasks, setHasInjectedMayTasks] = useLocalStorage<boolean>('hasInjectedMayTasks', false);
+  const [hasInjectedMayTasks, setHasInjectedMayTasks] = useCookieState<boolean>('hasInjectedMayTasks', false);
+  const [d1UserId, setD1UserId] = useState<string | null>(() => localStorage.getItem('d1_user_id'));
+
+  // Auto-sync state changes to D1 Cloud in real-time if logged in
+  useEffect(() => {
+    if (!d1UserId) return;
+
+    const timeoutId = setTimeout(async () => {
+      try {
+        await fetch('/api/sync/push', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: d1UserId,
+            subjects,
+            tasks,
+            reviewResults,
+            userProgress,
+          }),
+        });
+        console.log('⚡ D1 Database automatically synchronized.');
+      } catch (e) {
+        console.error('Failed to auto-sync to D1:', e);
+      }
+    }, 1500);
+
+    return () => clearTimeout(timeoutId);
+  }, [subjects, tasks, reviewResults, userProgress, d1UserId]);
+
+  const [cookieConsent, setCookieConsent] = useState<string | null>(() => {
+    const consent = getRawCookie('cookie_consent');
+    if (consent) return consent;
+    try {
+      return window.localStorage.getItem('cookie_consent');
+    } catch {
+      return null;
+    }
+  });
+
+  const handleAcceptCookies = () => {
+    setCookie('cookie_consent', 'true', 365);
+    try {
+      window.localStorage.setItem('cookie_consent', 'true');
+    } catch (e) {
+      console.error(e);
+    }
+    setCookieConsent('true');
+    
+    // Save all current local state to cookies immediately
+    setCookie('subjects', JSON.stringify(subjects));
+    setCookie('tasks', JSON.stringify(tasks));
+    setCookie('reviewResults', JSON.stringify(reviewResults));
+    setCookie('userProgress', JSON.stringify(userProgress));
+    setCookie('gemini_api_key', apiKey);
+    setCookie('hasInjectedMayTasks', JSON.stringify(hasInjectedMayTasks));
+  };
+
+  const handleRejectCookies = () => {
+    setCookie('cookie_consent', 'rejected', 365);
+    try {
+      window.localStorage.setItem('cookie_consent', 'rejected');
+    } catch (e) {
+      console.error(e);
+    }
+    setCookieConsent('rejected');
+
+    // Delete any existing cookies to respect user rejection
+    deleteCookie('subjects');
+    deleteCookie('tasks');
+    deleteCookie('reviewResults');
+    deleteCookie('userProgress');
+    deleteCookie('gemini_api_key');
+    deleteCookie('hasInjectedMayTasks');
+  };
   
   useEffect(() => {
     if (!hasInjectedMayTasks) {
@@ -430,6 +504,21 @@ const App: React.FC = () => {
         return <ArticlesView onNavigate={setActiveView} onReadArticle={handleReadArticle} />;
       case 'about':
         return <AboutView />;
+      case 'sync':
+        return (
+          <SyncView 
+            subjects={subjects}
+            tasks={tasks}
+            reviewResults={reviewResults}
+            userProgress={userProgress}
+            setSubjects={setSubjects}
+            setTasks={setTasks}
+            setReviewResults={setReviewResults}
+            setUserProgress={setUserProgress}
+            loggedInUser={d1UserId}
+            setLoggedInUser={setD1UserId}
+          />
+        );
       default:
         return null;
     }
@@ -454,6 +543,7 @@ const App: React.FC = () => {
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         onOpenSettings={() => setIsSettingsOpen(true)}
         onNavigate={setActiveView}
+        d1UserId={d1UserId}
       />
       
       <Sidebar
@@ -492,6 +582,41 @@ const App: React.FC = () => {
         apiKey={apiKey}
         setApiKey={setApiKey}
       />
+
+      {/* Cookie Consent Banner */}
+      {!cookieConsent && (
+        <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:max-w-md z-50 animate-modal-enter">
+          <div className="bg-slate-900 border border-slate-800 text-slate-100 p-5 rounded-2xl shadow-2xl space-y-4">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center shrink-0 border border-indigo-500/20">
+                <Icon name="sparkles" className="w-5 h-5 text-indigo-400 animate-pulse" />
+              </div>
+              <div className="space-y-1">
+                <h4 className="font-extrabold text-sm sm:text-base text-white flex items-center gap-1.5">
+                  クッキー使用許可のお願い
+                </h4>
+                <p className="text-xs text-slate-350 leading-relaxed">
+                  当サイトでは、カレンダーの予定、教科設定、学習記録などの各種情報を安全に自動保存するためにクッキー（Cookie）を使用しています。許可いただくことで次回訪問時も学習記録を自動的に引き継ぐことができます。
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 pt-2">
+              <button
+                onClick={handleRejectCookies}
+                className="flex-1 py-2.5 rounded-xl text-xs font-black bg-slate-800 hover:bg-slate-750 text-slate-300 border border-slate-700/50 transition-all active:scale-[0.98] cursor-pointer"
+              >
+                拒否する
+              </button>
+              <button
+                onClick={handleAcceptCookies}
+                className="flex-1 py-2.5 rounded-xl text-xs font-black bg-indigo-600 hover:bg-indigo-550 text-white shadow-lg shadow-indigo-600/20 transition-all active:scale-[0.98] cursor-pointer"
+              >
+                許可する
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -67,7 +67,7 @@ export const generateReviewQuestions = async (subjectName: string, apiKey: strin
   const ai = new GoogleGenAI({ apiKey: apiKey });
   
   try {
-    const prompt = `あなたは数学の教師です。中学1年生の数学の単元「${subjectName}」に関する、4択のクイズを5問作成してください。
+    const prompt = `あなたは優秀な教師です。「${subjectName}」に関する、中学校の学習カリキュラムに沿った4択のクイズを5問作成してください。学年別の難易度に合致させて、適切かつ質の高い問題を生成してください。
     各問題には、問題文(question)、4つの選択肢(options)、正解のインデックス(correctAnswerIndex, 0-3)、および解説(explanation)を含めてください。
     JSON形式の配列で出力してください。`;
     
