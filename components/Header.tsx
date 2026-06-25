@@ -43,7 +43,7 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onOpenSettings, onNavi
                             {d1UserId ? (
                               <span className="flex items-center gap-2 text-emerald-800 bg-emerald-50 border border-emerald-100 rounded-full pl-1.5 pr-3 py-1 text-[11px] font-black shadow-sm">
                                 <UserAvatar username={d1UserId} avatarIcon={avatarIcon} className="w-5 h-5 text-[9px]" />
-                                <span>ログイン中 ({d1UserId})</span>
+                                <span>ログイン中</span>
                               </span>
                             ) : (
                               <span className="text-indigo-600 hover:text-indigo-700 bg-indigo-50 hover:bg-indigo-100/80 border border-indigo-100 rounded-full px-3.5 py-1 text-xs font-black shadow-sm">
