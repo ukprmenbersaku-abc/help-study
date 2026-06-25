@@ -1,9 +1,12 @@
 // Types for local TypeScript compilation safety
 type PagesFunction = any;
+import { ensureTables } from '../db';
 
 export const onRequestPost: PagesFunction = async (context: any) => {
   const { request, env } = context;
   try {
+    await ensureTables(env.DB);
+
     const body = await request.json() as any;
     const { userId, subjects, tasks, reviewResults, userProgress } = body;
 
