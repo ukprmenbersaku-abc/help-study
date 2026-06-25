@@ -46,6 +46,7 @@ export interface UserProgress {
   articlesReadCount?: number;
   reviewsCompletedCount?: number;
   isMember?: boolean;
+  avatarIcon?: string | null;
 }
 
 export interface SuggestedTask {

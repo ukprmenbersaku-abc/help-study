@@ -544,6 +544,7 @@ const App: React.FC = () => {
         onOpenSettings={() => setIsSettingsOpen(true)}
         onNavigate={setActiveView}
         d1UserId={d1UserId}
+        avatarIcon={userProgress.avatarIcon}
       />
       
       <Sidebar

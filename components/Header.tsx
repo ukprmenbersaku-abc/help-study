@@ -2,15 +2,17 @@
 import React from 'react';
 import Icon from './Icon';
 import { View } from '../App';
+import { UserAvatar } from './UserAvatar';
 
 interface HeaderProps {
     onToggleSidebar: () => void;
     onOpenSettings: () => void;
     onNavigate: (view: View) => void;
     d1UserId: string | null;
+    avatarIcon?: string | null;
 }
 
-const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onOpenSettings, onNavigate, d1UserId }) => {
+const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onOpenSettings, onNavigate, d1UserId, avatarIcon }) => {
     return (
         <header className="bg-white/80 backdrop-blur-lg sticky top-0 z-30 w-full flex-shrink-0">
             <style>{`
@@ -36,12 +38,12 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onOpenSettings, onNavi
                         <button 
                             onClick={() => onNavigate('sync')}
                             className="flex items-center gap-1.5 transition-all duration-200 active:scale-95 cursor-pointer"
-                            title={d1UserId ? `クラウド同期中: ${d1UserId}` : "ローカル保存（未ログイン）"}
+                            title={d1UserId ? `ログイン中: ${d1UserId}` : "この端末だけに保存中（未ログイン）"}
                         >
                             {d1UserId ? (
-                              <span className="flex items-center gap-1.5 text-emerald-800 bg-emerald-50 border border-emerald-100 rounded-full px-2.5 py-1 text-[11px] font-black shadow-sm">
-                                <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-                                <span>同期中 ({d1UserId})</span>
+                              <span className="flex items-center gap-2 text-emerald-800 bg-emerald-50 border border-emerald-100 rounded-full pl-1.5 pr-3 py-1 text-[11px] font-black shadow-sm">
+                                <UserAvatar username={d1UserId} avatarIcon={avatarIcon} className="w-5 h-5 text-[9px]" />
+                                <span>ログイン中 ({d1UserId})</span>
                               </span>
                             ) : (
                               <span className="text-indigo-600 hover:text-indigo-700 bg-indigo-50 hover:bg-indigo-100/80 border border-indigo-100 rounded-full px-3.5 py-1 text-xs font-black shadow-sm">

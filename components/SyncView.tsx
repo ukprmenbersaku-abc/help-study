@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Subject, Task, ReviewResult, UserProgress } from '../types';
 import Icon from './Icon';
+import { UserAvatar } from './UserAvatar';
 
 interface SyncViewProps {
   subjects: Subject[];
@@ -16,9 +17,9 @@ interface SyncViewProps {
 }
 
 const SyncView: React.FC<SyncViewProps> = ({
-  subjects,
-  tasks,
-  reviewResults,
+  subjects: _subjects,
+  tasks: _tasks,
+  reviewResults: _reviewResults,
   userProgress,
   setSubjects,
   setTasks,
@@ -30,6 +31,31 @@ const SyncView: React.FC<SyncViewProps> = ({
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const [isRegister, setIsRegister] = useState(false);
+  const [typedUserAvatar, setTypedUserAvatar] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!userId.trim() || isRegister) {
+      setTypedUserAvatar(null);
+      return;
+    }
+
+    const delayDebounceFn = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/auth/check-user?userId=${encodeURIComponent(userId.trim())}`);
+        const data = await res.json();
+        if (res.ok && data.success && data.exists) {
+          setTypedUserAvatar(data.avatar || 'DEFAULT_INITIALS');
+        } else {
+          setTypedUserAvatar(null);
+        }
+      } catch (e) {
+        console.error('Error checking user:', e);
+        setTypedUserAvatar(null);
+      }
+    }, 400);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [userId, isRegister]);
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ text: string; type: 'success' | 'error' | 'info' } | null>(null);
@@ -54,7 +80,7 @@ const SyncView: React.FC<SyncViewProps> = ({
       });
       const data = await res.json();
       if (res.ok && data.success) {
-        showMessage('登録が完了しました！ログインしてください。', 'success');
+        showMessage('アカウント登録が完了しました！作成したユーザー名とパスワードでログインしてください。', 'success');
         setIsRegister(false);
         setPassword('');
       } else {
@@ -84,7 +110,7 @@ const SyncView: React.FC<SyncViewProps> = ({
       if (res.ok && data.success) {
         localStorage.setItem('d1_user_id', data.user.id);
         setLoggedInUser(data.user.id);
-        showMessage('ログインしました！データを同期しています...', 'success');
+        showMessage('ログインしました！保存されているデータを読み込んでいます...', 'success');
         
         // Auto-pull immediately upon login
         await handlePull(data.user.id);
@@ -103,35 +129,7 @@ const SyncView: React.FC<SyncViewProps> = ({
     setLoggedInUser(null);
     setUserId('');
     setPassword('');
-    showMessage('ログアウトしました。ローカル保存モードに戻りました。', 'info');
-  };
-
-  const handlePush = async () => {
-    if (!loggedInUser) return;
-    setLoading(true);
-    try {
-      const res = await fetch('/api/sync/push', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId: loggedInUser,
-          subjects,
-          tasks,
-          reviewResults,
-          userProgress,
-        }),
-      });
-      const data = await res.json();
-      if (res.ok && data.success) {
-        showMessage('学習データをクラウドに保存しました！', 'success');
-      } else {
-        showMessage(data.error || '保存に失敗しました。', 'error');
-      }
-    } catch (err: any) {
-      showMessage('通信エラー: ' + err.message, 'error');
-    } finally {
-      setLoading(false);
-    }
+    showMessage('ログアウトしました。これからは、この端末（スマホやPC）だけにデータが一時的に保存されます。', 'info');
   };
 
   const handlePull = async (targetUser?: string) => {
@@ -149,12 +147,12 @@ const SyncView: React.FC<SyncViewProps> = ({
         if (cloudReviews) setReviewResults(cloudReviews);
         if (cloudProgress) setUserProgress(cloudProgress);
 
-        showMessage('クラウドから最新の学習データを読み込みました！', 'success');
+        showMessage('以前インターネットに保存したデータを、この端末に読み込みました！続きから勉強を始めましょう。', 'success');
       } else {
-        showMessage('クラウド上に保存されたデータがありません。現在の設定を「クラウドへ保存」してください。', 'info');
+        showMessage('インターネット上に戻せるデータが見つかりませんでした。今の設定を「ネットに今すぐ保存」してください。', 'info');
       }
     } catch (err: any) {
-      showMessage('読み込みエラー: ' + err.message, 'error');
+      showMessage('データの読み込みに失敗しました: ' + err.message, 'error');
     } finally {
       setLoading(false);
     }
@@ -169,15 +167,16 @@ const SyncView: React.FC<SyncViewProps> = ({
           </div>
           <div>
             <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-              アカウント同期
+              勉強データをネットに保存
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500 font-bold tracking-wider uppercase">
-              Cloud Sync & Backup
+            <p className="text-xs sm:text-sm text-indigo-600 font-extrabold tracking-wider uppercase">
+              データ保存・引き継ぎ（無料アカウント）
             </p>
           </div>
         </div>
         <p className="text-slate-500 text-xs sm:text-sm leading-relaxed max-w-xl mx-auto sm:mx-0">
-          ログインすると、カレンダーの予定、教科管理、クイズの学習記録、現在のレベル・XP・バッジなどをクラウドに安全にバックアップし、他のデバイスとシームレスに同期できます。
+          無料のアカウントを作ってログインすると、カレンダーの予定、作成した教科、これまでの学習記録、現在のレベルやバッジなどのデータをインターネット上に安全に保存（バックアップ）できます。
+          スマホを紛失したときや、他のパソコンやタブレットから使いたいときも、同じアカウントでログインするだけで、いつでも続きから勉強を再開できます！
         </p>
       </header>
 
@@ -196,12 +195,11 @@ const SyncView: React.FC<SyncViewProps> = ({
 
       <div className="bg-white rounded-2xl sm:rounded-[2rem] p-5 sm:p-8 border border-slate-200 shadow-sm space-y-6">
         {loggedInUser ? (
-          <div className="space-y-6">
+          <div className="space-y-6 animate-fade-in">
+            {/* Account Profile Header */}
             <div className="flex items-center justify-between p-4 bg-slate-50 border border-slate-200 rounded-xl sm:rounded-2xl">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-black">
-                  {loggedInUser.charAt(0).toUpperCase()}
-                </div>
+                <UserAvatar username={loggedInUser} avatarIcon={userProgress.avatarIcon} className="w-12 h-12 text-sm" />
                 <div>
                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-wider">ログイン中のアカウント</p>
                   <p className="text-sm sm:text-base font-black text-slate-800">{loggedInUser}</p>
@@ -215,40 +213,59 @@ const SyncView: React.FC<SyncViewProps> = ({
               </button>
             </div>
 
-            <div className="space-y-4">
-              <h3 className="text-sm font-black text-slate-800 flex items-center gap-1.5">
-                <Icon name="settings" className="w-4 h-4 text-slate-500" />
-                <span>同期メニュー</span>
-              </h3>
+            {/* Avatar Selector Area */}
+            <div className="space-y-3 bg-slate-50/50 border border-slate-100 rounded-xl p-4 sm:p-5">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-black text-slate-800 flex items-center gap-1.5">
+                  <Icon name="smile" className="w-4 h-4 text-indigo-500" />
+                  <span>アカウントのアイコンを変更する</span>
+                </h3>
+                {userProgress.avatarIcon && (
+                  <button
+                    onClick={() => {
+                      setUserProgress({ ...userProgress, avatarIcon: null });
+                      showMessage('アイコンをデフォルト（頭文字）に戻しました！', 'success');
+                    }}
+                    className="text-[11px] font-black text-indigo-600 hover:text-indigo-800 transition-colors"
+                  >
+                    初期状態（頭文字）に戻す
+                  </button>
+                )}
+              </div>
+              <p className="text-[11px] text-slate-500 font-medium">お好きなアイコンを選んで、あなただけのプロフィールにカスタマイズできます！</p>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <button
-                  onClick={handlePush}
-                  disabled={loading}
-                  className="flex flex-col items-center justify-center p-5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl sm:rounded-2xl transition-all shadow-md active:scale-95 text-center group cursor-pointer"
-                >
-                  <Icon name="upload" className="w-6 h-6 mb-2 group-hover:-translate-y-0.5 transition-transform" />
-                  <span className="text-xs sm:text-sm font-black">クラウドへ保存</span>
-                  <span className="text-[9px] opacity-80 font-semibold mt-1">現在の内容で上書き保存</span>
-                </button>
-
-                <button
-                  onClick={() => handlePull()}
-                  disabled={loading}
-                  className="flex flex-col items-center justify-center p-5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl sm:rounded-2xl transition-all shadow-md active:scale-95 text-center group cursor-pointer"
-                >
-                  <Icon name="download" className="w-6 h-6 mb-2 group-hover:translate-y-0.5 transition-transform" />
-                  <span className="text-xs sm:text-sm font-black">クラウドから復元</span>
-                  <span className="text-[9px] opacity-80 font-semibold mt-1">保存されたデータを読み込み</span>
-                </button>
+              <div className="grid grid-cols-6 sm:grid-cols-9 gap-2 pt-2">
+                {['📚', '✍️', '🎯', '🚀', '🐱', '🐻', '🐨', '🦊', '🦁', '🐯', '🐼', '🐸', '🐙', '🦄', '🎨', '⚽', '🎮', '💡', '🏆', '🌈', '🍀', '🔥', '🍕', '🍰', '🌸', '⭐'].map((emoji) => {
+                  const isSelected = userProgress.avatarIcon === emoji;
+                  return (
+                    <button
+                      key={emoji}
+                      onClick={() => {
+                        setUserProgress({ ...userProgress, avatarIcon: emoji });
+                        showMessage(`アイコンを「${emoji}」に変更しました！`, 'success');
+                      }}
+                      className={`text-2xl p-2 rounded-xl transition-all duration-200 hover:bg-white hover:shadow-sm active:scale-90 cursor-pointer ${
+                        isSelected 
+                          ? 'bg-indigo-50 border-2 border-indigo-500 scale-110 shadow-sm' 
+                          : 'bg-white/40 border border-transparent hover:border-slate-200'
+                      }`}
+                    >
+                      {emoji}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
+            {/* Reassuring Auto-Save Info Banner */}
             <div className="p-4 bg-emerald-50 border border-emerald-100 rounded-xl flex items-start gap-2.5">
-              <Icon name="check" className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+              <Icon name="check" className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
               <div className="text-[11px] sm:text-xs text-emerald-800 font-bold leading-relaxed">
-                <p>✨ 自動保存機能がオンになっています</p>
-                <p className="opacity-80 font-medium">カレンダーの予定変更、教科の編集、クイズ結果は自動的にクラウドデータベースへ反映されます。</p>
+                <p className="font-black text-emerald-900">✨ リアルタイム自動保存が有効です</p>
+                <p className="opacity-90 font-medium mt-1">
+                  カレンダーの予定を変更したり、勉強の記録をつけたり、クイズを解いたりすると、すべての変更が自動的にインターネット上にリアルタイム保存されます。
+                  手動で「保存」や「読み込み」ボタンを押す必要はもうありません。別のスマホやパソコンからでも、ログインするだけでいつでも自動的に最新の状態が復元されます。
+                </p>
               </div>
             </div>
           </div>
@@ -257,7 +274,11 @@ const SyncView: React.FC<SyncViewProps> = ({
             <div className="flex bg-slate-100 p-1 rounded-xl">
               <button
                 type="button"
-                onClick={() => setIsRegister(false)}
+                onClick={() => {
+                  setIsRegister(false);
+                  setUserId('');
+                  setPassword('');
+                }}
                 className={`flex-1 py-2 text-xs sm:text-sm font-black rounded-lg transition-all ${
                   !isRegister ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-800'
                 }`}
@@ -266,19 +287,38 @@ const SyncView: React.FC<SyncViewProps> = ({
               </button>
               <button
                 type="button"
-                onClick={() => setIsRegister(true)}
+                onClick={() => {
+                  setIsRegister(true);
+                  setUserId('');
+                  setPassword('');
+                }}
                 className={`flex-1 py-2 text-xs sm:text-sm font-black rounded-lg transition-all ${
                   isRegister ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-800'
                 }`}
               >
-                新規会員登録
+                新規アカウント登録（無料）
               </button>
             </div>
+
+            {/* Real-time username exists display */}
+            {typedUserAvatar && (
+              <div className="flex items-center gap-3 p-3 bg-indigo-50 border border-indigo-100 rounded-xl animate-fade-in">
+                <UserAvatar 
+                  username={userId} 
+                  avatarIcon={typedUserAvatar === 'DEFAULT_INITIALS' ? null : typedUserAvatar} 
+                  className="w-10 h-10 text-xs" 
+                />
+                <div className="text-left">
+                  <p className="text-xs font-black text-indigo-950">登録済みの「{userId}」さんを見つけました！</p>
+                  <p className="text-[10px] text-indigo-600 font-bold">パスワードを入力してログインしてください。</p>
+                </div>
+              </div>
+            )}
 
             <form onSubmit={isRegister ? handleRegister : handleLogin} className="space-y-4">
               <div className="space-y-1">
                 <label className="text-[10px] sm:text-xs font-black text-slate-500 uppercase tracking-widest">
-                  ユーザーID
+                  ユーザー名（お好きな半角英数字）
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
@@ -286,7 +326,7 @@ const SyncView: React.FC<SyncViewProps> = ({
                   </div>
                   <input
                     type="text"
-                    placeholder="任意のユーザー名"
+                    placeholder="例: sato123"
                     value={userId}
                     onChange={(e) => setUserId(e.target.value)}
                     disabled={loading}
@@ -297,7 +337,7 @@ const SyncView: React.FC<SyncViewProps> = ({
 
               <div className="space-y-1">
                 <label className="text-[10px] sm:text-xs font-black text-slate-500 uppercase tracking-widest">
-                  パスワード
+                  パスワード（8文字以上を推奨）
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
@@ -324,7 +364,7 @@ const SyncView: React.FC<SyncViewProps> = ({
                 ) : (
                   <>
                     <Icon name={isRegister ? 'user-plus' : 'key'} className="w-4 h-4" />
-                    <span>{isRegister ? '新規会員登録を行う' : 'ログインする'}</span>
+                    <span>{isRegister ? '新しくアカウントを作る' : 'ログインする'}</span>
                   </>
                 )}
               </button>
@@ -337,10 +377,12 @@ const SyncView: React.FC<SyncViewProps> = ({
       <div className="bg-indigo-50/50 border border-indigo-100 rounded-2xl p-5 sm:p-6 space-y-3">
         <h4 className="text-sm font-black text-slate-800 flex items-center gap-1.5">
           <Icon name="shield" className="w-4 h-4 text-indigo-500" />
-          <span>アカウント未登録時の動作について</span>
+          <span>アカウントを作らずに使う場合（お試しモード）</span>
         </h4>
         <p className="text-xs text-slate-600 leading-relaxed font-medium">
-          アカウントを登録・ログインしていない状態でも、当アプリはブラウザのローカル保存環境（ローカルストレージやクッキー）を利用して自動的にデータを保護します。ログインすることで、いつでもそのデータをクラウドへ保存し、機種変更時などに復元させることができます。
+          アカウントを作ってログインしていない状態でも、現在お使いのブラウザ（今使用しているスマホやパソコン）の中にデータが自動的に保存されます。
+          ただし、ブラウザの履歴やキャッシュを消去したり、プライベートブラウズ（シークレットモード）を使用したり、別のスマホ・パソコンに変えたりするとデータが完全に消えてしまいます。
+          大切な勉強データをずっと安全に残すために、簡単な無料アカウントの作成を強くおすすめします！
         </p>
       </div>
     </div>

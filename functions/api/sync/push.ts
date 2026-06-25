@@ -89,6 +89,11 @@ export const onRequestPost: PagesFunction = async (context: any) => {
         p.activeTitle || null,
         p.articlesReadCount || 0
       ).run();
+
+      // Also update the users.avatar column if provided in userProgress
+      if (p.avatarIcon !== undefined) {
+        await env.DB.prepare('UPDATE users SET avatar = ? WHERE id = ?').bind(p.avatarIcon, userId).run();
+      }
     }
 
     return new Response(JSON.stringify({ success: true, message: 'データがクラウド（D1）に保存されました！' }), {

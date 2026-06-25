@@ -62,6 +62,7 @@ export async function initializeDatabase() {
       `CREATE TABLE IF NOT EXISTS users (
         id TEXT PRIMARY KEY,
         password TEXT,
+        avatar TEXT,
         created_at TEXT
       );`,
       `CREATE TABLE IF NOT EXISTS subjects (
@@ -117,6 +118,15 @@ export async function initializeDatabase() {
     for (const ddl of tables) {
       await executeQueryOnD1(ddl);
     }
+
+    // Try altering users table to add avatar column if it's an existing database
+    try {
+      await executeQueryOnD1("ALTER TABLE users ADD COLUMN avatar TEXT;");
+      console.log('✅ Altered users table to ensure avatar column exists.');
+    } catch (e) {
+      // Column probably already exists, safe to ignore
+    }
+
     console.log('✅ Cloudflare D1 tables successfully verified.');
   } else {
     console.log('🏠 Local DB active (fallback). No Cloudflare credentials found.');
@@ -175,13 +185,30 @@ export async function executeQuery(sql: string, params: any[] = []): Promise<any
     return user ? [user] : [];
   }
 
-  // 2. INSERT INTO users (id, password, created_at) VALUES (?, ?, ?)
+  // 2. INSERT INTO users (id, password, created_at) VALUES (?, ?, ?) or with avatar column
   if (normalizedSql.includes('INSERT INTO USERS')) {
-    const [id, password, created_at] = params;
+    let id, password, avatar, created_at;
+    if (params.length === 4) {
+      [id, password, avatar, created_at] = params;
+    } else {
+      [id, password, created_at] = params;
+      avatar = null;
+    }
     // Remove duplicate
     db.users = db.users.filter(u => u.id !== id);
-    db.users.push({ id, password, created_at });
+    db.users.push({ id, password, avatar, created_at });
     saveLocalDB(db);
+    return [];
+  }
+
+  // 2b. UPDATE users SET avatar = ? WHERE id = ?
+  if (normalizedSql.includes('UPDATE USERS SET AVATAR =')) {
+    const [avatar, id] = params;
+    const user = db.users.find(u => u.id === id);
+    if (user) {
+      user.avatar = avatar;
+      saveLocalDB(db);
+    }
     return [];
   }
 

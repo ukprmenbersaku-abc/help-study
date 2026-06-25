@@ -78,6 +78,9 @@ export const onRequestGet: PagesFunction = async (context: any) => {
       } catch (e) {
         console.error('Error parsing titles:', e);
       }
+      // Fetch user's avatar
+      const userRow = await env.DB.prepare('SELECT avatar FROM users WHERE id = ?').bind(userId).first() as any;
+
       formattedProgress = {
         level: p.level,
         xp: p.xp,
@@ -88,7 +91,8 @@ export const onRequestGet: PagesFunction = async (context: any) => {
         badges: badges,
         unlockedTitles: unlockedTitles,
         activeTitle: p.active_title || undefined,
-        articlesReadCount: p.articles_read_count || 0
+        articlesReadCount: p.articles_read_count || 0,
+        avatarIcon: userRow?.avatar || undefined
       };
     }
 
