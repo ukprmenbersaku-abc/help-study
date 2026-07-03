@@ -18,6 +18,7 @@ import AboutView from './components/AboutView';
 import MeshBackground from './components/MeshBackground';
 import SyncView from './components/SyncView';
 import { ReviewResult } from './types';
+import GameView from './components/GameView';
 
 const SIDEBAR_COLORS = [
   '#F87171', '#FB923C', '#FBBF24', '#A3E635', '#4ADE80', '#34D399', '#2DD4BF', '#60A5FA', '#818CF8', '#A78BFA', '#F472B6'
@@ -78,7 +79,7 @@ const MAY_2026_TASKS: Omit<Task, 'id' | 'isCompleted'>[] = [
   { subjectId: 'school', date: '2026-05-30', title: '中信大会（テニス・卓球）', type: TaskType.STUDY, isImportant: true },
 ];
 
-export type View = 'home' | 'calendar' | 'progress' | 'subjects' | 'review' | 'search' | 'articles' | 'about' | 'sync';
+export type View = 'home' | 'calendar' | 'progress' | 'subjects' | 'review' | 'search' | 'articles' | 'about' | 'sync' | 'game';
 
 const App: React.FC = () => {
   const [subjects, setSubjects] = useCookieState<Subject[]>('subjects', DEFAULT_SUBJECTS);
@@ -504,6 +505,8 @@ const App: React.FC = () => {
         return <ArticlesView onNavigate={setActiveView} onReadArticle={handleReadArticle} />;
       case 'about':
         return <AboutView />;
+      case 'game':
+        return <GameView userProgress={userProgress} setUserProgress={setUserProgress} />;
       case 'sync':
         return (
           <SyncView 

@@ -88,6 +88,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activeView, onNaviga
                         onClick={() => { onNavigate('articles'); onClose(); }}
                     />
                     <NavItem 
+                        iconName="flask"
+                        label="元素バトルラボ"
+                        isActive={activeView === 'game'}
+                        onClick={() => { onNavigate('game'); onClose(); }}
+                    />
+                    <NavItem 
                         iconName="book"
                         label="教科管理"
                         isActive={activeView === 'subjects'}

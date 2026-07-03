@@ -77,10 +77,17 @@ const HomeView: React.FC<HomeViewProps> = ({ userProgress, tasks, subjects, onNa
              </button>
              <button 
                 onClick={() => onNavigate('articles')}
+                className="bg-white/10 hover:bg-white/20 md:bg-white/20 md:hover:bg-white/30 backdrop-blur-md px-3 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold transition-all active:scale-95 flex items-center justify-center gap-1.5 text-xs sm:text-sm flex-grow sm:flex-grow-0"
+             >
+                <Icon name="book-open" className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                <span>学習記事</span>
+             </button>
+             <button 
+                onClick={() => onNavigate('game')}
                 className="bg-white text-indigo-600 px-3 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold transition-all hover:bg-indigo-50 active:scale-95 flex items-center justify-center gap-1.5 text-xs sm:text-sm flex-grow sm:flex-grow-0 shadow-sm"
              >
-                <Icon name="book-open" className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-600" />
-                <span>学習記事</span>
+                <Icon name="flask" className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-600" />
+                <span>元素バトル</span>
              </button>
           </div>
         </div>
