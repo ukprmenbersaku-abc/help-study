@@ -212,6 +212,17 @@ export async function executeQuery(sql: string, params: any[] = []): Promise<any
     return [];
   }
 
+  // 2c. UPDATE users SET password = ? WHERE id = ?
+  if (normalizedSql.includes('UPDATE USERS SET PASSWORD =')) {
+    const [password, id] = params;
+    const user = db.users.find(u => u.id === id);
+    if (user) {
+      user.password = password;
+      saveLocalDB(db);
+    }
+    return [];
+  }
+
   // 3. SELECT * FROM subjects WHERE user_id = ?
   if (normalizedSql.includes('SELECT * FROM SUBJECTS WHERE USER_ID =')) {
     const userId = params[0];

@@ -38,5 +38,68 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 .animate-fade-in {
-  animation: fade-in 0.3s ease-out forwards;
+  animation: fade-in 0.25s ease-out forwards;
+  will-change: opacity, transform;
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50% { transform: translate3d(0, -6px, 0) rotate(0.8deg); }
+}
+.animate-float-slow {
+  animation: float-slow 3s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes orbit-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-orbit-spin {
+  animation: orbit-spin 12s linear infinite;
+  will-change: transform;
+}
+.animate-orbit-spin-reverse {
+  animation: orbit-spin 8s linear infinite reverse;
+  will-change: transform;
+}
+
+@keyframes arena-shake {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  25% { transform: translate3d(-5px, 3px, 0); }
+  50% { transform: translate3d(5px, -3px, 0); }
+  75% { transform: translate3d(-3px, -2px, 0); }
+}
+.animate-shake {
+  animation: arena-shake 0.35s ease-in-out;
+  will-change: transform;
+}
+
+@keyframes projectile-fly {
+  0% { transform: translate3d(-40px, 30px, 0) scale(0.7); opacity: 0; }
+  25% { opacity: 1; }
+  100% { transform: translate3d(100px, -15px, 0) scale(1.05); opacity: 1; }
+}
+.animate-projectile {
+  animation: projectile-fly 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes bubble-rise {
+  0% { transform: translate3d(0, 15px, 0) scale(0.6); opacity: 0; }
+  50% { opacity: 0.8; }
+  100% { transform: translate3d(0, -25px, 0) scale(1.05); opacity: 0; }
+}
+.animate-bubble-rise {
+  animation: bubble-rise 2s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes flame-flicker {
+  0%, 100% { transform: scale(1) skewX(0deg); }
+  50% { transform: scale(1.03, 0.97) skewX(-1.5deg); }
+}
+.animate-flame {
+  animation: flame-flicker 1.4s ease-in-out infinite;
+  will-change: transform;
 }

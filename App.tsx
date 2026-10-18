@@ -109,15 +109,20 @@ const App: React.FC = () => {
   const [hasInjectedMayTasks, setHasInjectedMayTasks] = useCookieState<boolean>('hasInjectedMayTasks', false);
   const [d1UserId, setD1UserId] = useState<string | null>(() => localStorage.getItem('d1_user_id'));
 
-  // Auto-sync state changes to D1 Cloud in real-time if logged in
+  // Auto-sync state changes to D1 Cloud in real-time if logged in (with HMAC-SHA256 Token Auth)
   useEffect(() => {
     if (!d1UserId) return;
+    const token = localStorage.getItem('d1_auth_token');
+    if (!token) return;
 
     const timeoutId = setTimeout(async () => {
       try {
-        await fetch('/api/sync/push', {
+        const res = await fetch('/api/sync/push', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
           body: JSON.stringify({
             userId: d1UserId,
             subjects,
@@ -126,7 +131,11 @@ const App: React.FC = () => {
             userProgress,
           }),
         });
-        console.log('⚡ D1 Database automatically synchronized.');
+        if (res.status === 401 || res.status === 403) {
+          console.warn('[Sync Security] Session token invalid or expired.');
+        } else if (res.ok) {
+          console.log('⚡ D1 Database automatically synchronized with Bearer token authentication.');
+        }
       } catch (e) {
         console.error('Failed to auto-sync to D1:', e);
       }
